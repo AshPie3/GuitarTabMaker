@@ -1,4 +1,6 @@
-package GuitarTabMaker;
+package GuitarTabMaker.FretboardCreator;
+
+import GuitarTabMaker.ConnectionSettings;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

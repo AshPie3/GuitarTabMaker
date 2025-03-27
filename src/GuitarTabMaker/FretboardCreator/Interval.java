@@ -1,4 +1,4 @@
-package GuitarTabMaker;
+package GuitarTabMaker.FretboardCreator;
 
 public class Interval {
     private int id;

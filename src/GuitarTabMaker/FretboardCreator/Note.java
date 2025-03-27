@@ -1,4 +1,4 @@
-package GuitarTabMaker;
+package GuitarTabMaker.FretboardCreator;
 
 import java.sql.*;
 import java.util.LinkedList;
