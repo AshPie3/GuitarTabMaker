@@ -33,30 +33,33 @@ public class Scale {
                 this.interval_values.add(resultSet_intervals.getInt("i_val"));
             }
             //System.out.println(interval_values);
-
-
             for (int i = 0; i<7; i++){
                 int note_val = root_note_val+this.interval_values.get(i);
                 if (note_val>12) {note_val= note_val -12; scale_notes.add(note_val);}
                 else scale_notes.add(note_val);
-
             }
-            System.out.println(scale_notes);
+            //System.out.println(scale_notes);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
     }
     public void applyScale(Fretboard fretboard) {
+        for (int i1 = 0; i1<6; i1++) {
+            for (int i2 = 0; i2 <fretboard.getFretNum(); i2++) {
+                for(int i3 = 0; i3<7 ; i3++){
+                    int n_val =  this.scale_notes.get(i3);
+                    if (fretboard.getFretboard().get(i1).get(i2).getVal() == n_val){
+                        fretboard.getFretboard().get(i1).get(i2).setIn_scale(true);
+                        //System.out.println(fretboard.getFretboard().get(i1).get(i2));
+                        break;
 
-
-
-
-
+                    }
+                }
+            }
+        }
     }
-    }
+}
         /*for (int i1 = 0; i1<6; i1++) {
             System.out.print("String " + i1 + ", ");
             for (int i2 = 0; i2 <fretboard.getFretNum(); i2++) {
