@@ -1,19 +1,17 @@
 package GuitarTabMaker;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Fretboard {
     private int fretNum;
+
     private List<Note> tuning = new LinkedList<>();
+
     private List<List<Note>> fretboard = new LinkedList<>();
 
     public Fretboard(){}
-    public List<Note> getTuning(){
-        return tuning;
-    }
 
     @Override
     public String toString() {
@@ -23,11 +21,23 @@ public class Fretboard {
                 ", fretboard=" + fretboard +
                 '}';
     }
+
+    public List<Note> getTuning(){
+        return tuning;
+    }
+
+    public void setFretNum(int fretNum) {this.fretNum = fretNum;}
+
+    public void setTuning(List<Note> tuning) {this.tuning = tuning;}
+
+    public void setFretboard(List<List<Note>> fretboard) {this.fretboard = fretboard;}
+
     public List<List<Note>> getFretboard(){
         return fretboard;
     }
+
     public int getFretNum() {return this.fretNum;}
-    //This works
+
     public void generateTuning(int t_id){
         ConnectionSettings settings = new ConnectionSettings();
             try {
@@ -37,7 +47,6 @@ public class Fretboard {
                 ResultSet resultSet_notes_id = statement_notes_id.executeQuery(sql);
                 resultSet_notes_id.next();
                 for (int i = 1; i<=6; i++){
-
                     int string_id = resultSet_notes_id.getInt(i);
                     sql = "SELECT n_name, n_val, n_oct, n_audio FROM notes WHERE n_id = "+string_id;
                     Statement statement_notes = conn.createStatement();
@@ -50,7 +59,7 @@ public class Fretboard {
 
             } catch (SQLException e) {
                 throw new RuntimeException(e);
-            }
+        }
     }
 
     public void generateFretboard(int fretNum){
@@ -70,10 +79,8 @@ public class Fretboard {
                     resultSet_notes.next();
                     Note note = new Note(n_id, resultSet_notes.getString("n_name"), resultSet_notes.getInt("n_val"), resultSet_notes.getInt("n_oct"), resultSet_notes.getString("n_audio"), false);
                     temp_string_notes.add(note);
-
                 }
                 this.fretboard.add(n, temp_string_notes);
-
             }
 
         } catch (SQLException e) {

@@ -2,10 +2,16 @@ package GuitarTabMaker;
 
 public class Main {
     public static void main(String[] args) {
+        // Create new fretboard
         Fretboard fretboard1 = new Fretboard();
         fretboard1.generateTuning(1);
-        // getter
-        System.out.println(fretboard1.getTuning());
+        // Print out the tuning
+        System.out.print("Tuning: ");
+        for (int y = 0; y<6; y++){
+            System.out.print(fretboard1.getTuning().get(y).getName()+ ", ");
+        }
+        System.out.println();
+
         // Setter
         fretboard1.generateFretboard(16);
 

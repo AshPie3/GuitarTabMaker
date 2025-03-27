@@ -13,6 +13,7 @@ class ShapeDrawing extends JComponent {
     public int right_border = 80;
     public void paint(Graphics g)
     {
+        //this.fret_num = fretboard.getFretNum();
         Graphics2D g2 = (Graphics2D) g;
         //Draw the fretboard
         for(int i = 1; i <7; i++){
@@ -21,6 +22,7 @@ class ShapeDrawing extends JComponent {
             for (int n = 1; n <=fret_num; n++){
                 int step = getWidth()/fret_num * n;
                 g2.drawOval( right_border+step-2*c_width, getHeight()-x-c_width/2, c_width, c_width);
+                //g2.drawLine(right_border+step-2*c_width,, );
             }
         }
         //Draw the string picker
