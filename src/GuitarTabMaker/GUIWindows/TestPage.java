@@ -15,5 +15,4 @@ public class TestPage {
         //frame.getContentPane().add(new ShapeDrawing ());
         frame.setVisible(true);
     }
-
 }

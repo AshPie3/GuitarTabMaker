@@ -8,37 +8,10 @@ import java.util.List;
 
 public class Fretboard {
     private int fretNum;
-
     private List<Note> tuning = new LinkedList<>();
-
     private List<List<Note>> fretboard = new LinkedList<>();
 
     public Fretboard(){}
-
-    @Override
-    public String toString() {
-        return "Fretboard{" +
-                "FretNum=" + fretNum +
-                ", tuning=" + tuning +
-                ", fretboard=" + fretboard +
-                '}';
-    }
-
-    public List<Note> getTuning(){
-        return tuning;
-    }
-
-    public void setFretNum(int fretNum) {this.fretNum = fretNum;}
-
-    public void setTuning(List<Note> tuning) {this.tuning = tuning;}
-
-    public void setFretboard(List<List<Note>> fretboard) {this.fretboard = fretboard;}
-
-    public List<List<Note>> getFretboard(){
-        return fretboard;
-    }
-
-    public int getFretNum() {return this.fretNum;}
 
     public void generateTuning(int t_id){
         ConnectionSettings settings = new ConnectionSettings();
@@ -89,4 +62,33 @@ public class Fretboard {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Fretboard{" +
+                "FretNum=" + fretNum +
+                ", tuning=" + tuning +
+                ", fretboard=" + fretboard +
+                '}';
+    }
+
+    public List<Note> getTuning(){
+        return tuning;
+    }
+    public void setTuning(List<Note> tuning) {this.tuning = tuning;}
+
+    public List<List<Note>> getFretboard(){
+        return fretboard;
+    }
+    public void setFretboard(List<List<Note>> fretboard) {this.fretboard = fretboard;}
+
+    public int getFretNum() {return this.fretNum;}
+    public void setFretNum(int fretNum) {this.fretNum = fretNum;}
+
+
+
+
+
+
+
 }

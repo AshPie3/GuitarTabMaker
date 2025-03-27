@@ -34,26 +34,20 @@ public class Note {
     }
 
     public int getId() {return id;}
-
     public void setId(int id) {this.id = id;}
 
     public String getName() {return name;}
-
     public void setName(String name) {this.name = name;}
 
     public int getVal() {return val;}
-
     public void setVal(int val) {this.val = val;}
 
     public int getOct() {return oct;}
-
     public void setOct(int oct) {this.oct = oct;}
 
     public String getAudio_file() {return audio_file;}
-
     public void setAudio_file(String audio_file) {this.audio_file = audio_file;}
 
     public boolean getIn_scale() {return in_scale;}
-
     public void setIn_scale(boolean in_scale) {this.in_scale = in_scale;}
 }

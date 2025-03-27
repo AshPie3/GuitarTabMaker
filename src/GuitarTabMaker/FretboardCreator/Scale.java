@@ -18,26 +18,6 @@ public class Scale {
 
     public Scale() {}
 
-    public String getScale_name() {return scale_name;}
-
-    public int getScale_id() {return scale_id;}
-
-    public List<List<Note>> getFretboard() {return fretboard;}
-
-    public List<Integer> getScale_notes() {return scale_notes;}
-
-    public List<Integer> getInterval_values() {return interval_values;}
-
-    public void setScale_name(String scale_name) {this.scale_name = scale_name;}
-
-    public void setFretboard(List<List<Note>> fretboard) {this.fretboard = fretboard;}
-
-    public void setScale_notes(List<Integer> scale_notes) {this.scale_notes = scale_notes;}
-
-    public void setScale_id(int scale_id) {this.scale_id = scale_id;}
-
-    public void setInterval_values(List<Integer> interval_values) {this.interval_values = interval_values;}
-
     public void createScale(int scale_id, int root_note_val){
         ConnectionSettings settings = new ConnectionSettings();
         this.scale_id = scale_id;
@@ -78,4 +58,21 @@ public class Scale {
             }
         }
     }
+
+    public String getScale_name() {return scale_name;}
+    public void setScale_name(String scale_name) {this.scale_name = scale_name;}
+
+    public int getScale_id() {return scale_id;}
+    public void setScale_id(int scale_id) {this.scale_id = scale_id;}
+
+    public List<List<Note>> getFretboard() {return fretboard;}
+    public void setFretboard(List<List<Note>> fretboard) {this.fretboard = fretboard;}
+
+
+    public List<Integer> getScale_notes() {return scale_notes;}
+    public void setScale_notes(List<Integer> scale_notes) {this.scale_notes = scale_notes;}
+
+    public List<Integer> getInterval_values() {return interval_values;}
+    public void setInterval_values(List<Integer> interval_values) {this.interval_values = interval_values;}
+
 }
