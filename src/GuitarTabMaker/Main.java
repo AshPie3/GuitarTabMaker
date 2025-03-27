@@ -11,6 +11,9 @@ public class Main {
         for (int i = 0; i<6; i++){
             System.out.println("String "+ (i+1) +": "+ fretboard1.getFretboard().get(i));
         }
+        Scale scale1 = new Scale();
+        scale1.createScale(1, 1);
+        //System.out.println(scale1.);
 
 
     }
