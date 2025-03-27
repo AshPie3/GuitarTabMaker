@@ -8,11 +8,13 @@ public class Main {
         System.out.println(fretboard1.getTuning());
         // Setter
         fretboard1.generateFretboard(16);
+
+        Scale scale1 = new Scale();
+        scale1.createScale(1, 4);
+        scale1.applyScale(fretboard1);
         for (int i = 0; i<6; i++){
             System.out.println("String "+ (i+1) +": "+ fretboard1.getFretboard().get(i));
         }
-        Scale scale1 = new Scale();
-        scale1.createScale(1, 1);
         //System.out.println(scale1.);
 
 

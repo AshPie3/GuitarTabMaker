@@ -29,6 +29,7 @@ public class Note {
                 ", val=" + val +
                 ", oct=" + oct +
                 ", audio_file='" + audio_file + '\'' +
+                ", in_scale=" + in_scale + '\'' +
                 '}';
     }
 
@@ -52,4 +53,7 @@ public class Note {
 
     public void setAudio_file(String audio_file) {this.audio_file = audio_file;}
 
+    public boolean isIn_scale() {return in_scale;}
+
+    public void setIn_scale(boolean in_scale) {this.in_scale = in_scale;}
 }

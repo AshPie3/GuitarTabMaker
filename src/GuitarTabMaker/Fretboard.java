@@ -26,6 +26,7 @@ public class Fretboard {
     public List<List<Note>> getFretboard(){
         return fretboard;
     }
+    public int getFretNum() {return this.fretNum;}
     //This works
     public void generateTuning(int t_id){
         ConnectionSettings settings = new ConnectionSettings();
