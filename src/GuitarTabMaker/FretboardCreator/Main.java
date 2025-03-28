@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) {
         // Create new fretboard
         Fretboard fretboard1 = new Fretboard();
-        fretboard1.generateTuning(1);
+        fretboard1.generateTuning(2);
         // Print out the tuning
         System.out.print("Tuning: ");
         for (int y = 0; y<6; y++){
