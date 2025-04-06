@@ -30,7 +30,6 @@ public class ProjectWindow {
         frame.add(FretboardNumsPanel());
 
 
-
     }
     private Component FretboardPanel(){
         JPanel fretboardPanel = new FretboardPanel();
@@ -45,10 +44,8 @@ public class ProjectWindow {
         int panel_height = (int) (fretboardPanelHeight*0.1);
         panel.setBounds((windowWidth/2-fretboardPanelWidth/2), (int)(windowHeight-fretboardPanelHeight-windowHeight*0.1) - panel_height, fretboardPanelWidth, panel_height);
 
-
         return panel;
     }
-
 
     public static void main(String[] args) {
         new ProjectWindow();
@@ -80,7 +77,6 @@ public class ProjectWindow {
                 g.fillRect(0,y, fretboardPanelWidth, (int) (fretboardPanelHeight*0.02));
 
             }
-
         }
     }
     private class FretNumPanel extends JPanel {
