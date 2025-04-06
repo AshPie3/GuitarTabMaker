@@ -4,17 +4,40 @@ import javax.swing.*;
 import java.awt.*;
 
 public class StartWindow {
-    public StartWindow(){
+
+    private JPanel panel1;
+    private JTextPane textPane1;
+    private int windowWidth = 900;
+    private int windowHeight = 600;
+
+    private StartWindow(){
+        // create Window
         JFrame frame = new JFrame();
         frame.setTitle("Start Window");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 500);
-        frame.setVisible(true);
-
+        frame.setSize(windowWidth, windowHeight );
+        frame.setResizable(false);
         ImageIcon icon = new ImageIcon("Assets/Icon.png");
         frame.setIconImage(icon.getImage());
-
         frame.getContentPane().setBackground(Window.background_c);
+        frame.setLayout(null);
+        frame.setVisible(true);
+
+        // Create Center Label
+        JLabel label = new JLabel();
+        label.setText("Guitar Tab Maker");
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.TOP);
+        label.setForeground(Window.text_c); // set text color
+        label.setFont(new Font("Courier New", Font.BOLD, 42));
+        int label_width = 400;
+        int label_height = 100;
+        label.setBounds(windowWidth/2-label_width/2, 50, label_width, label_height);
+
+        frame.add(label);
+
+
+
     }
 
     public static void main(String[] args) {
