@@ -1,4 +1,6 @@
-package GuitarTabMaker.GUIWindows;
+package GuitarTabMaker.GUIWindows.StartWindow;
+
+import GuitarTabMaker.GUIWindows.Window;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,8 +9,8 @@ public class StartWindow {
 
     private JPanel panel1;
     private JTextPane textPane1;
-    private int windowWidth = (int) (Window.screenSize.getWidth()*0.5);
-    private int windowHeight = (int) (Window.screenSize.getHeight()*0.5);
+    private int windowWidth = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getWidth()*0.5);
+    private int windowHeight = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getHeight()*0.5);
 
     private StartWindow(){
         // create Window
@@ -19,7 +21,7 @@ public class StartWindow {
         frame.setResizable(false);
         ImageIcon icon = new ImageIcon("Assets/Icon.png");
         frame.setIconImage(icon.getImage());
-        frame.getContentPane().setBackground(Window.background_c);
+        frame.getContentPane().setBackground(GuitarTabMaker.GUIWindows.Window.background_c);
         frame.setLayout(null);
         frame.setVisible(true);
 

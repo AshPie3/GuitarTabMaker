@@ -7,8 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ProjectWindow {
-    private int windowWidth = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getWidth()*0.7);
-    private int windowHeight = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getHeight()*0.7);
+    private int windowWidth = (int) (Window.screenSizeWidth*0.7);
+    private int windowHeight = (int) (Window.screenSizeHeight*0.7);
     private int fretboardPanelWidth = (int) (windowWidth * 0.9);
     private int fretboardPanelHeight = (int) (windowHeight * 0.25);
     private int fretNum = Fretboard.getFretNum();
@@ -25,8 +25,8 @@ public class ProjectWindow {
         frame.getContentPane().setBackground(Window.background_c);
         frame.setLayout(null);
         // Create Fretboard pannel
-
         frame.add(FretboardPanel());
+        // Create Fretboard Numbers panel
         frame.add(FretboardNumsPanel());
 
 
@@ -40,28 +40,12 @@ public class ProjectWindow {
         return fretboardPanel;
     }
     private Component FretboardNumsPanel(){
-        JPanel panel = new JPanel();
+        JPanel panel = new FretNumPanel();
         panel.setBackground(Window.fretboard_num_c);
         int panel_height = (int) (fretboardPanelHeight*0.1);
         panel.setBounds((windowWidth/2-fretboardPanelWidth/2), (int)(windowHeight-fretboardPanelHeight-windowHeight*0.1) - panel_height, fretboardPanelWidth, panel_height);
-        JLabel label = new JLabel();
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setVerticalAlignment(SwingConstants.CENTER);
-        label.setBounds(0, 0, 20, panel_height);
-        label.setText("10");
-        label.setForeground(Color.black);
-        /*
-        for(int i = 1; i<=fretNum; i++){
-            int num_x = (fretboardPanelWidth/(fretNum+1)) *i-(fretboardPanelWidth/(fretNum+1))/2;
-            JLabel label = new JLabel();
-            label.setHorizontalAlignment(SwingConstants.CENTER);
-            label.setVerticalAlignment(SwingConstants.CENTER);
-            label.setBounds(num_x, 0, 20, panel_height);
-            label.setText(String.valueOf(i));
-            label.setForeground(Color.black);
-            panel.add(label);
-        }
-*/
+
+
         return panel;
     }
 
@@ -69,7 +53,6 @@ public class ProjectWindow {
     public static void main(String[] args) {
         new ProjectWindow();
     }
-
 
     private class FretboardPanel extends JPanel{
         @Override
@@ -98,6 +81,24 @@ public class ProjectWindow {
 
             }
 
+        }
+    }
+    private class FretNumPanel extends JPanel {
+        @Override
+        public void paintComponent(Graphics g){
+            super.paintComponent(g);
+            int panel_height = (int) (fretboardPanelHeight*0.1);
+            for(int i = 0; i<=fretNum; i++){
+                int num_x = (fretboardPanelWidth/(fretNum+1)) *i-(fretboardPanelWidth/(fretNum+1))/2;
+                JLabel label = new JLabel();
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                label.setVerticalAlignment(SwingConstants.CENTER);
+                label.setBounds(((fretboardPanelWidth/(fretNum+1))) +num_x,0, 20,panel_height );
+                label.setFont(new Font("Courier New", Font.BOLD, (int) (panel_height*0.7))); // 16
+                label.setText(String.valueOf(i ));
+                label.setForeground(Color.black);
+                add(label);
+            }
         }
     }
 }

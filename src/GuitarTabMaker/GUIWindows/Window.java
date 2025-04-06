@@ -5,8 +5,8 @@ import java.awt.*;
 public class Window {
 
     public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    public static int screenSizeWidth = (int) screenSize.getWidth();
-    public static int screenSizeHeight = (int) screenSize.getHeight();
+    public static int screenSizeWidth = (int) (screenSize.getWidth());
+    public static int screenSizeHeight = (int) ( screenSize.getHeight());
     public static Color background_c = new Color(62, 74, 88);
     public static Color button_off_c = new Color(45, 70, 84);
     public static Color button_on_c = new Color(36, 59, 74);
