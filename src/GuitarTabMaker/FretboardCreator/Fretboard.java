@@ -84,11 +84,4 @@ public class Fretboard {
 
     public int getFretNum() {return this.fretNum;}
     public void setFretNum(int fretNum) {this.fretNum = fretNum;}
-
-
-
-
-
-
-
 }

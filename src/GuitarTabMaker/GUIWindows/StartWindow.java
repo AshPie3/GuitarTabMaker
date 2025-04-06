@@ -2,21 +2,22 @@ package GuitarTabMaker.GUIWindows;
 
 import javax.swing.*;
 import java.awt.*;
-import javax.swing.JComponent;
 
 public class StartWindow {
-    public static void main(String[] args) {
-        MyButton button = new MyButton("Hello, World!");
-
-        JFrame frame = new JFrame("Guitar Tab Maker");
-        frame.setSize((int) (Window.width*0.8), (int) (Window.height*0.8));
+    public StartWindow(){
+        JFrame frame = new JFrame();
+        frame.setTitle("Start Window");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Container contentPane = frame.getContentPane();
-        contentPane.setLayout(new FlowLayout());
-        contentPane.add(button);
+        frame.setSize(800, 500);
         frame.setVisible(true);
+
+        ImageIcon icon = new ImageIcon("Assets/Icon.png");
+        frame.setIconImage(icon.getImage());
+
+        frame.getContentPane().setBackground(Window.background_c);
+    }
+
+    public static void main(String[] args) {
+        new StartWindow();
     }
 }
-
-
-
