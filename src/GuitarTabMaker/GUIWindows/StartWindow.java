@@ -7,8 +7,8 @@ public class StartWindow {
 
     private JPanel panel1;
     private JTextPane textPane1;
-    private int windowWidth = 900;
-    private int windowHeight = 600;
+    private int windowWidth = (int) (Window.screenSize.getWidth()*0.5);
+    private int windowHeight = (int) (Window.screenSize.getHeight()*0.5);
 
     private StartWindow(){
         // create Window
@@ -34,11 +34,11 @@ public class StartWindow {
         int label_height = 100;
         label.setBounds(windowWidth/2-label_width/2, 50, label_width, label_height);
 
+        // Add components
         frame.add(label);
 
-
-
     }
+
 
     public static void main(String[] args) {
         new StartWindow();

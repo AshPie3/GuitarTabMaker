@@ -12,6 +12,8 @@ public class Window {
     public static Color button_on_c = new Color(36, 59, 74);
     public static Color text_c = new Color(60, 50, 61);
     public static Font text_f = new Font("Courier New", Font.BOLD, 42);
+    public static Color fretboard_c = new Color(93, 92, 79);
+    public static Color fretboard_num_c = new Color(73, 72, 69);
 
 
 
