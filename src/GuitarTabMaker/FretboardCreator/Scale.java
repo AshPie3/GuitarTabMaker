@@ -52,7 +52,6 @@ public class Scale {
                     if (fretboard.getFretboard().get(i1).get(i2).getVal() == n_val){
                         fretboard.getFretboard().get(i1).get(i2).setIn_scale(true);
                         break;
-
                     }
                 }
             }
@@ -67,7 +66,6 @@ public class Scale {
 
     public List<List<Note>> getFretboard() {return fretboard;}
     public void setFretboard(List<List<Note>> fretboard) {this.fretboard = fretboard;}
-
 
     public List<Integer> getScale_notes() {return scale_notes;}
     public void setScale_notes(List<Integer> scale_notes) {this.scale_notes = scale_notes;}
