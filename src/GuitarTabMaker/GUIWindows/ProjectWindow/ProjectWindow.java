@@ -4,6 +4,7 @@ import GuitarTabMaker.FretboardCreator.Fretboard;
 import GuitarTabMaker.GUIWindows.Window;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class ProjectWindow {
@@ -19,7 +20,7 @@ public class ProjectWindow {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(windowWidth, windowHeight);
         frame.setResizable(false);
-        frame.setVisible(true);
+        //frame.setVisible(true);
         ImageIcon icon = new ImageIcon("Assets/Icon.png");
         frame.setIconImage(icon.getImage());
         frame.getContentPane().setBackground(Window.background_c);
@@ -27,7 +28,20 @@ public class ProjectWindow {
         // Create Fretboard pannel
         frame.add(FretboardPanel());
         // Create Fretboard Numbers panel
-        frame.add(FretboardNumsPanel());
+        JPanel fretNumPanel= FretboardNumsPanel();
+        frame.add(fretNumPanel);
+
+        JLabel label = new JLabel();
+        label.setBounds(0,0, 20,(int) (fretboardPanelHeight*0.15));
+        label.setFont(new Font("Courier New", Font.BOLD, (int) ((int) (fretboardPanelHeight*0.15)*0.7))); // 16
+        label.setText("19");
+        label.setForeground(Color.black);
+        //fretNumPanel.add(label);
+        // Create exit button
+        frame.add(ExitButton());
+
+        frame.setVisible(true);
+
 
 
     }
@@ -38,18 +52,47 @@ public class ProjectWindow {
 
         return fretboardPanel;
     }
-    private Component FretboardNumsPanel(){
-        JPanel panel = new FretNumPanel();
+    private JPanel FretboardNumsPanel(){
+        JPanel panel = new JPanel();
         panel.setBackground(Window.fretboard_num_c);
-        int panel_height = (int) (fretboardPanelHeight*0.1);
+        int panel_height = (int) (fretboardPanelHeight*0.15);
         panel.setBounds((windowWidth/2-fretboardPanelWidth/2), (int)(windowHeight-fretboardPanelHeight-windowHeight*0.1) - panel_height, fretboardPanelWidth, panel_height);
+        panel.setLayout(null);
+        // testing purpouses
+
+        //label.setVerticalAlignment(SwingConstants.TOP);
+        //label.setVerticalTextPosition(SwingConstants.CENTER);
+        for(int i = 0; i<=fretNum; i++){
+            int num_x = (fretboardPanelWidth/(fretNum+1)) *i;
+            JLabel label = new JLabel();
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+            label.setVerticalAlignment(SwingConstants.CENTER);
+            label.setBounds(num_x,0,  (fretboardPanelWidth/(fretNum+1)),panel_height );
+            label.setFont(new Font("Courier New", Font.BOLD, (int) (panel_height*0.7))); // 16
+            label.setText(String.valueOf(i));
+            label.setForeground(Color.black);
+            panel.add(label);
+        }
 
         return panel;
     }
 
-    public static void main(String[] args) {
-        new ProjectWindow();
+    private Component ExitButton(){
+        JButton button = new JButton();
+        int button_width = (int) (windowWidth*0.09);
+        button.setBounds(windowWidth-button_width, 0, button_width, (int) (windowHeight*0.08));
+        button.setBackground(Window.button_off_c);
+        button.setBorderPainted(false);
+        //button.set
+        button.setText("EXIT");
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setFont(new Font("Courier New", Font.BOLD,(int) (windowHeight*0.08*0.4)));
+
+        return button;
     }
+
+
+
 
     private class FretboardPanel extends JPanel{
         @Override
@@ -69,7 +112,6 @@ public class ProjectWindow {
                     g.fillOval(x -(fretboardPanelWidth/(fretNum+1))/2 - circle_w/4, (int) ((fretboardPanelHeight/2 - circle_w/2) - fretboardPanelHeight/3.5), circle_w, circle_w);
                     g.fillOval(x -(fretboardPanelWidth/(fretNum+1))/2 - circle_w/4, (int) ((fretboardPanelHeight/2 - circle_w/2) + fretboardPanelHeight/3.5), circle_w, circle_w);
                 }
-
             }
             for (int i = 1; i<7; i++){
                 int y = (fretboardPanelHeight/7) *i;
@@ -82,7 +124,7 @@ public class ProjectWindow {
     private class FretNumPanel extends JPanel {
         @Override
         public void paintComponent(Graphics g){
-            super.paintComponent(g);
+            //super.paintComponent(g);
             int panel_height = (int) (fretboardPanelHeight*0.1);
             for(int i = 0; i<=fretNum; i++){
                 int num_x = (fretboardPanelWidth/(fretNum+1)) *i-(fretboardPanelWidth/(fretNum+1))/2;
@@ -96,5 +138,8 @@ public class ProjectWindow {
                 add(label);
             }
         }
+    }
+    public static void main(String[] args) {
+        new ProjectWindow();
     }
 }

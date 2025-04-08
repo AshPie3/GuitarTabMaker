@@ -1,4 +1,4 @@
-package GuitarTabMaker.GUIWindows.StartWindow;
+package GuitarTabMaker.GUIWindows.StartWindowPackage;
 
 import GuitarTabMaker.GUIWindows.Window;
 
@@ -25,21 +25,28 @@ public class StartWindow {
         frame.setLayout(null);
         frame.setVisible(true);
 
-        // Create Center Label
+
+        // Add components
+        frame.add(MainTitle());
+
+    }
+    // Create Center Label
+    private Component MainTitle(){
         JLabel label = new JLabel();
         label.setText("Guitar Tab Maker");
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.TOP);
         label.setForeground(Window.text_c); // set text color
-        label.setFont(new Font("Courier New", Font.BOLD, 42));
+        label.setFont(new Font("Courier New", Font.BOLD, (int) (windowHeight*0.08)));
         int label_width = 400;
         int label_height = 100;
         label.setBounds(windowWidth/2-label_width/2, 50, label_width, label_height);
 
-        // Add components
-        frame.add(label);
-
+        return label;
     }
+
+
+
 
 
     public static void main(String[] args) {

@@ -9,7 +9,7 @@ public class StartWindow {
         MyButton button = new MyButton("Hello, World!");
 
         JFrame frame = new JFrame("Guitar Tab Maker");
-        frame.setSize((int) (Window.width*0.8), (int) (Window.height*0.8));
+        frame.setSize((int) (Window.screenSizeWidth*0.8), (int) (Window.screenSizeHeight*0.8));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Container contentPane = frame.getContentPane();
         contentPane.setLayout(new FlowLayout());
