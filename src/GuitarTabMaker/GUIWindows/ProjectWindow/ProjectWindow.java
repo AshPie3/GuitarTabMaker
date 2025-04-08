@@ -28,14 +28,8 @@ public class ProjectWindow {
         // Create Fretboard pannel
         frame.add(FretboardPanel());
         // Create Fretboard Numbers panel
-        JPanel fretNumPanel= FretboardNumsPanel();
-        frame.add(fretNumPanel);
+        frame.add(FretboardNumsPanel());
 
-        JLabel label = new JLabel();
-        label.setBounds(0,0, 20,(int) (fretboardPanelHeight*0.15));
-        label.setFont(new Font("Courier New", Font.BOLD, (int) ((int) (fretboardPanelHeight*0.15)*0.7))); // 16
-        label.setText("19");
-        label.setForeground(Color.black);
         //fretNumPanel.add(label);
         // Create exit button
         frame.add(ExitButton());
@@ -45,7 +39,7 @@ public class ProjectWindow {
 
 
     }
-    private Component FretboardPanel(){
+    private JPanel FretboardPanel(){
         JPanel fretboardPanel = new FretboardPanel();
         fretboardPanel.setBackground(Window.fretboard_c);
         fretboardPanel.setBounds(windowWidth/2-fretboardPanelWidth/2, (int)(windowHeight-fretboardPanelHeight-windowHeight*0.1), fretboardPanelWidth, fretboardPanelHeight);
@@ -58,10 +52,6 @@ public class ProjectWindow {
         int panel_height = (int) (fretboardPanelHeight*0.15);
         panel.setBounds((windowWidth/2-fretboardPanelWidth/2), (int)(windowHeight-fretboardPanelHeight-windowHeight*0.1) - panel_height, fretboardPanelWidth, panel_height);
         panel.setLayout(null);
-        // testing purpouses
-
-        //label.setVerticalAlignment(SwingConstants.TOP);
-        //label.setVerticalTextPosition(SwingConstants.CENTER);
         for(int i = 0; i<=fretNum; i++){
             int num_x = (fretboardPanelWidth/(fretNum+1)) *i;
             JLabel label = new JLabel();
@@ -82,11 +72,14 @@ public class ProjectWindow {
         int button_width = (int) (windowWidth*0.09);
         button.setBounds(windowWidth-button_width, 0, button_width, (int) (windowHeight*0.08));
         button.setBackground(Window.button_off_c);
-        button.setBorderPainted(false);
+        button.setBorderPainted(true);
         //button.set
-        button.setText("EXIT");
+        JLabel label = new JLabel();
+        label.setText("Exit");
+        //button.setLayout(null);
         button.setHorizontalAlignment(SwingConstants.CENTER);
-        button.setFont(new Font("Courier New", Font.BOLD,(int) (windowHeight*0.08*0.4)));
+        label.setFont(new Font(Window.font, Font.BOLD,(int) (windowHeight*0.08*0.4)));
+        button.add(label);
 
         return button;
     }
@@ -118,24 +111,6 @@ public class ProjectWindow {
                 g.setColor(Color.BLACK);
                 g.fillRect(0,y, fretboardPanelWidth, (int) (fretboardPanelHeight*0.02));
 
-            }
-        }
-    }
-    private class FretNumPanel extends JPanel {
-        @Override
-        public void paintComponent(Graphics g){
-            //super.paintComponent(g);
-            int panel_height = (int) (fretboardPanelHeight*0.1);
-            for(int i = 0; i<=fretNum; i++){
-                int num_x = (fretboardPanelWidth/(fretNum+1)) *i-(fretboardPanelWidth/(fretNum+1))/2;
-                JLabel label = new JLabel();
-                label.setHorizontalAlignment(SwingConstants.CENTER);
-                label.setVerticalAlignment(SwingConstants.CENTER);
-                label.setBounds(((fretboardPanelWidth/(fretNum+1))) +num_x,0, 20,panel_height );
-                label.setFont(new Font("Courier New", Font.BOLD, (int) (panel_height*0.7))); // 16
-                label.setText(String.valueOf(i ));
-                label.setForeground(Color.black);
-                add(label);
             }
         }
     }
