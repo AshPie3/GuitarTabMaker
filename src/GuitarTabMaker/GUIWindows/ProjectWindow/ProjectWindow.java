@@ -1,11 +1,13 @@
 package GuitarTabMaker.GUIWindows.ProjectWindow;
 
 import GuitarTabMaker.FretboardCreator.Fretboard;
+import GuitarTabMaker.FretboardCreator.Note;
 import GuitarTabMaker.GUIWindows.Window;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.util.List;
 
 public class ProjectWindow {
     private int windowWidth = (int) (Window.screenSizeWidth*0.7);
@@ -13,6 +15,8 @@ public class ProjectWindow {
     private int fretboardPanelWidth = (int) (windowWidth * 0.9);
     private int fretboardPanelHeight = (int) (windowHeight * 0.25);
     private int fretNum = Fretboard.getFretNum();
+
+
     public ProjectWindow(){
          // Create Window
         JFrame frame = new JFrame();
@@ -43,6 +47,8 @@ public class ProjectWindow {
         JPanel fretboardPanel = new FretboardPanel();
         fretboardPanel.setBackground(Window.fretboard_c);
         fretboardPanel.setBounds(windowWidth/2-fretboardPanelWidth/2, (int)(windowHeight-fretboardPanelHeight-windowHeight*0.1), fretboardPanelWidth, fretboardPanelHeight);
+
+
 
         return fretboardPanel;
     }
@@ -84,6 +90,10 @@ public class ProjectWindow {
         return button;
     }
 
+    private List<List<ButtonGenerator>> generateButtons(Fretboard fretboard, int fretNum, int string ){
+
+        return null;
+    }
 
 
 
@@ -114,6 +124,8 @@ public class ProjectWindow {
             }
         }
     }
+
+
     public static void main(String[] args) {
         new ProjectWindow();
     }

@@ -11,8 +11,8 @@ public class NewProjectWindow {
 
     private JPanel panel1;
 
-    private int windowWidth = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getWidth()*0.1);
-    private int windowHeight = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getHeight()*0.1);
+    private int windowWidth = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getWidth()*0.25);
+    private int windowHeight = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getHeight()*0.45);
 
     private NewProjectWindow(){
         // create Window
@@ -30,7 +30,7 @@ public class NewProjectWindow {
 
         // Add components
         frame.add(MainTitle());
-        frame.add(NewProjectButton());
+        //frame.add(NewProjectButton());
 
 
 
@@ -38,13 +38,14 @@ public class NewProjectWindow {
     // Create Center Label
     private Component MainTitle(){
         JLabel label = new JLabel();
-        label.setText("Guitar Tab Maker");
+        label.setText("New Project");
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.TOP);
         label.setForeground(Window.text_c); // set text color
-        label.setFont(new Font(Window.font, Font.BOLD, (int) (windowHeight*0.08)));
-        int label_width = 400;
-        int label_height = 100;
+        label.setFont(new Font(Window.font, Font.BOLD, 15));
+        label.setForeground(Color.BLACK);
+        int label_width = windowWidth/3;
+        int label_height = 50;
         label.setBounds(windowWidth/2-label_width/2, 50, label_width, label_height);
 
         return label;
@@ -80,7 +81,7 @@ public class NewProjectWindow {
 
 
     public static void main(String[] args) {
-        new StartWindow();
+        new NewProjectWindow();
     }
 
 
