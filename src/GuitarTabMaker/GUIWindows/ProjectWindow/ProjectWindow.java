@@ -7,6 +7,7 @@ import GuitarTabMaker.GUIWindows.Window;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ProjectWindow {
@@ -90,9 +91,13 @@ public class ProjectWindow {
         return button;
     }
 
-    private List<List<ButtonGenerator>> generateButtons(Fretboard fretboard, int fretNum, int string ){
+    private List<List<Component>> generateButtons(Fretboard fretboard, int fretNum, int string ){
+        List<List<Component>> button_list = new LinkedList<>();
+        for (int y = 0; y <6; y++){
 
+        }
         return null;
+
     }
 
 
