@@ -48,7 +48,22 @@ public class ProjectWindow {
         JPanel fretboardPanel = new FretboardPanel();
         fretboardPanel.setBackground(Window.fretboard_c);
         fretboardPanel.setBounds(windowWidth/2-fretboardPanelWidth/2, (int)(windowHeight-fretboardPanelHeight-windowHeight*0.1), fretboardPanelWidth, fretboardPanelHeight);
+        fretboardPanel.setLayout(null);
+        // Temp
+        int x = 0;
+        int y = 0;
+        int b_diamater = fretboardPanelHeight/12;
+        JButton button = new JButton();
+        int y_m = (fretboardPanelHeight/7) * y + (fretboardPanelHeight/7) - b_diamater/2;
+        int x_m = (fretboardPanelWidth / (fretNum + 1)) * x + (fretboardPanelWidth / (fretNum + 1)) / 2 - b_diamater/4;
+        button.setBounds(x_m, y_m, b_diamater, b_diamater);
+        //button.setBorder(new RoundedBorder(b_diamater/2));
+        //button.setContentAreaFilled(false);
+        button.setOpaque(false);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
 
+        fretboardPanel.add(button);
 
 
         return fretboardPanel;
@@ -91,12 +106,25 @@ public class ProjectWindow {
         return button;
     }
 
-    private List<List<Component>> generateButtons(Fretboard fretboard, int fretNum, int string ){
+    private List<List<Component>> setButtons(Fretboard fretboard){
         List<List<Component>> button_list = new LinkedList<>();
-        for (int y = 0; y <6; y++){
+        int b_diamater = fretboardPanelHeight/12;
+        for (int y = 0; y <6; y++) {
+            int y_m = (fretboardPanelHeight/7) * y + (fretboardPanelHeight/7/2);
+            for (int x = 0; x <= fretNum; x++) {
+                JButton button = new JButton();
+                int x_m = (fretboardPanelWidth / (fretNum + 1)) * x + (fretboardPanelWidth / (fretNum + 1)) / 2;
+                button.setBounds(x_m, y_m, b_diamater, b_diamater);
+                //button.setBorder(new RoundedBorder(b_diamater/2));
 
+                //Get fretboard values
+                String note_name = fretboard.getFretboard().get(y).get(x).getName();
+                int note_value = fretboard.getFretboard().get(y).get(x).getVal();
+
+
+            }
         }
-        return null;
+        return button_list;
 
     }
 
@@ -128,6 +156,11 @@ public class ProjectWindow {
 
             }
         }
+    }
+
+    private class RoundButton extends JButton{
+
+
     }
 
 
