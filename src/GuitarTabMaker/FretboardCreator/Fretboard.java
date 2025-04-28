@@ -37,9 +37,9 @@ public class Fretboard {
         }
     }
 
-    public void generateFretboard(int fretNum){
+    public void generateFretboard(){
         ConnectionSettings settings = new ConnectionSettings();
-        this.fretNum = fretNum;
+
         try{
             Connection conn  = settings.getDatabaseConnection();
             String sql;
@@ -81,6 +81,7 @@ public class Fretboard {
         return fretboard;
     }
     public void setFretboard(List<List<Note>> fretboard) {this.fretboard = fretboard;}
+
 
     public static int getFretNum() {return fretNum;}
     public void setFretNum(int fretNum) {this.fretNum = fretNum;}

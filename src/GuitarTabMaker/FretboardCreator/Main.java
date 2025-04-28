@@ -13,7 +13,7 @@ public class Main {
         System.out.println();
 
         // Setter
-        fretboard1.generateFretboard(16);
+        fretboard1.generateFretboard();
 
         Scale scale1 = new Scale();
         scale1.createScale(1, 4);
