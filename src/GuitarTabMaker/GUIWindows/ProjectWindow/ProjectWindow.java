@@ -32,22 +32,20 @@ public class ProjectWindow {
         frame.setIconImage(icon.getImage());
         frame.getContentPane().setBackground(Window.background_c);
         frame.setLayout(null);
-        // Create Fretboard pannel
+        // Create Fretboard panel
         JPanel fretpanel = FretboardPanel();
         frame.add(fretpanel);
         setButtons(fretboard,fretpanel);
         // Create Fretboard Numbers panel
         frame.add(FretboardNumsPanel());
 
-        //fretNumPanel.add(label);
         // Create exit button
         frame.add(ExitButton());
-
-        //Add buttons
 
 
         frame.setVisible(true);
     }
+    //Components
     private JPanel FretboardPanel(){
         JPanel fretboardPanel = new FretboardPanel();
         fretboardPanel.setBackground(Window.fretboard_c);
@@ -75,7 +73,6 @@ public class ProjectWindow {
 
         return panel;
     }
-
     private Component ExitButton(){
         JButton button = new JButton();
         int button_width = (int) (windowWidth*0.09);
@@ -93,7 +90,15 @@ public class ProjectWindow {
         return button;
     }
 
+    private JPanel TabWindow(){
+        JPanel panel = new JPanel();
 
+
+
+        return panel;
+    }
+
+    //Modified Classes
     private List<List<Component>> setButtons(Fretboard fretboard, JPanel panel){
         List<List<Component>> button_list = new LinkedList<>();
         List<Component> button_temp = new LinkedList<>();
@@ -120,8 +125,6 @@ public class ProjectWindow {
         return button_list;
 
     }
-
-
 
     private class FretboardPanel extends JPanel{
         @Override
@@ -213,7 +216,7 @@ public class ProjectWindow {
         public void setFret(int fret) {this.fret = fret;}
     }
 
-
+    //Test method
     public static void main(String[] args) {
         Scale scale = new Scale();
         scale.createScale(1, 4);

@@ -9,8 +9,6 @@ import java.awt.event.ActionListener;
 
 public class NewProjectWindow {
 
-    private JPanel panel1;
-
     private int windowWidth = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getWidth()*0.25);
     private int windowHeight = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getHeight()*0.45);
 
@@ -45,36 +43,16 @@ public class NewProjectWindow {
         label.setFont(new Font(Window.font, Font.BOLD, 15));
         label.setForeground(Color.BLACK);
         int label_width = windowWidth/3;
-        int label_height = 50;
-        label.setBounds(windowWidth/2-label_width/2, 50, label_width, label_height);
+        int label_height = windowHeight/15;
+        label.setBounds(windowWidth/2-label_width/2, 0, label_width, label_height);
 
         return label;
     }
-
-    private Component NewProjectButton(){
-        JButton button = new JButton();
-        int width = (int) (windowWidth/4.5);
-        int height = windowHeight/7;
-        button.setBounds(windowWidth - windowWidth/3 - width/2, windowHeight/2 - height/2, width, height);
-        button.setBackground(Window.button_off_c);
-        button.setBorderPainted(false);
+    private Component ProjectName(){
         JLabel label = new JLabel();
-        label.setText("New Project");
-        label.setFont(new Font(Window.font, Font.BOLD, height/3));
 
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
-
-        button.add(label);
-
-        return button;
+        return label;
     }
-
 
 
 
