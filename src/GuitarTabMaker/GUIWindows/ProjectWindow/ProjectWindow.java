@@ -1,13 +1,11 @@
 package GuitarTabMaker.GUIWindows.ProjectWindow;
 
 import GuitarTabMaker.FretboardCreator.Fretboard;
-import GuitarTabMaker.FretboardCreator.Note;
 import GuitarTabMaker.FretboardCreator.Scale;
 import GuitarTabMaker.GUIWindows.Window;
-import GuitarTabMaker.Project;
+import GuitarTabMaker.ProjectManager.Project;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

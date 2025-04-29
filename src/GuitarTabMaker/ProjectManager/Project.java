@@ -1,4 +1,4 @@
-package GuitarTabMaker;
+package GuitarTabMaker.ProjectManager;
 
 import GuitarTabMaker.FretboardCreator.Fretboard;
 import GuitarTabMaker.FretboardCreator.Scale;
