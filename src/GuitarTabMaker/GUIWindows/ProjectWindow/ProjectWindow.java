@@ -7,16 +7,23 @@ import GuitarTabMaker.ProjectManager.Project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ProjectWindow {
     private int windowWidth = (int) (Window.screenSizeWidth*0.8);
     private int windowHeight = (int) (Window.screenSizeHeight*0.8);
-    private int fretboardPanelWidth = (int) (windowWidth * 0.9);
+    private int fretboardPanelWidth = (int) (windowWidth * 0.95);
     private int fretboardPanelHeight = (int) (windowHeight * 0.3);
+    private int top_margin = (int) (windowHeight*0.05);
+
+    private List<List<String>> tab = new LinkedList();
+
 
     public ProjectWindow(Project project){
         Fretboard fretboard = project.getFretboard();
@@ -40,16 +47,32 @@ public class ProjectWindow {
         frame.add(FretboardNumsPanel());
 
         // Create exit button
-        frame.add(ExitButton());
+        frame.add(ExitButton(frame));
 
+        //Add tablature button
+        frame.add(TabWindow());
 
+        //Add next line button
+        frame.add(next_line());
         frame.setVisible(true);
+
+        //Initialize list
+        List<String> temp_list = new ArrayList<>(6);
+        for (int i = 0; i<6; i++){
+            String note = fretboard.getTuning().get(i).getName().substring(0,1);
+            temp_list.add(note);
+        }
+        tab.add(temp_list);
+        System.out.println(tab);
+
+
     }
     //Components
     private JPanel FretboardPanel(){
         JPanel fretboardPanel = new FretboardPanel();
         fretboardPanel.setBackground(Window.fretboard_c);
-        fretboardPanel.setBounds(windowWidth/2-fretboardPanelWidth/2, (int)(windowHeight-fretboardPanelHeight-windowHeight*0.1), fretboardPanelWidth, fretboardPanelHeight);
+        int x = (int) (windowWidth-fretboardPanelWidth)/3;
+        fretboardPanel.setBounds(x, (int)(windowHeight-fretboardPanelHeight-windowHeight*0.15), fretboardPanelWidth, fretboardPanelHeight);
         fretboardPanel.setLayout(null);
         return fretboardPanel;
     }
@@ -57,7 +80,8 @@ public class ProjectWindow {
         JPanel panel = new JPanel();
         panel.setBackground(Window.fretboard_num_c);
         int panel_height = (int) (fretboardPanelHeight*0.15);
-        panel.setBounds((windowWidth/2-fretboardPanelWidth/2), (int)(windowHeight-fretboardPanelHeight-windowHeight*0.1) - panel_height, fretboardPanelWidth, panel_height);
+        int x = (int) (windowWidth-fretboardPanelWidth)/3;
+        panel.setBounds(x, (int)(windowHeight-fretboardPanelHeight-windowHeight*0.15) - panel_height, fretboardPanelWidth, panel_height);
         panel.setLayout(null);
         for(int i = 0; i<Fretboard.getFretNum(); i++){
             int num_x = (fretboardPanelWidth/(Fretboard.getFretNum())) *i;
@@ -73,10 +97,11 @@ public class ProjectWindow {
 
         return panel;
     }
-    private Component ExitButton(){
+    private Component ExitButton(JFrame frame){
         JButton button = new JButton();
-        int button_width = (int) (windowWidth*0.09);
-        button.setBounds(windowWidth-button_width, 0, button_width, (int) (windowHeight*0.08));
+        int button_width = (int) (windowWidth*0.08);
+        int button_height = top_margin;
+        button.setBounds(windowWidth-button_width, 0, button_width,button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
         //button.set
@@ -84,16 +109,66 @@ public class ProjectWindow {
         label.setText("Exit");
         //button.setLayout(null);
         button.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setFont(new Font(Window.font, Font.BOLD,(int) (windowHeight*0.08*0.4)));
+        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.6)));
         button.add(label);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+
 
         return button;
     }
 
-    private JPanel TabWindow(){
-        JPanel panel = new JPanel();
+    private JButton next_line(){
+        JButton button = new JButton();
+        int button_width = (int) (windowWidth*0.08);
+        int button_height = top_margin*2;
+        button.setBounds(windowWidth/2, 0, button_width,button_height);
+        button.setBackground(Window.button_off_c);
+        button.setBorderPainted(true);
+        //button.set
+        JLabel label = new JLabel();
+        label.setText("next line");
+        //button.setLayout(null);
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.6)));
+        button.add(label);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<String> temp_list = new ArrayList<>(6);
+                for (int i = 0; i<6; i++){temp_list.add("-");}
+                tab.add(temp_list);
+                System.out.println(tab);
+            }
+        });
 
-        return panel;
+        return button;
+    }
+
+    private JScrollPane TabWindow(){
+        //Whole panel
+        JTextArea panel = new JTextArea();
+        panel.setLayout(null);
+        int y = top_margin + 5;
+        int width = (int) (windowWidth*0.9);
+        int height = (int) (windowHeight/2.3);
+        panel.setBounds((int) (windowWidth*0.05), y, width, height*100);
+        panel.setLineWrap(true);
+
+        //Visible window
+        JScrollPane scrollFrame = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollFrame.setBounds((int) (windowWidth*0.05), y,width ,height );
+
+        // Scroll bar
+        JScrollBar scrollBar =scrollFrame.getVerticalScrollBar();
+        scrollBar.setOrientation(JScrollBar.VERTICAL);
+
+        // Add components
+        return scrollFrame;
     }
 
     //Modified Classes
@@ -151,6 +226,7 @@ public class ProjectWindow {
             }
         }
     }
+
 
     private class RoundButton extends JLabel{
         private boolean mousePressed = false;
