@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Fretboard {
-    private static int fretNum = 16;
+    private static int fretNum = 17;
     private List<Note> tuning = new LinkedList<>();
     private List<List<Note>> fretboard = new LinkedList<>();
 

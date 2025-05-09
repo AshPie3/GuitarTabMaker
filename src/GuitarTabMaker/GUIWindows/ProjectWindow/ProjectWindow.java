@@ -13,8 +13,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ProjectWindow {
-    private int windowWidth = (int) (Window.screenSizeWidth*0.7);
-    private int windowHeight = (int) (Window.screenSizeHeight*0.7);
+    private int windowWidth = (int) (Window.screenSizeWidth*0.8);
+    private int windowHeight = (int) (Window.screenSizeHeight*0.8);
     private int fretboardPanelWidth = (int) (windowWidth * 0.9);
     private int fretboardPanelHeight = (int) (windowHeight * 0.3);
 
@@ -93,8 +93,6 @@ public class ProjectWindow {
     private JPanel TabWindow(){
         JPanel panel = new JPanel();
 
-
-
         return panel;
     }
 
@@ -102,7 +100,7 @@ public class ProjectWindow {
     private List<List<Component>> setButtons(Fretboard fretboard, JPanel panel){
         List<List<Component>> button_list = new LinkedList<>();
         List<Component> button_temp = new LinkedList<>();
-        int b_diamater = (int) (fretboardPanelHeight/7);
+        int b_diamater = (int) (fretboardPanelHeight/7.3);
         for (int y = 0; y <6; y++) {
             int y_m = (fretboardPanelHeight/7) * y + (fretboardPanelHeight/7) - b_diamater/2;
             for (int x = 0; x < Fretboard.getFretNum(); x++) {
