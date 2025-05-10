@@ -22,18 +22,24 @@ public class ProjectWindow {
     private int fretboardPanelHeight = (int) (windowHeight * 0.3);
     private int top_margin = (int) (windowHeight*0.05);
 
-    private List<List<String>> tab = new LinkedList();
+    private List<List<String>> tab;
+    private String str_tab;
+    private int currently_edited = 2;
 
 
     public ProjectWindow(Project project){
         Fretboard fretboard = project.getFretboard();
+        tab = project.getTablature();
+        str_tab = TabListToString();
+        System.out.println(str_tab);
 
-         // Create Window
+        // Create Window
         JFrame frame = new JFrame();
         frame.setTitle("Project Window");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(windowWidth, windowHeight);
         frame.setResizable(false);
+
         //frame.setVisible(true);
         ImageIcon icon = new ImageIcon("Assets/Icon.png");
         frame.setIconImage(icon.getImage());
@@ -49,23 +55,28 @@ public class ProjectWindow {
         // Create exit button
         frame.add(ExitButton(frame));
 
-        //Add tablature button
-        frame.add(TabWindow());
 
-        //Add next line button
-        frame.add(next_line());
-        frame.setVisible(true);
+
+        //Add next buttons button
+        frame.add(insert_line()); // Insert line button
+        frame.add(previous_line()); // Edit previous line button
+        frame.add(next_line()); // edit next line button
+
 
         //Initialize list
-        List<String> temp_list = new ArrayList<>(6);
+        for (int i = 0; i<3; i++){tab.add(i, new ArrayList<>(6));}
         for (int i = 0; i<6; i++){
             String note = fretboard.getTuning().get(i).getName().substring(0,1);
-            temp_list.add(note);
+            tab.get(0).add(i, note);
         }
-        tab.add(temp_list);
-        System.out.println(tab);
+        for (int i = 0; i<6; i++){tab.get(1).add(i, "|");}
+        for (int i = 0; i<6; i++){tab.get(2).add(i, "-");}
+        str_tab = TabListToString();
+        System.out.println(str_tab);
+        //Add tablature button
 
-
+        //Set frame visible
+        frame.setVisible(true);
     }
     //Components
     private JPanel FretboardPanel(){
@@ -122,53 +133,177 @@ public class ProjectWindow {
         return button;
     }
 
-    private JButton next_line(){
+    private JButton add_line(){
         JButton button = new JButton();
         int button_width = (int) (windowWidth*0.08);
-        int button_height = top_margin*2;
-        button.setBounds(windowWidth/2, 0, button_width,button_height);
+        int button_height = (int) (windowHeight*0.08);
+        button.setBounds(windowWidth/2, windowHeight-button_height, button_width,button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
+        //button.setLayout(null);
         //button.set
         JLabel label = new JLabel();
-        label.setText("next line");
+        label.setText("Insert line");
         //button.setLayout(null);
         button.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.6)));
+        button.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.3)));
         button.add(label);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<String> temp_list = new ArrayList<>(6);
                 for (int i = 0; i<6; i++){temp_list.add("-");}
-                tab.add(temp_list);
-                System.out.println(tab);
+                //currently_edited++;
+                tab.add(currently_edited+1, temp_list);
+                str_tab = TabListToString();
+
+                //System.out.println(tab);
             }
         });
 
         return button;
     }
 
-    private JScrollPane TabWindow(){
-        //Whole panel
+    private JButton insert_line(){
+        JButton button = new JButton();
+        int button_width = (int) (windowWidth*0.08);
+        int button_height = (int) (windowHeight*0.08);
+        button.setBounds(windowWidth/2, windowHeight-button_height, button_width,button_height);
+        button.setBackground(Window.button_off_c);
+        button.setBorderPainted(true);
+        //button.setLayout(null);
+        //button.set
+        JLabel label = new JLabel();
+        label.setText("Insert line");
+        //button.setLayout(null);
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.3)));
+        button.add(label);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<String> temp_list = new ArrayList<>(6);
+                for (int i = 0; i<6; i++){temp_list.add("-");}
+                currently_edited++;
+                tab.add(currently_edited, temp_list);
+                str_tab = TabListToString();
+
+                //System.out.println(tab);
+            }
+        });
+
+        return button;
+    }
+
+    private JButton next_line(){
+        JButton button = new JButton();
+        int button_width = (int) (windowWidth*0.08);
+        int button_height = (int) (windowHeight*0.08);
+        button.setBounds(windowWidth-button_width, windowHeight-button_height, button_width,button_height);
+        button.setBackground(Window.button_off_c);
+        button.setBorderPainted(true);
+        //button.setLayout(null);
+        //button.set
+        JLabel label = new JLabel();
+        label.setText("next line");
+        //button.setLayout(null);
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.3)));
+        button.add(label);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(tab.size());
+                if (currently_edited== tab.size()-1){  }
+                else currently_edited++;
+                //System.out.println(tab);
+            }
+        });
+
+        return button;
+    }
+
+    private JButton previous_line(){
+        JButton button = new JButton();
+        int button_width = (int) (windowWidth*0.08);
+        int button_height = (int) (windowHeight*0.08);
+        button.setBounds(0, windowHeight-button_height, button_width,button_height);
+        button.setBackground(Window.button_off_c);
+        button.setBorderPainted(true);
+        //button.setLayout(null);
+        //button.set
+        JLabel label = new JLabel();
+        label.setText("previous line");
+        //button.setLayout(null);
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.3)));
+        button.add(label);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                currently_edited--;
+                if (currently_edited<2) currently_edited++;
+                //System.out.println(tab);
+            }
+        });
+
+        return button;
+    }
+
+
+    private Component TabWindow(){
         JTextArea panel = new JTextArea();
         panel.setLayout(null);
         int y = top_margin + 5;
         int width = (int) (windowWidth*0.9);
         int height = (int) (windowHeight/2.3);
-        panel.setBounds((int) (windowWidth*0.05), y, width, height*100);
-        panel.setLineWrap(true);
+        panel.setBounds((int) (windowWidth*0.05), y, width, height);
+        panel.setBackground(Window.fretboard_c);
+        //panel.setEditable(false);
+        panel.setFont(new Font(Window.font, Font.BOLD, (int)(height*0.05)));
+        panel.setText(str_tab);
 
         //Visible window
         JScrollPane scrollFrame = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollFrame.setBounds((int) (windowWidth*0.05), y,width ,height );
+        scrollFrame.setBorder(null);
 
         // Scroll bar
         JScrollBar scrollBar =scrollFrame.getVerticalScrollBar();
         scrollBar.setOrientation(JScrollBar.VERTICAL);
 
-        // Add components
         return scrollFrame;
+    }
+
+    private String TabListToString(){
+        StringBuffer str_tab = new StringBuffer();
+        for(int y = 0; y< 6; y++){
+            for(int x = 0; x<tab.size(); x++) {
+                String current_val = tab.get(x).get(y);
+                int current_val_int = 0;
+                try {
+                    current_val_int = Integer.parseInt(tab.get(x).get(y));
+                } catch (NumberFormatException e) {}
+
+                if (x < 3) str_tab.append(current_val);
+                else if (current_val_int > 10) {
+                    str_tab.append(current_val);
+                    //str_tab.deleteCharAt(x+1);
+                } else {
+
+                    str_tab.append(current_val);
+                    str_tab.append("-");
+                }
+
+            }
+            str_tab.append("\n");
+        }
+        System.out.println(str_tab);
+        return str_tab.toString();
     }
 
     //Modified Classes
@@ -273,7 +408,15 @@ public class ProjectWindow {
             super.paintComponent(g);
             if(mousePressed == true) {
                 g.setColor(Window.button_hover);
-                System.out.println(getFret());
+                String current_val = tab.get(currently_edited).get(string);
+                System.out.println(current_val);
+                if (current_val == String.valueOf(fret)){
+                    tab.get(currently_edited).set(string, "-");
+                } else{
+                    tab.get(currently_edited).set(string, String.valueOf(fret));
+                }
+                str_tab = TabListToString();
+
             }else if(inKey == true) g.setColor(Window.button_on_c);
             else g.setColor(Window.button_off_c);
             g.fillOval(getWidth()/2-radius, getHeight()/2-radius, radius*2, radius*2);
@@ -294,7 +437,7 @@ public class ProjectWindow {
     public static void main(String[] args) {
         Scale scale = new Scale();
         scale.createScale(1, 4);
-        Project project = new Project(new Fretboard(),scale , 1);
+        Project project = new Project(new Fretboard(),scale , 1, new LinkedList<>());
         new ProjectWindow(project);
     }
 }
