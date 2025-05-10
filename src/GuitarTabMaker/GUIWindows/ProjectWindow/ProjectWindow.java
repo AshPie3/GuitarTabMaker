@@ -267,7 +267,7 @@ public class ProjectWindow {
         int label_height = (int) (height*0.01);
         int row = 0;
         panel.setLayout(null);
-        for (int x_m = 0; x_m< tab.size(); x_m++) {
+        for (int x_m = 0; x_m< tab.size(); x_m++) { // creating a list of lables which will have all the string values still it would not update whenever there is a change based on the current way its written
                 int x_value = width/50;
             for (int y_m = 0; y_m < 6; y_m++) {
                 JLabel label = new JLabel();
@@ -293,7 +293,7 @@ public class ProjectWindow {
         return scrollFrame;
     }
 
-    private String TabListToString(){
+    private String TabListToString(){ //Temporary use conversion from a list to string it doesn't work perfectly tho
         StringBuffer str_tab = new StringBuffer();
         for(int y = 0; y< 6; y++){
             for(int x = 0; x<tab.size(); x++) {
@@ -442,21 +442,23 @@ public class ProjectWindow {
             int radius =  getDiameter()/2;
             super.paintComponent(g);
             if(mousePressed == true) {
+                int current_val_int = 0;
+                try {
+                    current_val_int = Integer.parseInt( tab.get(currently_edited).get(string));
+                } catch (NumberFormatException e) {
+                    current_val_int = -1;
+                }
                 g.setColor(Window.button_hover);
-                String current_val = tab.get(currently_edited).get(string);
-                System.out.println(current_val);
-                if (current_val == String.valueOf(fret)){
-                    tab.get(currently_edited).set(string, "-");
-                } else{
+                if (current_val_int != fret){
                     tab.get(currently_edited).set(string, String.valueOf(fret));
+                } else { //(current_val == String.valueOf(fret))
+                    tab.get(currently_edited).set(string, "-");
                 }
                 str_tab = TabListToString();
 
             }else if(inKey == true) g.setColor(Window.button_on_c);
             else g.setColor(Window.button_off_c);
             g.fillOval(getWidth()/2-radius, getHeight()/2-radius, radius*2, radius*2);
-
-
 
         }
 
