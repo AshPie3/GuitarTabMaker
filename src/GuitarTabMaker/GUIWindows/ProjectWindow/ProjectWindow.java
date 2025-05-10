@@ -256,16 +256,30 @@ public class ProjectWindow {
 
 
     private Component TabWindow(){
-        JTextArea panel = new JTextArea();
+        JPanel panel = new JPanel();
         panel.setLayout(null);
         int y = top_margin + 5;
         int width = (int) (windowWidth*0.9);
         int height = (int) (windowHeight/2.3);
         panel.setBounds((int) (windowWidth*0.05), y, width, height);
         panel.setBackground(Window.fretboard_c);
+        int label_width = (int) (width*0.01);
+        int label_height = (int) (height*0.01);
+        int row = 0;
+        panel.setLayout(null);
+        for (int x_m = 0; x_m< tab.size(); x_m++) {
+                int x_value = width/50;
+            for (int y_m = 0; y_m < 6; y_m++) {
+                JLabel label = new JLabel();
+                if(x_m == currently_edited)
+                label.setBackground(Window.button_on_c);
+                else label.setBackground(Window.button_off_c);
+                label.setText(tab.get(x_m).get(y_m));
+            }
+        }
+
+        //panel.setFont(new Font(Window.font, Font.BOLD, (int)(height*0.05)));
         //panel.setEditable(false);
-        panel.setFont(new Font(Window.font, Font.BOLD, (int)(height*0.05)));
-        panel.setText(str_tab);
 
         //Visible window
         JScrollPane scrollFrame = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -294,9 +308,9 @@ public class ProjectWindow {
                     str_tab.append(current_val);
                     //str_tab.deleteCharAt(x+1);
                 } else {
-
-                    str_tab.append(current_val);
                     str_tab.append("-");
+                    str_tab.append(current_val);
+                   // str_tab.append("-");
                 }
 
             }
@@ -360,6 +374,27 @@ public class ProjectWindow {
 
             }
         }
+    }
+
+    private class NoteLabel extends JLabel{
+        private boolean selected = false;
+        private String value;
+        public NoteLabel(String value, boolean selected){
+            this.selected = selected;
+            this.value = value;
+
+            setText(value);
+
+
+        }
+
+
+        public boolean isSelected() {return selected;}
+        public void setSelected(boolean selected) {this.selected = selected;}
+
+        public String getValue() {return value;}
+        public void setValue(String value) {this.value = value;}
+
     }
 
 
