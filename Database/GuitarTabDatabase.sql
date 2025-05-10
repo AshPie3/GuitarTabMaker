@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `intervals` (
   PRIMARY KEY (`i_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
--- Dumping data for table guitartab.intervals: ~16 rows (approximately)
+-- Dumping data for table guitartab.intervals: ~14 rows (approximately)
 INSERT INTO `intervals` (`i_id`, `i_name`, `i_val`) VALUES
 	(1, 'P1', 0),
 	(2, 'm2', 1),
@@ -37,14 +37,12 @@ INSERT INTO `intervals` (`i_id`, `i_name`, `i_val`) VALUES
 	(6, 'P4', 5),
 	(7, 'TT', 6),
 	(8, 'P5', 7),
-	(9, 'm6', 8),
-	(10, 'M6', 8),
+	(9, 'A5', 8),
+	(10, 'm6', 8),
 	(11, 'M6', 9),
-	(12, 'A5', 11),
-	(13, 'm7', 12),
-	(14, 'M7', 13),
-	(15, 'P8', 14),
-	(16, 'M9', 15);
+	(12, 'm7', 10),
+	(13, 'M7', 11),
+	(14, 'P8', 12);
 
 -- Dumping structure for table guitartab.notes
 CREATE TABLE IF NOT EXISTS `notes` (
@@ -147,9 +145,11 @@ CREATE TABLE IF NOT EXISTS `scale` (
   CONSTRAINT `FK_scale_intervals` FOREIGN KEY (`s_i5`) REFERENCES `intervals` (`i_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
--- Dumping data for table guitartab.scale: ~1 rows (approximately)
+-- Dumping data for table guitartab.scale: ~3 rows (approximately)
 INSERT INTO `scale` (`s_id`, `s_name`, `s_i1`, `s_i2`, `s_i3`, `s_i4`, `s_i5`, `s_i6`, `s_i7`) VALUES
-	(1, 'Major', 1, 3, 5, 6, 8, 11, 12);
+	(1, 'Major', 1, 3, 5, 6, 8, 11, 13),
+	(2, 'Natural Minor', 1, 3, 4, 6, 8, 10, 12),
+	(3, 'Minor pentatonic scale', 1, 4, 6, 8, 12, 14, NULL);
 
 -- Dumping structure for table guitartab.tunings
 CREATE TABLE IF NOT EXISTS `tunings` (
