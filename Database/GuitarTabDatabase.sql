@@ -1,20 +1,22 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               10.8.3-MariaDB - mariadb.org binary distribution
+-- Server version:               11.7.2-MariaDB - mariadb.org binary distribution
 -- Server OS:                    Win64
--- HeidiSQL Version:             11.3.0.6295
+-- HeidiSQL Version:             12.10.0.7000
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8 */;
 /*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
 -- Dumping database structure for guitartab
-CREATE DATABASE IF NOT EXISTS `guitartab` /*!40100 DEFAULT CHARACTER SET utf8mb3 */;
+CREATE DATABASE IF NOT EXISTS `guitartab` /*!40100 DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_uca1400_ai_ci */;
 USE `guitartab`;
 
 -- Dumping structure for table guitartab.intervals
@@ -23,10 +25,9 @@ CREATE TABLE IF NOT EXISTS `intervals` (
   `i_name` varchar(50) NOT NULL,
   `i_val` int(11) NOT NULL,
   PRIMARY KEY (`i_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
--- Dumping data for table guitartab.intervals: ~16 rows (approximately)
-/*!40000 ALTER TABLE `intervals` DISABLE KEYS */;
+-- Dumping data for table guitartab.intervals: ~14 rows (approximately)
 INSERT INTO `intervals` (`i_id`, `i_name`, `i_val`) VALUES
 	(1, 'P1', 0),
 	(2, 'm2', 1),
@@ -36,15 +37,12 @@ INSERT INTO `intervals` (`i_id`, `i_name`, `i_val`) VALUES
 	(6, 'P4', 5),
 	(7, 'TT', 6),
 	(8, 'P5', 7),
-	(9, 'm6', 8),
-	(10, 'M6', 8),
+	(9, 'A5', 8),
+	(10, 'm6', 8),
 	(11, 'M6', 9),
-	(12, 'A5', 11),
-	(13, 'm7', 12),
-	(14, 'M7', 13),
-	(15, 'P8', 14),
-	(16, 'M9', 15);
-/*!40000 ALTER TABLE `intervals` ENABLE KEYS */;
+	(12, 'm7', 10),
+	(13, 'M7', 11),
+	(14, 'P8', 12);
 
 -- Dumping structure for table guitartab.notes
 CREATE TABLE IF NOT EXISTS `notes` (
@@ -54,10 +52,9 @@ CREATE TABLE IF NOT EXISTS `notes` (
   `n_oct` int(1) DEFAULT NULL,
   `n_audio` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`n_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
--- Dumping data for table guitartab.notes: ~43 rows (approximately)
-/*!40000 ALTER TABLE `notes` DISABLE KEYS */;
+-- Dumping data for table guitartab.notes: ~60 rows (approximately)
 INSERT INTO `notes` (`n_id`, `n_name`, `n_val`, `n_oct`, `n_audio`) VALUES
 	(1, 'A2', 1, 2, NULL),
 	(2, 'A#2', 2, 2, NULL),
@@ -106,8 +103,19 @@ INSERT INTO `notes` (`n_id`, `n_name`, `n_val`, `n_oct`, `n_audio`) VALUES
 	(45, 'F5', 9, 5, NULL),
 	(46, 'F#5', 10, 5, NULL),
 	(47, 'G5', 11, 5, NULL),
-	(48, 'G#5', 12, 5, NULL);
-/*!40000 ALTER TABLE `notes` ENABLE KEYS */;
+	(48, 'G#5', 12, 5, NULL),
+	(49, 'A6', 1, 6, NULL),
+	(50, 'A#6', 2, 6, NULL),
+	(51, 'B6', 3, 6, NULL),
+	(52, 'C6', 4, 6, NULL),
+	(53, 'C#6', 5, 6, NULL),
+	(54, 'D6', 6, 6, NULL),
+	(55, 'D#6', 7, 6, NULL),
+	(56, 'E6', 8, 6, NULL),
+	(57, 'F6', 9, 6, NULL),
+	(58, 'F#6', 10, 6, NULL),
+	(59, 'G6', 11, 6, NULL),
+	(60, 'G#6', 12, 6, NULL);
 
 -- Dumping structure for table guitartab.scale
 CREATE TABLE IF NOT EXISTS `scale` (
@@ -135,13 +143,13 @@ CREATE TABLE IF NOT EXISTS `scale` (
   CONSTRAINT `FK__intervals_5` FOREIGN KEY (`s_i6`) REFERENCES `intervals` (`i_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK__intervals_6` FOREIGN KEY (`s_i7`) REFERENCES `intervals` (`i_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_scale_intervals` FOREIGN KEY (`s_i5`) REFERENCES `intervals` (`i_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
--- Dumping data for table guitartab.scale: ~1 rows (approximately)
-/*!40000 ALTER TABLE `scale` DISABLE KEYS */;
+-- Dumping data for table guitartab.scale: ~3 rows (approximately)
 INSERT INTO `scale` (`s_id`, `s_name`, `s_i1`, `s_i2`, `s_i3`, `s_i4`, `s_i5`, `s_i6`, `s_i7`) VALUES
-	(1, 'Major', 1, 3, 5, 6, 9, 11, 14);
-/*!40000 ALTER TABLE `scale` ENABLE KEYS */;
+	(1, 'Major', 1, 3, 5, 6, 8, 11, 13),
+	(2, 'Natural Minor', 1, 3, 4, 6, 8, 10, 12),
+	(3, 'Minor pentatonic scale', 1, 4, 6, 8, 12, 14, NULL);
 
 -- Dumping structure for table guitartab.tunings
 CREATE TABLE IF NOT EXISTS `tunings` (
@@ -166,16 +174,15 @@ CREATE TABLE IF NOT EXISTS `tunings` (
   CONSTRAINT `FK_tunings_notes_2` FOREIGN KEY (`t_s4_id`) REFERENCES `notes` (`n_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_tunings_notes_3` FOREIGN KEY (`t_s5_id`) REFERENCES `notes` (`n_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_tunings_notes_4` FOREIGN KEY (`t_s6_id`) REFERENCES `notes` (`n_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 -- Dumping data for table guitartab.tunings: ~3 rows (approximately)
-/*!40000 ALTER TABLE `tunings` DISABLE KEYS */;
 INSERT INTO `tunings` (`t_id`, `t_name`, `t_s1_id`, `t_s2_id`, `t_s3_id`, `t_s4_id`, `t_s5_id`, `t_s6_id`) VALUES
 	(1, 'EADGBE', 32, 15, 23, 18, 1, 8),
 	(2, 'FACGCE', 32, 28, 23, 16, 14, 9),
 	(3, 'DEDGBE', 32, 15, 23, 18, 1, 6);
-/*!40000 ALTER TABLE `tunings` ENABLE KEYS */;
 
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
