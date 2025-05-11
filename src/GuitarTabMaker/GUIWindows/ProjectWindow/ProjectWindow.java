@@ -29,7 +29,7 @@ public class ProjectWindow {
 
     public ProjectWindow(Project project){
         Fretboard fretboard = project.getFretboard();
-        tab = project.getTablature();
+        tab = project.getTab();
         str_tab = TabListToString();
 
         // Create Window
