@@ -16,13 +16,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ProjectWindow {
-    private int windowWidth = (int) (Window.screenSizeWidth*0.8);
-    private int windowHeight = (int) (Window.screenSizeHeight*0.8);
-    private int fretboardPanelWidth = (int) (windowWidth * 0.95);
-    private int fretboardPanelHeight = (int) (windowHeight * 0.3);
-    private int top_margin = (int) (windowHeight*0.05);
+    private final int windowWidth = (int) (Window.screenSizeWidth*0.8);
+    private final int windowHeight = (int) (Window.screenSizeHeight*0.8);
+    private final int fretboardPanelWidth = (int) (windowWidth * 0.95);
+    private final int fretboardPanelHeight = (int) (windowHeight * 0.3);
+    private final int top_margin = (int) (windowHeight*0.05);
 
-    private List<List<String>> tab;
+    private final List<List<String>> tab;
     private String str_tab;
     private int currently_edited = 2;
 
@@ -31,7 +31,6 @@ public class ProjectWindow {
         Fretboard fretboard = project.getFretboard();
         tab = project.getTablature();
         str_tab = TabListToString();
-        System.out.println(str_tab);
 
         // Create Window
         JFrame frame = new JFrame();
@@ -65,14 +64,11 @@ public class ProjectWindow {
 
         //Initialize list
         for (int i = 0; i<3; i++){tab.add(i, new ArrayList<>(6));}
-        for (int i = 0; i<6; i++){
-            String note = fretboard.getTuning().get(i).getName().substring(0,1);
-            tab.get(0).add(i, note);
-        }
+        for (int i = 0; i<6; i++){tab.get(0).add(i, fretboard.getTuning().get(i).getName().substring(0,1));}
         for (int i = 0; i<6; i++){tab.get(1).add(i, "|");}
-        for (int i = 0; i<6; i++){tab.get(2).add(i, "-");}
+        for (int i = 0; i<6; i++){tab.get(2).add(i, "--");}
         str_tab = TabListToString();
-        System.out.println(str_tab);
+        System.out.println(str_tab); // Temporary for debugging
         //Add tablature button
 
         //Set frame visible
@@ -82,7 +78,7 @@ public class ProjectWindow {
     private JPanel FretboardPanel(){
         JPanel fretboardPanel = new FretboardPanel();
         fretboardPanel.setBackground(Window.fretboard_c);
-        int x = (int) (windowWidth-fretboardPanelWidth)/3;
+        int x = (windowWidth-fretboardPanelWidth) /3;
         fretboardPanel.setBounds(x, (int)(windowHeight-fretboardPanelHeight-windowHeight*0.15), fretboardPanelWidth, fretboardPanelHeight);
         fretboardPanel.setLayout(null);
         return fretboardPanel;
@@ -91,7 +87,7 @@ public class ProjectWindow {
         JPanel panel = new JPanel();
         panel.setBackground(Window.fretboard_num_c);
         int panel_height = (int) (fretboardPanelHeight*0.15);
-        int x = (int) (windowWidth-fretboardPanelWidth)/3;
+        int x = (windowWidth-fretboardPanelWidth) /3;
         panel.setBounds(x, (int)(windowHeight-fretboardPanelHeight-windowHeight*0.15) - panel_height, fretboardPanelWidth, panel_height);
         panel.setLayout(null);
         for(int i = 0; i<Fretboard.getFretNum(); i++){
@@ -115,10 +111,8 @@ public class ProjectWindow {
         button.setBounds(windowWidth-button_width, 0, button_width,button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
-        //button.set
         JLabel label = new JLabel();
         label.setText("Exit");
-        //button.setLayout(null);
         button.setHorizontalAlignment(SwingConstants.CENTER);
         label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.6)));
         button.add(label);
@@ -129,40 +123,16 @@ public class ProjectWindow {
             }
         });
 
-
         return button;
     }
 
-    private JButton add_line(){
-        JButton button = new JButton();
-        int button_width = (int) (windowWidth*0.08);
-        int button_height = (int) (windowHeight*0.08);
-        button.setBounds(windowWidth/2, windowHeight-button_height, button_width,button_height);
-        button.setBackground(Window.button_off_c);
-        button.setBorderPainted(true);
-        //button.setLayout(null);
-        //button.set
-        JLabel label = new JLabel();
-        label.setText("Insert line");
-        //button.setLayout(null);
-        button.setHorizontalAlignment(SwingConstants.CENTER);
-        button.setVerticalAlignment(SwingConstants.CENTER);
-        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.3)));
-        button.add(label);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                List<String> temp_list = new ArrayList<>(6);
-                for (int i = 0; i<6; i++){temp_list.add("-");}
-                //currently_edited++;
-                tab.add(currently_edited+1, temp_list);
-                str_tab = TabListToString();
+    private void add_line(){ // function
+        List<String> temp_list = new ArrayList<>(6);
+        for (int i = 0; i<6; i++){temp_list.add("--");}
+        //currently_edited++;
+        tab.add(currently_edited+1, temp_list);
+        str_tab = TabListToString();
 
-                //System.out.println(tab);
-            }
-        });
-
-        return button;
     }
 
     private JButton insert_line(){
@@ -185,7 +155,7 @@ public class ProjectWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<String> temp_list = new ArrayList<>(6);
-                for (int i = 0; i<6; i++){temp_list.add("-");}
+                for (int i = 0; i<6; i++){temp_list.add("--");}
                 currently_edited++;
                 tab.add(currently_edited, temp_list);
                 str_tab = TabListToString();
@@ -217,7 +187,7 @@ public class ProjectWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println(tab.size());
-                if (currently_edited== tab.size()-1){  }
+                if (currently_edited== tab.size()-1){ add_line(); currently_edited++; }
                 else currently_edited++;
                 //System.out.println(tab);
             }
@@ -268,15 +238,18 @@ public class ProjectWindow {
         int row = 0;
         panel.setLayout(null);
         for (int x_m = 0; x_m< tab.size(); x_m++) { // creating a list of lables which will have all the string values still it would not update whenever there is a change based on the current way its written
-                int x_value = width/50;
-            for (int y_m = 0; y_m < 6; y_m++) {
-                JLabel label = new JLabel();
-                if(x_m == currently_edited)
-                label.setBackground(Window.button_on_c);
-                else label.setBackground(Window.button_off_c);
-                label.setText(tab.get(x_m).get(y_m));
+            int x_value = width/50;
+            JLabel label = new JLabel();
+            if(x_m == currently_edited)
+            label.setBackground(Window.button_on_c);
+            else label.setBackground(Window.button_off_c);
+            StringBuffer string_val = new StringBuffer();
+            for (int i = 0; i<6; i++){
+                string_val.append(tab.get(x_m).get(i));
             }
+            label.setText(string_val.toString());
         }
+
 
         //panel.setFont(new Font(Window.font, Font.BOLD, (int)(height*0.05)));
         //panel.setEditable(false);
@@ -298,25 +271,12 @@ public class ProjectWindow {
         for(int y = 0; y< 6; y++){
             for(int x = 0; x<tab.size(); x++) {
                 String current_val = tab.get(x).get(y);
-                int current_val_int = 0;
-                try {
-                    current_val_int = Integer.parseInt(tab.get(x).get(y));
-                } catch (NumberFormatException e) {}
-
-                if (x < 3) str_tab.append(current_val);
-                else if (current_val_int > 10) {
-                    str_tab.append(current_val);
-                    //str_tab.deleteCharAt(x+1);
-                } else {
-                    str_tab.append("-");
-                    str_tab.append(current_val);
-                   // str_tab.append("-");
-                }
-
+                str_tab.append(current_val);
             }
             str_tab.append("\n");
         }
-        System.out.println(str_tab);
+        System.out.println(str_tab); // Temporary for debugging
+        System.out.println(tab); // Temporary for debugging
         return str_tab.toString();
     }
 
@@ -397,13 +357,12 @@ public class ProjectWindow {
 
     }
 
-
     private class RoundButton extends JLabel{
         private boolean mousePressed = false;
         private boolean inKey = false;
         private int fret;
-        private int string;
-        private String audio_file;
+        private final int string;
+        private final String audio_file;
 
         public RoundButton(int fret, int string, boolean inKey, String audio_file) {
             this.inKey = inKey;
@@ -442,17 +401,24 @@ public class ProjectWindow {
             int radius =  getDiameter()/2;
             super.paintComponent(g);
             if(mousePressed == true) {
-                int current_val_int = 0;
+                int current_val_int;
+                String appended_val;
                 try {
-                    current_val_int = Integer.parseInt( tab.get(currently_edited).get(string));
+                    current_val_int = Integer.parseInt( tab.get(currently_edited).get(string).replaceAll("-", ""));
                 } catch (NumberFormatException e) {
                     current_val_int = -1;
                 }
                 g.setColor(Window.button_hover);
+
+                if(fret>=10){
+                    appended_val = String.valueOf(fret);
+                } else appended_val = String.valueOf(fret) + "-";
+
                 if (current_val_int != fret){
-                    tab.get(currently_edited).set(string, String.valueOf(fret));
+                    tab.get(currently_edited).set(string, "");
+                    tab.get(currently_edited).set(string, appended_val);
                 } else { //(current_val == String.valueOf(fret))
-                    tab.get(currently_edited).set(string, "-");
+                    tab.get(currently_edited).set(string, "--");
                 }
                 str_tab = TabListToString();
 
