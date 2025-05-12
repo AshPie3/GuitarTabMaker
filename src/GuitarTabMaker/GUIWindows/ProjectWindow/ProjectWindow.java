@@ -21,7 +21,6 @@ public class ProjectWindow {
     private final int fretboardPanelWidth = (int) (windowWidth * 0.95);
     private final int fretboardPanelHeight = (int) (windowHeight * 0.3);
     private final int top_margin = (int) (windowHeight*0.05);
-
     private final List<List<String>> tab;
     private String str_tab;
     private int currently_edited = 2;
@@ -32,7 +31,7 @@ public class ProjectWindow {
         tab = project.getTab();
         str_tab = TabListToString();
 
-        // Create Window
+        // Create Window frame
         JFrame frame = new JFrame();
         frame.setTitle("Project Window");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -44,30 +43,36 @@ public class ProjectWindow {
         frame.setIconImage(icon.getImage());
         frame.getContentPane().setBackground(Window.background_c);
         frame.setLayout(null);
-        // Create Fretboard panel
+
+        //Adding components to the frame
         JPanel fretpanel = FretboardPanel();
         frame.add(fretpanel);
         setButtons(fretboard,fretpanel);
-        // Create Fretboard Numbers panel
-        frame.add(FretboardNumsPanel());
-
-        // Create exit button
-        frame.add(ExitButton(frame));
-
-
-
+        frame.add(FretboardNumsPanel());// Create Fretboard Numbers panel
+        frame.add(ExitButton(frame)); // Create exit button
+        frame.add(functions_panel()); // add panel with functions like next/previous line
+        /*
         //Add next buttons button
         frame.add(insert_line()); // Insert line button
         frame.add(previous_line()); // Edit previous line button
         frame.add(next_line()); // edit next line button
-
-
-        //Initialize list
-        for (int i = 0; i<3; i++){tab.add(i, new ArrayList<>(6));}
-        for (int i = 0; i<6; i++){tab.get(0).add(i, fretboard.getTuning().get(i).getName().substring(0,1));}
-        for (int i = 0; i<6; i++){tab.get(1).add(i, "|");}
-        for (int i = 0; i<6; i++){tab.get(2).add(i, "--");}
-        str_tab = TabListToString();
+        */
+        if (tab.isEmpty()) {
+            //Initialize list
+            for (int i = 0; i < 3; i++) {
+                tab.add(i, new ArrayList<>(6));
+            }
+            for (int i = 0; i < 6; i++) {
+                tab.get(0).add(i, fretboard.getTuning().get(i).getName().substring(0, 1));
+            }
+            for (int i = 0; i < 6; i++) {
+                tab.get(1).add(i, "|");
+            }
+            for (int i = 0; i < 6; i++) {
+                tab.get(2).add(i, "--");
+            }
+            str_tab = TabListToString();
+        }
         System.out.println(str_tab); // Temporary for debugging
         //Add tablature button
 
@@ -135,21 +140,25 @@ public class ProjectWindow {
 
     }
 
-    private JButton insert_line(){
+    private JButton insert_line(int width, int height, int x){
         JButton button = new JButton();
-        int button_width = (int) (windowWidth*0.08);
-        int button_height = (int) (windowHeight*0.08);
-        button.setBounds(windowWidth/2, windowHeight-button_height, button_width,button_height);
+        button.setLayout(null);
+        int button_width = (int) (width*0.08);
+        int button_height = (int) (height*0.8);
+        int y = (height-button_height)/2;
+        button.setBounds(x, y ,button_width,button_height);
+        //button.setSize(button_width,button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
         //button.setLayout(null);
         //button.set
         JLabel label = new JLabel();
-        label.setText("Insert line");
-        //button.setLayout(null);
-        button.setHorizontalAlignment(SwingConstants.CENTER);
-        button.setVerticalAlignment(SwingConstants.CENTER);
-        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.3)));
+        label.setText("Insert");
+        label.setBounds(0,0,button_width,button_height);
+
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.4)));
         button.add(label);
         button.addActionListener(new ActionListener() {
             @Override
@@ -167,63 +176,131 @@ public class ProjectWindow {
         return button;
     }
 
-    private JButton next_line(){
+    private JButton insert_bar_line(int width, int height, int x){
         JButton button = new JButton();
-        int button_width = (int) (windowWidth*0.08);
-        int button_height = (int) (windowHeight*0.08);
-        button.setBounds(windowWidth-button_width, windowHeight-button_height, button_width,button_height);
+        button.setLayout(null);
+        int button_width = (int) (width*0.04);
+        int button_height = (int) (height*0.8);
+        int y = (height-button_height)/2;
+        button.setBounds(x, y ,button_width,button_height);
+        //button.setSize(button_width,button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
         //button.setLayout(null);
         //button.set
         JLabel label = new JLabel();
-        label.setText("next line");
+        label.setText(" | ");
+        label.setBounds(0,0,button_width,button_height);
+
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.6)));
+        button.add(label);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<String> temp_list = new ArrayList<>(6);
+                for (int i = 0; i<6; i++){temp_list.add("|");}
+                currently_edited++;
+
+                tab.add(currently_edited, temp_list);
+                str_tab = TabListToString();
+
+                //System.out.println(tab);
+            }
+        });
+
+        return button;
+    }
+
+    private JButton next_line(int width, int height, int x){
+        JButton button = new JButton();
+        button.setLayout(null);
+        int button_width = (int) (width*0.04);
+        int button_height = (int) (height*0.8);
+        int y = (height-button_height)/2;
+        button.setBounds(x, y ,button_width,button_height);
+        //button.setSize(button_width,button_height);
+        button.setBackground(Window.button_off_c);
+        button.setBorderPainted(true);
         //button.setLayout(null);
-        button.setHorizontalAlignment(SwingConstants.CENTER);
-        button.setVerticalAlignment(SwingConstants.CENTER);
-        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.3)));
+        //button.set
+        JLabel label = new JLabel();
+        label.setText(">");
+        label.setBounds(0,0,button_width,button_height);
+
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.4)));
         button.add(label);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println(tab.size());
                 if (currently_edited== tab.size()-1){ add_line(); currently_edited++; }
+                else if (tab.get(currently_edited).get(0) == "|") currently_edited++ ;
                 else currently_edited++;
                 //System.out.println(tab);
             }
         });
-
         return button;
     }
 
-    private JButton previous_line(){
+    private JButton previous_line(int width, int height, int x){
         JButton button = new JButton();
-        int button_width = (int) (windowWidth*0.08);
-        int button_height = (int) (windowHeight*0.08);
-        button.setBounds(0, windowHeight-button_height, button_width,button_height);
+        button.setLayout(null);
+        int button_width = (int) (width*0.04);
+        int button_height = (int) (height*0.8);
+        int y = (height-button_height)/2;
+        button.setBounds(x, y ,button_width,button_height);
+        //button.setSize(button_width,button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
         //button.setLayout(null);
         //button.set
         JLabel label = new JLabel();
-        label.setText("previous line");
-        //button.setLayout(null);
-        button.setHorizontalAlignment(SwingConstants.CENTER);
-        button.setVerticalAlignment(SwingConstants.CENTER);
-        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.3)));
+        label.setText("<");
+        label.setBounds(0,0,button_width,button_height);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD,(int) (button_height*0.4)));
         button.add(label);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 currently_edited--;
-                if (currently_edited<2) currently_edited++;
+                if (currently_edited<2 ) currently_edited++;
+                else if (tab.get(currently_edited).get(0) == "|") currently_edited--;
                 //System.out.println(tab);
             }
         });
-
         return button;
     }
 
+    private Component functions_panel(){
+        JPanel panel = new JPanel();
+        //panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        //panel.add(Box.createHorizontalGlue());
+        panel.setLayout(null);
+        int width = (int) (windowWidth*0.7);
+        int height = (int) (fretboardPanelHeight*0.23);
+        int x = (windowWidth-width)/2;
+        int y = windowHeight- 2*height;
+        int button_width = (int) (width*0.08);
+        panel.setBounds(x, y, width, height);
+        panel.setBackground(Window.fretboard_c);
+        int func_num = 4;
+        int[] func_x = new int[func_num];
+        for (int i = 0; i<func_num; i++){
+            func_x[i] = (width/func_num)*i + width/func_num/2;
+        }
+        //next line button
+        panel.add(next_line(width,height, func_x[3]));
+        panel.add(previous_line(width, height, func_x[2]));
+        panel.add(insert_bar_line(width,height, func_x[1]));
+        panel.add(insert_line(width,height, func_x[0]));
+        return panel;
+    }
 
     private Component TabWindow(){
         JPanel panel = new JPanel();
@@ -276,7 +353,7 @@ public class ProjectWindow {
             str_tab.append("\n");
         }
         System.out.println(str_tab); // Temporary for debugging
-        System.out.println(tab); // Temporary for debugging
+        //System.out.println(tab); // Temporary for debugging
         return str_tab.toString();
     }
 
