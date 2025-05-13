@@ -1,5 +1,6 @@
 package GuitarTabMaker.ProjectManager;
 
+import GuitarTabMaker.ConnectionSettings;
 import GuitarTabMaker.FretboardCreator.Fretboard;
 import GuitarTabMaker.FretboardCreator.Scale;
 
@@ -13,15 +14,16 @@ public class Project {
     private Scale scale = new Scale();
     private List<List<String>> tab = new LinkedList<>();
 
-    public Project(Fretboard fretboard, Scale scale, int t_id,List<List<String>> tab ){
-        this.fretboard = fretboard;
+    public Project(Scale scale, int t_id,List<List<String>> tab ){
         this.scale = scale;
         this.t_id = t_id;
         this.tab = tab;
 
-        fretboard.generateTuning(t_id);
-        fretboard.generateFretboard();
-        scale.applyScale(fretboard);
+        this.fretboard.generateTuning(t_id);
+        this.fretboard.generateFretboard();
+        scale.applyScale(this.fretboard);
+
+
     }
 
     public Fretboard getFretboard() {return fretboard;}
@@ -35,4 +37,11 @@ public class Project {
     public List<List<String>> getTab() {return tab;}
 
     public void setTab(List<List<String>> tab) {this.tab = tab;}
+
+    public void createNewProject(Scale scale, int t_id){
+
+
+        ConnectionSettings settings = new ConnectionSettings();
+    }
+
 }

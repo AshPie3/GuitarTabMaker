@@ -1,5 +1,6 @@
 package GuitarTabMaker.GUIWindows.StartWindow;
 
+import GuitarTabMaker.GUIWindows.ProjectWindow.ProjectWindow;
 import GuitarTabMaker.GUIWindows.Window;
 
 import javax.swing.*;
@@ -9,12 +10,10 @@ import java.awt.event.ActionListener;
 
 public class StartWindow {
 
-    private JPanel panel1;
-
     private int windowWidth = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getWidth()*0.5);
     private int windowHeight = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getHeight()*0.5);
 
-    private StartWindow(){
+    public StartWindow(){
         // create Window
         JFrame frame = new JFrame();
         frame.setTitle("Start Window");
@@ -25,7 +24,7 @@ public class StartWindow {
         frame.setIconImage(icon.getImage());
         frame.getContentPane().setBackground(GuitarTabMaker.GUIWindows.Window.background_c);
         frame.setLayout(null);
-        frame.setVisible(true);
+
 
 
         // Add components
@@ -33,7 +32,7 @@ public class StartWindow {
         frame.add(NewProjectButton());
 
 
-
+        frame.setVisible(true);
     }
     // Create Center Label
     private Component MainTitle(){
