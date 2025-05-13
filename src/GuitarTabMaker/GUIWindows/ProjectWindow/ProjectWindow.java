@@ -331,8 +331,8 @@ public class ProjectWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //System.out.println(tab.size());
-                if (currently_edited == tab.size()-1){ addLine(); currently_edited++; }
-                //else if (tab.get(currently_edited+1).get(0) == "|" && tab.size()-1 <= currently_edited){}
+                if (currently_edited == tab.size()-1){  currently_edited++; addLine(); }
+                else if (tab.get(currently_edited+1).get(0) == "|" && tab.size()-1 <= currently_edited){}
                 else{ currently_edited++;}
             }
         });
