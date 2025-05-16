@@ -27,9 +27,13 @@ public class ProjectWindow {
     private final List<List<String>> tab;
     private String str_tab;
     private int currently_edited = 2;
-    private JFrame frame = new JFrame();
-    private JTextArea textArea = new JTextArea();
-
+    private JFrame frame = new JFrame(); //new window
+    private JTextArea textArea = new JTextArea(); // tablature text area panel
+    private JPanel fretboardPanel = new FretboardPanel();
+    private JScrollFrame scrollFrame = new JScrollPane(tablatureTextArea(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // tablature text area scroll frame
+    private JPanel fretboardNumsPanel = new JPanel();
+    private JPanel functionsPanel = new JPanel();
+    
     public ProjectWindow(Project project) {
         Fretboard fretboard = project.getFretboard();
         this.tab = project.getTab();
@@ -79,7 +83,7 @@ public class ProjectWindow {
 
     //Panels
     private JPanel FretboardPanel() {
-        JPanel fretboardPanel = new FretboardPanel();
+        //JPanel fretboardPanel = new FretboardPanel();
         fretboardPanel.setBackground(Window.fretboard_c);
         int x = (windowWidth - fretboardPanelWidth) / 3;
         fretboardPanel.setBounds(x, (int) (windowHeight - fretboardPanelHeight - windowHeight * 0.15), fretboardPanelWidth, fretboardPanelHeight);
@@ -89,11 +93,11 @@ public class ProjectWindow {
 
     private JPanel FretboardNumsPanel() {
         JPanel panel = new JPanel();
-        panel.setBackground(Window.fretboard_num_c);
+        fretboardNumsPanel.setBackground(Window.fretboard_num_c);
         int panel_height = (int) (fretboardPanelHeight * 0.15);
         int x = (windowWidth - fretboardPanelWidth) / 3;
-        panel.setBounds(x, (int) (windowHeight - fretboardPanelHeight - windowHeight * 0.15) - panel_height, fretboardPanelWidth, panel_height);
-        panel.setLayout(null);
+        fretboardNumsPanel.setBounds(x, (int) (windowHeight - fretboardPanelHeight - windowHeight * 0.15) - panel_height, fretboardPanelWidth, panel_height);
+        fretboardNumsPanel.setLayout(null);
         for (int i = 0; i < Fretboard.getFretNum(); i++) {
             int num_x = (fretboardPanelWidth / (Fretboard.getFretNum())) * i;
             JLabel label = new JLabel();
@@ -103,13 +107,12 @@ public class ProjectWindow {
             label.setFont(new Font("Courier New", Font.BOLD, (int) (panel_height * 0.7))); // 16
             label.setText(String.valueOf(i));
             label.setForeground(Color.black);
-            panel.add(label);
+            fretboardNumsPanel.add(label);
         }
-
-        return panel;
+        return fretboardNumsPanel;
     }
 
-    private Component TabPanel() {
+    private Component TabScrollFramePanel() {
         int y = top_margin + 5;
         int width = (int) (windowWidth * 0.9);
         int height = (int) (windowHeight / 2.3);
@@ -132,7 +135,7 @@ public class ProjectWindow {
         }*/
 
         //Visible window
-        JScrollPane scrollFrame = new JScrollPane(tablatureTextArea(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        //scrollFrame = new JScrollPane(tablatureTextArea(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollFrame.setBounds((int) (windowWidth * 0.05), y, width, height);
         scrollFrame.setBorder(null);
 
@@ -159,18 +162,18 @@ public class ProjectWindow {
         return textArea;
     }
     private JPanel MenuPanel() {
-        JPanel panel = new JPanel();
+        JPanel menuPanel = new JPanel();
         int width = windowWidth;
         int height = (int) (windowHeight * 0.1);
-        panel.setBounds(0, 0, width, height);
-        panel.setBackground(Window.function_panel_c);
+        menuPanel.setBounds(0, 0, width, height);
+        menuPanel.setBackground(Window.function_panel_c);
         int btn_num = 3;
         int[] func_x = new int[btn_num];
         for (int i = 0; i < btn_num; i++) {
             func_x[i] = (width / btn_num) * i + width / btn_num / 2;
         }
 
-        return panel;
+        return menuPanel;
     }
     private Component ExitButton(JFrame frame) {
         JButton button = new JButton();
@@ -194,30 +197,30 @@ public class ProjectWindow {
         return button;
     }
     private Component functionsPanel() {
-        JPanel panel = new JPanel();
+        JPanel functionsPanel = new JPanel();
         //panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
         //panel.add(Box.createHorizontalGlue());
-        panel.setLayout(null);
+        functionsPanel.setLayout(null);
         int width = (int) (windowWidth * 0.7);
         int height = (int) (fretboardPanelHeight * 0.23);
         int x = (windowWidth - width) / 2;
         int y = windowHeight - 2 * height;
         int button_width = (int) (width * 0.08);
-        panel.setBounds(x, y, width, height);
-        panel.setBackground(Window.function_panel_c);
+        functionsPanel.setBounds(x, y, width, height);
+        functionsPanel.setBackground(Window.function_panel_c);
         int func_num = 6;
         int[] func_x = new int[func_num];
         for (int i = 0; i < func_num; i++) {
             func_x[i] = (width / func_num) * i + width / func_num / 2;
         }
         //next line button
-        panel.add(refreshButton(width, height, func_x[5]));
-        panel.add(nextLineButton(width, height, func_x[4]));
-        panel.add(previousLineButton(width, height, func_x[3]));
-        panel.add(insertBarLineButton(width, height, func_x[2]));
-        panel.add(insertLineButton(width, height, func_x[1]));
-        panel.add(deleteLineButton(width, height, func_x[0]));
-        return panel;
+        functionsPanel.add(refreshButton(width, height, func_x[5]));
+        functionsPanel.add(nextLineButton(width, height, func_x[4]));
+        functionsPanel.add(previousLineButton(width, height, func_x[3]));
+        functionsPanel.add(insertBarLineButton(width, height, func_x[2]));
+        functionsPanel.add(insertLineButton(width, height, func_x[1]));
+        functionsPanel.add(deleteLineButton(width, height, func_x[0]));
+        return functionsPanel;
     }
     // Elements of panels
     private JButton refreshButton(int width, int height, int x) {
@@ -354,7 +357,7 @@ public class ProjectWindow {
                 currently_edited++;
                 tab.add(currently_edited, temp_list);
                 currently_edited++;
-                addLine();
+                //addLine();
                 str_tab = TabListToString();
 
             }
@@ -388,8 +391,9 @@ public class ProjectWindow {
                 if (currently_edited == tab.size() - 1) {
                     currently_edited++;
                     addLine();
-                } else if (tab.get(currently_edited + 1).get(0) == "|" && tab.size() - 1 <= currently_edited) {
-                } else {
+                //} else if (tab.get(currently_edited + 1).get(0) == "|" && tab.size() - 1 <= currently_edited) {
+                } 
+                else {
                     currently_edited++;
                 }
             }
@@ -439,7 +443,7 @@ public class ProjectWindow {
         //System.out.println(tab); // Temporary for debugging
         return str_tab.toString();
     }
-    private List<List<Component>> setButtons(Fretboard fretboard, JPanel panel) {
+    private void setButtons(Fretboard fretboard, JPanel panel) {
         List<List<Component>> button_list = new LinkedList<>();
         List<Component> button_temp = new LinkedList<>();
         int b_diamater = (int) (fretboardPanelHeight / 7.3);
@@ -462,8 +466,6 @@ public class ProjectWindow {
             button_list.add(button_temp);
             button_temp.clear();
         }
-        return button_list;
-
     }
 
     //Modified Classes
