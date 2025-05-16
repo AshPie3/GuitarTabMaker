@@ -10,11 +10,14 @@ import java.util.Scanner;
 
 public class Project {
     private Fretboard fretboard = new Fretboard();
+    private int p_id;
+    private String cvs_value;
     private int t_id;
     private Scale scale = new Scale();
     private List<List<String>> tab = new LinkedList<>();
 
-    public Project(Scale scale, int t_id,List<List<String>> tab ){
+    public Project(int p_id, Scale scale, int t_id,List<List<String>> tab ){
+        this.p_id = p_id;
         this.scale = scale;
         this.t_id = t_id;
         this.tab = tab;

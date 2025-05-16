@@ -27,6 +27,7 @@ public class ProjectWindow {
     private final int fretboardPanelHeight = (int) (windowHeight * 0.3);
     private final int top_margin = (int) (windowHeight * 0.05);
     private final List<List<String>> tab;
+    private int p_id;
     private String str_tab;
     private int currently_edited = 2;
     private JFrame frame = new JFrame(); //new window
@@ -38,8 +39,8 @@ public class ProjectWindow {
     
     public ProjectWindow(Project project) {
         Fretboard fretboard = project.getFretboard();
+
         this.tab = project.getTab();
-        TabListToString();
 
         // Create Window frame
         frame.setTitle("Project Window");
@@ -259,7 +260,7 @@ public class ProjectWindow {
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
         JLabel label = new JLabel();
-        label.setText("Refresh");
+        label.setText("Save");
         label.setBounds(0, 0, button_width, button_height);
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.CENTER);
@@ -268,8 +269,7 @@ public class ProjectWindow {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                validateText();
-                validatePointer();
+                convertTabToDatabaseString();
             }
         });
         return button;
@@ -282,9 +282,8 @@ public class ProjectWindow {
         temp_list.add(" ");
         tab.add(currently_edited, temp_list);
 
-        TabListToString();
+        //TabListToString();
         validateText();
-        validatePointer();
 
     }
     private JButton deleteLineButton(int width, int height, int x) {
@@ -309,9 +308,9 @@ public class ProjectWindow {
                 tab.remove(currently_edited);
                 if (currently_edited == 2) {
                 } else currently_edited--;
-                TabListToString();
+                //TabListToString();
                 validateText();
-                validatePointer();
+
             }
         });
 
@@ -344,9 +343,8 @@ public class ProjectWindow {
                 temp_list.add("  ");
                 currently_edited++;
                 tab.add(currently_edited, temp_list);
-                TabListToString();
+                //TabListToString();
                 validateText();
-                validatePointer();
             }
         });
         return button;
@@ -374,14 +372,10 @@ public class ProjectWindow {
                 for (int i = 0; i < 6; i++) {
                     temp_list.add("|");
                 }
-                temp_list.add("  ");
+                temp_list.add(" ");
                 currently_edited++;
                 tab.add(currently_edited, temp_list);
-                currently_edited++;
-                //addLine();
-                TabListToString();
                 validateText();
-                validatePointer();
             }
         });
         return button;
@@ -405,15 +399,11 @@ public class ProjectWindow {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int edited_temp = currently_edited;
                 currently_edited++;
                 if (currently_edited >= tab.size() - 1) {
                     currently_edited = tab.size();
                     addLine();
-                } else {
-                    //currently_edited++;
-                }
-                validatePointer();
+                } else {}
                 validateText();
 
             }
@@ -440,26 +430,24 @@ public class ProjectWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (currently_edited > 2) currently_edited--;
-                validatePointer();
                 validateText();
 
             }
         });
         return button;
     }
-    private void TabListToString() { //Temporary use conversion from a list to string it doesn't work perfectly tho
+    private void TabListToString() {
         StringBuffer str_tab_buff = new StringBuffer();
         for (int y = 0; y < 7; y++) {
             for (int x = 0; x < tab.size(); x++) {
-                //if (tab.get(x).size() == 6){tab.get(x).add(6, " ");}
                 String current_val = tab.get(x).get(y);
                 str_tab_buff.append(current_val);
             }
             str_tab_buff.append("\n");
         }
-        System.out.println(str_tab_buff); // Temporary for debugging
+        //System.out.println(str_tab_buff); // for debugging
         str_tab = str_tab_buff.toString();
-    }
+    } //Function used to display the Tablature in the frame
     private void setButtons(Fretboard fretboard, JPanel panel) {
         List<List<Component>> button_list = new LinkedList<>();
         List<Component> button_temp = new LinkedList<>();
@@ -488,7 +476,6 @@ public class ProjectWindow {
         Runnable runnable = new ValidateThread();
         Thread thread = new Thread(runnable);
         thread.start();
-        System.out.println("Thread started");
     }
     private void validatePointer(){
         for(int i = 0; i < tab.size(); i++){
@@ -500,7 +487,6 @@ public class ProjectWindow {
         if (tab.get(currently_edited).get(0) == "|") tab.get(currently_edited).set(6, "^");
         else tab.get(currently_edited).set(6, "^^");
         TabListToString();
-        System.out.println("Text updated");
     }
     //Modified Classes
     private class FretboardPanel extends JPanel {
@@ -581,7 +567,7 @@ public class ProjectWindow {
                         mousePressed = true;
                         repaint();
                         validateText();
-                        validatePointer();
+                        //validatePointer();
                     }
                 }
                 @Override
@@ -625,7 +611,8 @@ public class ProjectWindow {
                 } else {
                     tab.get(currently_edited).set(string, "--");
                 }
-                TabListToString();
+                //TabListToString();
+                validateText();
 
             } else if (inKey == true) g.setColor(Window.button_on_c);
             else g.setColor(Window.button_off_c);
@@ -641,17 +628,24 @@ public class ProjectWindow {
     class ValidateThread implements Runnable {
         @Override
         public void run() {
+            TabListToString();
                 if (tablatureTextArea().getText() != str_tab) {
-                    //movePointer();
+                    validatePointer();
                     tablatureTextArea().setText(str_tab);
                     tablatureTextArea().repaint();
-                    System.out.println("Text updated");
             }
         }
     }
 
     public String convertTabToDatabaseString(){
-        return null;
+        StringBuffer stringBuffer = new StringBuffer();
+        for(int x = 0; x<tab.size(); x++){
+            for(int y = 0; y<7; y++){
+                stringBuffer.append(tab.get(x).get(y) + ",");
+            }
+        }
+        System.out.println(stringBuffer);
+        return String.valueOf(stringBuffer);
     }
 
     public void saveTabToDatabase(){
@@ -681,7 +675,7 @@ public class ProjectWindow {
     public static void main(String[] args) {
         Scale scale = new Scale();
         scale.createScale(1, 4);
-        Project project = new Project(scale, 1, new LinkedList<>());
+        Project project = new Project(1, scale, 1, new LinkedList<>());
         new ProjectWindow(project);
     }
 }
