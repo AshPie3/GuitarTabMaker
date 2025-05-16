@@ -2,7 +2,6 @@ package GuitarTabMaker.GUIWindows.ProjectWindow;
 
 import GuitarTabMaker.FretboardCreator.Fretboard;
 import GuitarTabMaker.FretboardCreator.Scale;
-import GuitarTabMaker.GUIWindows.StartWindow.StartWindow;
 import GuitarTabMaker.GUIWindows.Window;
 import GuitarTabMaker.ProjectManager.Project;
 
@@ -16,8 +15,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static java.awt.SystemColor.text;
-
 public class ProjectWindow {
     private final int windowWidth = (int) (Window.screenSizeWidth * 0.8);
     private final int windowHeight = (int) (Window.screenSizeHeight * 0.8);
@@ -30,14 +27,14 @@ public class ProjectWindow {
     private JFrame frame = new JFrame(); //new window
     private JTextArea textArea = new JTextArea(); // tablature text area panel
     private JPanel fretboardPanel = new FretboardPanel();
-    private JScrollFrame scrollFrame = new JScrollPane(tablatureTextArea(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // tablature text area scroll frame
+    private JScrollPane scrollFrame = new JScrollPane(); // tablature text area scroll frame tablatureTextArea(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
     private JPanel fretboardNumsPanel = new JPanel();
     private JPanel functionsPanel = new JPanel();
     
     public ProjectWindow(Project project) {
         Fretboard fretboard = project.getFretboard();
         this.tab = project.getTab();
-        this.str_tab = TabListToString();
+        TabListToString();
 
         // Create Window frame
         frame.setTitle("Project Window");
@@ -73,26 +70,25 @@ public class ProjectWindow {
                 tab.get(2).add(i, "--");
             }
         } //Initialize list
-        str_tab = TabListToString();
-        frame.add(tablatureTextArea()); //Add tablature window
-        //validate();
+        TabListToString();
+        //frame.add(tablatureTextArea()); //Add tablature window
+        tablatureTextArea();
+        frame.add(TabScrollFramePanel());
         //Set frame visible
         frame.setVisible(true);
 
-    }
 
+    }
     //Panels
     private JPanel FretboardPanel() {
-        //JPanel fretboardPanel = new FretboardPanel();
         fretboardPanel.setBackground(Window.fretboard_c);
         int x = (windowWidth - fretboardPanelWidth) / 3;
         fretboardPanel.setBounds(x, (int) (windowHeight - fretboardPanelHeight - windowHeight * 0.15), fretboardPanelWidth, fretboardPanelHeight);
         fretboardPanel.setLayout(null);
+
         return fretboardPanel;
     }
-
     private JPanel FretboardNumsPanel() {
-        JPanel panel = new JPanel();
         fretboardNumsPanel.setBackground(Window.fretboard_num_c);
         int panel_height = (int) (fretboardPanelHeight * 0.15);
         int x = (windowWidth - fretboardPanelWidth) / 3;
@@ -111,53 +107,61 @@ public class ProjectWindow {
         }
         return fretboardNumsPanel;
     }
-
     private Component TabScrollFramePanel() {
+        //JPanel panel = new JPanel();
+        //panel.setLayout(null);
         int y = top_margin + 5;
         int width = (int) (windowWidth * 0.9);
         int height = (int) (windowHeight / 2.3);
-
         /*
-        for (int x_m = 0; x_m< tab.size(); x_m++) { // creating a list of lables which will have all the string values still it would not update whenever there is a change based on the current way its written
+        panel.setBounds((int) (windowWidth * 0.05), y, width, height);
+        panel.setBackground(Window.fretboard_c);
+        int label_width = (int) (width * 0.1);
+        int label_height = (int) (height * 0.1);
+        panel.setLayout(null);
+        JLabel label = new JLabel();
+        label.setForeground(Window.button_off_c);
+        label.setFont(new Font(Font.MONOSPACED,Font.BOLD , (int) (label_width * 0.4)));
+        label.setBounds(0,0, label_width, label_height);
+        panel.add(label);
+
+        for (int x_m = 0; x_m< 1; x_m++) { // creating a list of lables which will have all the string values still it would not update whenever there is a change based on the current way its written
             int x_value = 0;
             JLabel label = new JLabel();
-            if(x_m == currently_edited)
-                label.setBackground(Window.button_on_c);
+            if(x_m == currently_edited) label.setBackground(Window.button_on_c);
             else label.setBackground(Window.button_off_c);
             StringBuffer string_val = new StringBuffer();
             for (int i = 0; i<6; i++){
                 string_val.append(tab.get(x_m).get(i));
                 string_val.append("\n");
+                System.out.println(string_val);
             }
             label.setText(string_val.toString());
             label.setBounds(x_value, 0, label_width, label_height);
             panel.add(label);
-        }*/
-
-        //Visible window
-        //scrollFrame = new JScrollPane(tablatureTextArea(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        } */
+        scrollFrame = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); // tablature text area scroll frame
         scrollFrame.setBounds((int) (windowWidth * 0.05), y, width, height);
         scrollFrame.setBorder(null);
 
-        // Scroll bar
         JScrollBar scrollBar = scrollFrame.getVerticalScrollBar();
         scrollBar.setOrientation(JScrollBar.VERTICAL);
 
         return scrollFrame;
     }
-
     private JTextArea tablatureTextArea() {
-
         textArea.setLayout(null);
         int y = top_margin + 5;
         int width = (int) (windowWidth * 0.9);
         int height = (int) (windowHeight / 2.3);
-        textArea.setBounds((int) (windowWidth * 0.05), y, width, height);
+        textArea.setBounds(0, 0, width, height);
         textArea.setBackground(Window.fretboard_c);
         int label_width = (int) (width * 0.01);
         int label_height = (int) (height * 0.01);
         textArea.setLayout(null);
         textArea.setText(str_tab);
+        textArea.setFont(new Font(Window.font, Font.BOLD, (int) (width * 0.02)));
+        //textArea.setLineWrap(true);
 
         return textArea;
     }
@@ -172,7 +176,6 @@ public class ProjectWindow {
         for (int i = 0; i < btn_num; i++) {
             func_x[i] = (width / btn_num) * i + width / btn_num / 2;
         }
-
         return menuPanel;
     }
     private Component ExitButton(JFrame frame) {
@@ -198,8 +201,6 @@ public class ProjectWindow {
     }
     private Component functionsPanel() {
         JPanel functionsPanel = new JPanel();
-        //panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
-        //panel.add(Box.createHorizontalGlue());
         functionsPanel.setLayout(null);
         int width = (int) (windowWidth * 0.7);
         int height = (int) (fretboardPanelHeight * 0.23);
@@ -242,13 +243,9 @@ public class ProjectWindow {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Runnable runnable = new ValidateThread();
-                Thread thread = new Thread(runnable);
-                thread.start();
-                System.out.println("Thread started");
+                validateText();
             }
         });
-
         return button;
     }
     private void addLine() { // function
@@ -256,9 +253,9 @@ public class ProjectWindow {
         for (int i = 0; i < 6; i++) {
             temp_list.add("--");
         }
-        //currently_edited++;
         tab.add(currently_edited, temp_list);
-        str_tab = TabListToString();
+        TabListToString();
+        validateText();
 
     }
     private JButton deleteLineButton(int width, int height, int x) {
@@ -273,7 +270,6 @@ public class ProjectWindow {
         JLabel label = new JLabel();
         label.setText("Delete");
         label.setBounds(0, 0, button_width, button_height);
-
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.CENTER);
         label.setFont(new Font(Window.font, Font.BOLD, (int) (button_height * 0.4)));
@@ -282,12 +278,10 @@ public class ProjectWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tab.remove(currently_edited);
-                //if(tab.get(currently_edited-1).get(0) == "|" && currently_edited-1>1){currently_edited = currently_edited -2;}
                 if (currently_edited == 2) {
                 } else currently_edited--;
-                str_tab = TabListToString();
-
-                //System.out.println(tab);
+                TabListToString();
+                validateText();
             }
         });
 
@@ -319,12 +313,10 @@ public class ProjectWindow {
                 }
                 currently_edited++;
                 tab.add(currently_edited, temp_list);
-                str_tab = TabListToString();
-
-                //System.out.println(tab);
+                TabListToString();
+                validateText();
             }
         });
-
         return button;
     }
     private JButton insertBarLineButton(int width, int height, int x) {
@@ -334,18 +326,14 @@ public class ProjectWindow {
         int button_height = (int) (height * 0.8);
         int y = (height - button_height) / 2;
         button.setBounds(x, y, button_width, button_height);
-        //button.setSize(button_width,button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
-        //button.setLayout(null);
-        //button.set
         JLabel label = new JLabel();
-        label.setText(" | ");
+        label.setText("|");
         label.setBounds(0, 0, button_width, button_height);
-
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.CENTER);
-        label.setFont(new Font(Window.font, Font.BOLD, (int) (button_height * 0.6)));
+        label.setFont(new Font(Window.font, Font.BOLD, (int) (button_height * 0.5)));
         button.add(label);
         button.addActionListener(new ActionListener() {
             @Override
@@ -358,8 +346,8 @@ public class ProjectWindow {
                 tab.add(currently_edited, temp_list);
                 currently_edited++;
                 //addLine();
-                str_tab = TabListToString();
-
+                TabListToString();
+                validateText();
             }
         });
         return button;
@@ -371,15 +359,11 @@ public class ProjectWindow {
         int button_height = (int) (height * 0.8);
         int y = (height - button_height) / 2;
         button.setBounds(x, y, button_width, button_height);
-        //button.setSize(button_width,button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
-        //button.setLayout(null);
-        //button.set
         JLabel label = new JLabel();
         label.setText(">");
         label.setBounds(0, 0, button_width, button_height);
-
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.CENTER);
         label.setFont(new Font(Window.font, Font.BOLD, (int) (button_height * 0.4)));
@@ -387,13 +371,11 @@ public class ProjectWindow {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //System.out.println(tab.size());
-                if (currently_edited == tab.size() - 1) {
-                    currently_edited++;
+                currently_edited++;
+                if (currently_edited >= tab.size() - 1) {
+                    currently_edited = tab.size();
                     addLine();
-                //} else if (tab.get(currently_edited + 1).get(0) == "|" && tab.size() - 1 <= currently_edited) {
-                } 
-                else {
+                } else {
                     currently_edited++;
                 }
             }
@@ -407,11 +389,8 @@ public class ProjectWindow {
         int button_height = (int) (height * 0.8);
         int y = (height - button_height) / 2;
         button.setBounds(x, y, button_width, button_height);
-        //button.setSize(button_width,button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
-        //button.setLayout(null);
-        //button.set
         JLabel label = new JLabel();
         label.setText("<");
         label.setBounds(0, 0, button_width, button_height);
@@ -424,24 +403,21 @@ public class ProjectWindow {
             public void actionPerformed(ActionEvent e) {
                 currently_edited--;
                 if (currently_edited < 2) currently_edited++;
-                //else if (tab.get(currently_edited).get(0) == "|") currently_edited--;
-                //System.out.println(tab);
             }
         });
         return button;
     }
-    private String TabListToString() { //Temporary use conversion from a list to string it doesn't work perfectly tho
-        StringBuffer str_tab = new StringBuffer();
+    private void TabListToString() { //Temporary use conversion from a list to string it doesn't work perfectly tho
+        StringBuffer str_tab_buff = new StringBuffer();
         for (int y = 0; y < 6; y++) {
             for (int x = 0; x < tab.size(); x++) {
                 String current_val = tab.get(x).get(y);
-                str_tab.append(current_val);
+                str_tab_buff.append(current_val);
             }
-            str_tab.append("\n");
+            str_tab_buff.append("\n");
         }
-        System.out.println(str_tab); // Temporary for debugging
-        //System.out.println(tab); // Temporary for debugging
-        return str_tab.toString();
+        System.out.println(str_tab_buff); // Temporary for debugging
+        str_tab = str_tab_buff.toString();
     }
     private void setButtons(Fretboard fretboard, JPanel panel) {
         List<List<Component>> button_list = new LinkedList<>();
@@ -467,10 +443,14 @@ public class ProjectWindow {
             button_temp.clear();
         }
     }
-
+    private void validateText(){
+        Runnable runnable = new ValidateThread();
+        Thread thread = new Thread(runnable);
+        thread.start();
+        System.out.println("Thread started");
+    }
     //Modified Classes
     private class FretboardPanel extends JPanel {
-
         @Override
         public void paintComponent(Graphics g) {
             int circle_w = fretboardPanelHeight / 12;
@@ -497,7 +477,6 @@ public class ProjectWindow {
             }
         }
     }
-
     private class NoteLabel extends JLabel {
         private boolean selected = false;
         private String value;
@@ -529,7 +508,6 @@ public class ProjectWindow {
         }
 
     }
-
     private class RoundButton extends JLabel {
         private boolean mousePressed = false;
         private boolean inKey = false;
@@ -543,24 +521,20 @@ public class ProjectWindow {
             this.string = string;
             this.audio_file = audio_file;
             setOpaque(false);
-
-
             MouseAdapter mouseListener = new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (contains(e.getX(), e.getY())) {
                         mousePressed = true;
                         repaint();
-
+                        validateText();
                     }
                 }
-
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     mousePressed = false;
                     repaint();
                 }
-
             };
             addMouseListener(mouseListener);
             addMouseMotionListener(mouseListener);
@@ -578,58 +552,46 @@ public class ProjectWindow {
             if (mousePressed == true) {
                 int current_val_int;
                 String appended_val;
+                g.setColor(Window.button_hover);
                 try {
                     current_val_int = Integer.parseInt(tab.get(currently_edited).get(string).replaceAll("-", ""));
                 } catch (NumberFormatException e) {
                     current_val_int = -1;
                 }
-                g.setColor(Window.button_hover);
+
                 if (tab.get(currently_edited).get(0) == "|") return;
 
-                if (fret >= 10) {
+                else if (fret >= 10) {
                     appended_val = String.valueOf(fret);
-                } else appended_val = String.valueOf(fret) + "-";
+                } else appended_val = fret + "-";
 
                 if (current_val_int != fret) {
                     tab.get(currently_edited).set(string, "");
                     tab.get(currently_edited).set(string, appended_val);
-                } else { //(current_val == String.valueOf(fret))
+                } else {
                     tab.get(currently_edited).set(string, "--");
                 }
-                str_tab = TabListToString();
+                TabListToString();
 
             } else if (inKey == true) g.setColor(Window.button_on_c);
             else g.setColor(Window.button_off_c);
             g.fillOval(getWidth() / 2 - radius, getHeight() / 2 - radius, radius * 2, radius * 2);
-
         }
+        public boolean isInKey() {return inKey;}
+        public void setInKey(boolean inKey) {this.inKey = inKey;}
 
-        public boolean isInKey() {
-            return inKey;
-        }
-
-        public void setInKey(boolean inKey) {
-            this.inKey = inKey;
-        }
-
-        public int getFret() {
-            return fret;
-        }
-
-        public void setFret(int fret) {
-            this.fret = fret;
-        }
+        public int getFret() {return fret;}
+        public void setFret(int fret) {this.fret = fret;}
 
     }
-
     class ValidateThread implements Runnable {
         @Override
         public void run() {
                 if (tablatureTextArea().getText() != str_tab) {
                     tablatureTextArea().setText(str_tab);
                     tablatureTextArea().repaint();
-                    tablatureTextArea().updateUI();
-                    frame.repaint();
+                    //tablatureTextArea().updateUI();
+                    //frame.repaint();
                     //tablatureTextArea().update(tablatureTextArea().getGraphics());
                     System.out.println("Text updated");
             }

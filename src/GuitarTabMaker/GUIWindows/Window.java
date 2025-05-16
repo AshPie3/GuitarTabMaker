@@ -17,7 +17,7 @@ public class Window {
     public static Color fretboard_num_c = new Color(73, 72, 69);
     public static Color function_panel_c = new Color(73, 72, 69);
     public static Color menu_panel_c = new Color(73, 72, 69);
-    public static String font = "Nanum Gothic Coding";
+    public static String font = "Monospaced";
 
 
 
