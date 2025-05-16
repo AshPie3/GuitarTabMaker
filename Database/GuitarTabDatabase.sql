@@ -1,4 +1,3 @@
-
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
 -- Server version:               11.7.2-MariaDB - mariadb.org binary distribution
@@ -118,6 +117,27 @@ INSERT INTO `notes` (`n_id`, `n_name`, `n_val`, `n_oct`, `n_audio`) VALUES
 	(59, 'G6', 11, 6, NULL),
 	(60, 'G#6', 12, 6, NULL);
 
+-- Dumping structure for table guitartab.projects
+CREATE TABLE IF NOT EXISTS `projects` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
+  `p_t_id` int(11) NOT NULL,
+  `p_s_id` int(11) NOT NULL,
+  `p_key_val` int(11) NOT NULL,
+  `p_name` text DEFAULT 'New Project',
+  `p_cvs_val` longtext DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  KEY `FK_projects_tunings` (`p_t_id`),
+  KEY `FK_projects_scale` (`p_s_id`),
+  KEY `FK_projects_notes` (`p_key_val`) USING BTREE,
+  CONSTRAINT `FK_projects_notes` FOREIGN KEY (`p_key_val`) REFERENCES `notes` (`n_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_projects_scale` FOREIGN KEY (`p_s_id`) REFERENCES `scale` (`s_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_projects_tunings` FOREIGN KEY (`p_t_id`) REFERENCES `tunings` (`t_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+
+-- Dumping data for table guitartab.projects: ~1 rows (approximately)
+INSERT INTO `projects` (`p_id`, `p_t_id`, `p_s_id`, `p_key_val`, `p_name`, `p_cvs_val`) VALUES
+	(3, 2, 1, 4, 'FACGCE C MAJ', NULL);
+
 -- Dumping structure for table guitartab.scale
 CREATE TABLE IF NOT EXISTS `scale` (
   `s_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -144,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `scale` (
   CONSTRAINT `FK__intervals_5` FOREIGN KEY (`s_i6`) REFERENCES `intervals` (`i_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK__intervals_6` FOREIGN KEY (`s_i7`) REFERENCES `intervals` (`i_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_scale_intervals` FOREIGN KEY (`s_i5`) REFERENCES `intervals` (`i_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 -- Dumping data for table guitartab.scale: ~3 rows (approximately)
 INSERT INTO `scale` (`s_id`, `s_name`, `s_i1`, `s_i2`, `s_i3`, `s_i4`, `s_i5`, `s_i6`, `s_i7`) VALUES
