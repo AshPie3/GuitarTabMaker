@@ -39,7 +39,6 @@ public class Fretboard {
 
     public void generateFretboard(){
         ConnectionSettings settings = new ConnectionSettings();
-
         try{
             Connection conn  = settings.getDatabaseConnection();
             String sql;

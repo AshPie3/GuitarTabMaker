@@ -1,5 +1,6 @@
 package GuitarTabMaker.GUIWindows.ProjectWindow;
 
+import GuitarTabMaker.ConnectionSettings;
 import GuitarTabMaker.FretboardCreator.Fretboard;
 import GuitarTabMaker.FretboardCreator.Scale;
 import GuitarTabMaker.GUIWindows.Window;
@@ -11,6 +12,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,13 +46,11 @@ public class ProjectWindow {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(windowWidth, windowHeight);
         frame.setResizable(false);
-
         //frame.setVisible(true);
         ImageIcon icon = new ImageIcon("Assets/Icon.png");
         frame.setIconImage(icon.getImage());
         frame.getContentPane().setBackground(Window.background_c);
         frame.setLayout(null);
-
         //Adding components to the frame
         JPanel fretpanel = FretboardPanel();
         frame.add(fretpanel);
@@ -58,26 +61,26 @@ public class ProjectWindow {
 
         if (tab.isEmpty()) {
             for (int i = 0; i < 3; i++) {
-                tab.add(i, new ArrayList<>(6));
+                tab.add(i, new ArrayList<>(7));
             }
             for (int i = 0; i < 6; i++) {
                 tab.get(0).add(i, fretboard.getTuning().get(i).getName().substring(0, 1));
             }
+            tab.get(0).add(6, " ");
             for (int i = 0; i < 6; i++) {
                 tab.get(1).add(i, "|");
             }
+            tab.get(1).add(6, " ");
             for (int i = 0; i < 6; i++) {
                 tab.get(2).add(i, "--");
             }
+            tab.get(2).add(6, "^^");
         } //Initialize list
         TabListToString();
-        //frame.add(tablatureTextArea()); //Add tablature window
         tablatureTextArea();
         frame.add(TabScrollFramePanel());
         //Set frame visible
         frame.setVisible(true);
-
-
     }
     //Panels
     private JPanel FretboardPanel() {
@@ -108,8 +111,6 @@ public class ProjectWindow {
         return fretboardNumsPanel;
     }
     private Component TabScrollFramePanel() {
-        //JPanel panel = new JPanel();
-        //panel.setLayout(null);
         int y = top_margin + 5;
         int width = (int) (windowWidth * 0.9);
         int height = (int) (windowHeight / 2.3);
@@ -150,14 +151,12 @@ public class ProjectWindow {
         return scrollFrame;
     }
     private JTextArea tablatureTextArea() {
+
         textArea.setLayout(null);
-        int y = top_margin + 5;
         int width = (int) (windowWidth * 0.9);
         int height = (int) (windowHeight / 2.3);
         textArea.setBounds(0, 0, width, height);
         textArea.setBackground(Window.fretboard_c);
-        int label_width = (int) (width * 0.01);
-        int label_height = (int) (height * 0.01);
         textArea.setLayout(null);
         textArea.setText(str_tab);
         textArea.setFont(new Font(Window.font, Font.BOLD, (int) (width * 0.02)));
@@ -171,13 +170,39 @@ public class ProjectWindow {
         int height = (int) (windowHeight * 0.1);
         menuPanel.setBounds(0, 0, width, height);
         menuPanel.setBackground(Window.function_panel_c);
-        int btn_num = 3;
+        int btn_num = 6;
         int[] func_x = new int[btn_num];
         for (int i = 0; i < btn_num; i++) {
             func_x[i] = (width / btn_num) * i + width / btn_num / 2;
         }
         return menuPanel;
     }
+    private Component exitButton(int width, int height, int x){
+        JButton button = new JButton();
+        button.setLayout(null);
+        int button_width = (int) (width * 0.08);
+        int button_height = (int) (height * 0.8);
+        int y = (height - button_height) / 2;
+        button.setBounds(x, y, button_width, button_height);
+        button.setBackground(Window.button_off_c);
+        button.setBorderPainted(true);
+        JLabel label = new JLabel();
+        label.setText("Exit");
+        label.setBounds(0, 0, button_width, button_height);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD, (int) (button_height * 0.4)));
+        button.add(label);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                frame.dispose();
+            }
+        });
+        return button;
+    }
+
     private Component ExitButton(JFrame frame) {
         JButton button = new JButton();
         int button_width = (int) (windowWidth * 0.08);
@@ -244,6 +269,7 @@ public class ProjectWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 validateText();
+                validatePointer();
             }
         });
         return button;
@@ -253,9 +279,12 @@ public class ProjectWindow {
         for (int i = 0; i < 6; i++) {
             temp_list.add("--");
         }
+        temp_list.add(" ");
         tab.add(currently_edited, temp_list);
+
         TabListToString();
         validateText();
+        validatePointer();
 
     }
     private JButton deleteLineButton(int width, int height, int x) {
@@ -282,6 +311,7 @@ public class ProjectWindow {
                 } else currently_edited--;
                 TabListToString();
                 validateText();
+                validatePointer();
             }
         });
 
@@ -311,10 +341,12 @@ public class ProjectWindow {
                 for (int i = 0; i < 6; i++) {
                     temp_list.add("--");
                 }
+                temp_list.add("  ");
                 currently_edited++;
                 tab.add(currently_edited, temp_list);
                 TabListToString();
                 validateText();
+                validatePointer();
             }
         });
         return button;
@@ -342,12 +374,14 @@ public class ProjectWindow {
                 for (int i = 0; i < 6; i++) {
                     temp_list.add("|");
                 }
+                temp_list.add("  ");
                 currently_edited++;
                 tab.add(currently_edited, temp_list);
                 currently_edited++;
                 //addLine();
                 TabListToString();
                 validateText();
+                validatePointer();
             }
         });
         return button;
@@ -371,13 +405,17 @@ public class ProjectWindow {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int edited_temp = currently_edited;
                 currently_edited++;
                 if (currently_edited >= tab.size() - 1) {
                     currently_edited = tab.size();
                     addLine();
                 } else {
-                    currently_edited++;
+                    //currently_edited++;
                 }
+                validatePointer();
+                validateText();
+
             }
         });
         return button;
@@ -401,16 +439,19 @@ public class ProjectWindow {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                currently_edited--;
-                if (currently_edited < 2) currently_edited++;
+                if (currently_edited > 2) currently_edited--;
+                validatePointer();
+                validateText();
+
             }
         });
         return button;
     }
     private void TabListToString() { //Temporary use conversion from a list to string it doesn't work perfectly tho
         StringBuffer str_tab_buff = new StringBuffer();
-        for (int y = 0; y < 6; y++) {
+        for (int y = 0; y < 7; y++) {
             for (int x = 0; x < tab.size(); x++) {
+                //if (tab.get(x).size() == 6){tab.get(x).add(6, " ");}
                 String current_val = tab.get(x).get(y);
                 str_tab_buff.append(current_val);
             }
@@ -448,6 +489,18 @@ public class ProjectWindow {
         Thread thread = new Thread(runnable);
         thread.start();
         System.out.println("Thread started");
+    }
+    private void validatePointer(){
+        for(int i = 0; i < tab.size(); i++){
+            if (tab.get(i).get(0) != "|") tab.get(i).set(6, "  ");
+            else tab.get(i).set(6, " ");
+        }
+        tab.get(0).set(6, " ");
+        tab.get(1).set(6, " ");
+        if (tab.get(currently_edited).get(0) == "|") tab.get(currently_edited).set(6, "^");
+        else tab.get(currently_edited).set(6, "^^");
+        TabListToString();
+        System.out.println("Text updated");
     }
     //Modified Classes
     private class FretboardPanel extends JPanel {
@@ -528,6 +581,7 @@ public class ProjectWindow {
                         mousePressed = true;
                         repaint();
                         validateText();
+                        validatePointer();
                     }
                 }
                 @Override
@@ -588,13 +642,39 @@ public class ProjectWindow {
         @Override
         public void run() {
                 if (tablatureTextArea().getText() != str_tab) {
+                    //movePointer();
                     tablatureTextArea().setText(str_tab);
                     tablatureTextArea().repaint();
-                    //tablatureTextArea().updateUI();
-                    //frame.repaint();
-                    //tablatureTextArea().update(tablatureTextArea().getGraphics());
                     System.out.println("Text updated");
             }
+        }
+    }
+
+    public String convertTabToDatabaseString(){
+        return null;
+    }
+
+    public void saveTabToDatabase(){
+        ConnectionSettings settings = new ConnectionSettings();
+        try {
+            Connection conn  = settings.getDatabaseConnection();
+            String sql = "SELECT t_s1_id,t_s2_id,t_s3_id,t_s4_id,t_s5_id,t_s6_id FROM tunings WHERE t_id = ";
+            Statement statement_notes_id = conn.createStatement();
+            ResultSet resultSet_notes_id = statement_notes_id.executeQuery(sql);
+            resultSet_notes_id.next();
+            for (int i = 1; i<=6; i++){
+                int string_id = resultSet_notes_id.getInt(i);
+                sql = "SELECT n_name, n_val, n_oct, n_audio FROM notes WHERE n_id = "+string_id;
+                Statement statement_notes = conn.createStatement();
+                ResultSet resultSet_notes = statement_notes.executeQuery(sql);
+                resultSet_notes.next();
+
+                statement_notes.close();
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
