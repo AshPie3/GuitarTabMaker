@@ -2,7 +2,6 @@ package GuitarTabMaker.GUIWindows.ProjectWindow;
 
 import GuitarTabMaker.ConnectionSettings;
 import GuitarTabMaker.FretboardCreator.Fretboard;
-import GuitarTabMaker.FretboardCreator.Scale;
 import GuitarTabMaker.GUIWindows.Window;
 import GuitarTabMaker.ProjectManager.Project;
 
@@ -25,6 +24,7 @@ public class ProjectWindow {
     private final int top_margin = (int) (windowHeight * 0.05);
     private final List<List<String>> tab;
     private int p_id;
+    private boolean auto_next_line = true;
     private String str_tab;
     private int currently_edited = 2;
     private JFrame frame = new JFrame(); //new window
@@ -54,28 +54,8 @@ public class ProjectWindow {
         frame.add(fretpanel);
         setButtons(fretboard, fretpanel);
         frame.add(FretboardNumsPanel());// Create Fretboard Numbers panel
-        frame.add(ExitButton(frame)); // Create exit button
+        frame.add(MenuPanel()); // Create menu panel
         frame.add(functionsPanel()); // add panel with functions like next/previous line
-
-        if (tab.isEmpty()) {
-            for (int i = 0; i < 3; i++) {
-                tab.add(i, new ArrayList<>(7));
-            }
-            for (int i = 0; i < 6; i++) {
-                if (fretboard.getTuning().get(i).getName().length()-1 == 1){
-                    tab.get(0).add(i, fretboard.getTuning().get(i).getName().substring(0, fretboard.getTuning().get(i).getName().length()-1) + " ");
-                }else  tab.get(0).add(i, fretboard.getTuning().get(i).getName().substring(0, fretboard.getTuning().get(i).getName().length()-1));
-            }
-            tab.get(0).add(6, "  ");
-            for (int i = 0; i < 6; i++) {
-                tab.get(1).add(i, "|");
-            }
-            tab.get(1).add(6, " ");
-            for (int i = 0; i < 6; i++) {
-                tab.get(2).add(i, "--");
-            }
-            tab.get(2).add(6, "^^");
-        } //Initialize list
         TabListToString();
         validateText();
         tablatureTextArea();
@@ -166,10 +146,11 @@ public class ProjectWindow {
 
         return textArea;
     }
-    private JPanel MenuPanel() {
+    private Component MenuPanel() {
         JPanel menuPanel = new JPanel();
+        menuPanel.setLayout(null);
         int width = windowWidth;
-        int height = (int) (windowHeight * 0.1);
+        int height = (int) (windowHeight * 0.05);
         menuPanel.setBounds(0, 0, width, height);
         menuPanel.setBackground(Window.function_panel_c);
         int btn_num = 6;
@@ -177,15 +158,18 @@ public class ProjectWindow {
         for (int i = 0; i < btn_num; i++) {
             func_x[i] = (width / btn_num) * i + width / btn_num / 2;
         }
+        menuPanel.add(exitButton(width, height, func_x[0]));
+        menuPanel.add(saveButton(width,height,func_x[1]));
+
         return menuPanel;
     }
     private Component exitButton(int width, int height, int x){
         JButton button = new JButton();
         button.setLayout(null);
         int button_width = (int) (width * 0.08);
-        int button_height = (int) (height * 0.8);
-        int y = (height - button_height) / 2;
-        button.setBounds(x, y, button_width, button_height);
+        int button_height = height;
+        int y = 0;
+        button.setBounds(windowWidth-button_width, y, button_width, button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
         JLabel label = new JLabel();
@@ -193,65 +177,18 @@ public class ProjectWindow {
         label.setBounds(0, 0, button_width, button_height);
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.CENTER);
-        label.setFont(new Font(Window.font, Font.BOLD, (int) (button_height * 0.4)));
-        button.add(label);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                frame.dispose();
-            }
-        });
-        return button;
-    }
-
-    private Component ExitButton(JFrame frame) {
-        JButton button = new JButton();
-        int button_width = (int) (windowWidth * 0.08);
-        int button_height = top_margin;
-        button.setBounds(windowWidth - button_width, 0, button_width, button_height);
-        button.setBackground(Window.button_off_c);
-        button.setBorderPainted(true);
-        JLabel label = new JLabel();
-        label.setText("Exit");
-        button.setHorizontalAlignment(SwingConstants.CENTER);
         label.setFont(new Font(Window.font, Font.BOLD, (int) (button_height * 0.6)));
         button.add(label);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                saveTabToDatabase();
                 frame.dispose();
             }
         });
-
         return button;
     }
-    private Component functionsPanel() {
-        JPanel functionsPanel = new JPanel();
-        functionsPanel.setLayout(null);
-        int width = (int) (windowWidth * 0.7);
-        int height = (int) (fretboardPanelHeight * 0.23);
-        int x = (windowWidth - width) / 2;
-        int y = windowHeight - 2 * height;
-        int button_width = (int) (width * 0.08);
-        functionsPanel.setBounds(x, y, width, height);
-        functionsPanel.setBackground(Window.function_panel_c);
-        int func_num = 6;
-        int[] func_x = new int[func_num];
-        for (int i = 0; i < func_num; i++) {
-            func_x[i] = (width / func_num) * i + width / func_num / 2;
-        }
-        //next line button
-        functionsPanel.add(refreshButton(width, height, func_x[5]));
-        functionsPanel.add(nextLineButton(width, height, func_x[4]));
-        functionsPanel.add(previousLineButton(width, height, func_x[3]));
-        functionsPanel.add(insertBarLineButton(width, height, func_x[2]));
-        functionsPanel.add(insertLineButton(width, height, func_x[1]));
-        functionsPanel.add(deleteLineButton(width, height, func_x[0]));
-        return functionsPanel;
-    }
-    // Elements of panels
-    private JButton refreshButton(int width, int height, int x) {
+    private JButton saveButton(int width, int height, int x) {
         JButton button = new JButton();
         button.setLayout(null);
         int button_width = (int) (width * 0.08);
@@ -275,6 +212,57 @@ public class ProjectWindow {
         });
         return button;
     }
+
+    private Component functionsPanel() {
+        JPanel functionsPanel = new JPanel();
+        functionsPanel.setLayout(null);
+        int width = (int) (windowWidth * 0.7);
+        int height = (int) (fretboardPanelHeight * 0.23);
+        int x = (windowWidth - width) / 2;
+        int y = windowHeight - 2 * height;
+        functionsPanel.setBounds(x, y, width, height);
+        functionsPanel.setBackground(Window.function_panel_c);
+        int func_num = 6;
+        int[] func_x = new int[func_num];
+        for (int i = 0; i < func_num; i++) {
+            func_x[i] = (width / func_num) * i + width / func_num / 2;
+        }
+        //next line button
+        functionsPanel.add(autoNextLineButton(width, height, func_x[5]));
+        functionsPanel.add(nextLineButton(width, height, func_x[4]));
+        functionsPanel.add(previousLineButton(width, height, func_x[3]));
+        functionsPanel.add(insertBarLineButton(width, height, func_x[2]));
+        functionsPanel.add(insertLineButton(width, height, func_x[1]));
+        functionsPanel.add(deleteLineButton(width, height, func_x[0]));
+        return functionsPanel;
+    }
+    // Elements of panels
+    private JButton autoNextLineButton(int width, int height, int x) {
+        JButton button = new JButton();
+        button.setLayout(null);
+        int button_width = (int) (width * 0.15);
+        int button_height = (int) (height * 0.8);
+        int y = (height - button_height) / 2;
+        button.setBounds(x - button_width/2, y, button_width, button_height);
+        button.setBackground(Window.button_off_c);
+        button.setBorderPainted(true);
+        JLabel label = new JLabel();
+        label.setText("Auto next");
+        label.setBounds(0, 0, button_width, button_height);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD, (int) (button_height * 0.4)));
+        button.add(label);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(auto_next_line) auto_next_line= false;
+                else auto_next_line= true;
+                System.out.println("Auto next line is:" + auto_next_line);
+            }
+        });
+        return button;
+    }
     private void addLine() { // function
         List<String> temp_list = new ArrayList<>(6);
         for (int i = 0; i < 6; i++) {
@@ -293,7 +281,7 @@ public class ProjectWindow {
         int button_width = (int) (width * 0.08);
         int button_height = (int) (height * 0.8);
         int y = (height - button_height) / 2;
-        button.setBounds(x, y, button_width, button_height);
+        button.setBounds(x - button_width/2, y, button_width, button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
         JLabel label = new JLabel();
@@ -327,7 +315,7 @@ public class ProjectWindow {
         int button_width = (int) (width * 0.08);
         int button_height = (int) (height * 0.8);
         int y = (height - button_height) / 2;
-        button.setBounds(x, y, button_width, button_height);
+        button.setBounds(x - button_width/2, y, button_width, button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
         JLabel label = new JLabel();
@@ -360,7 +348,7 @@ public class ProjectWindow {
         int button_width = (int) (width * 0.04);
         int button_height = (int) (height * 0.8);
         int y = (height - button_height) / 2;
-        button.setBounds(x, y, button_width, button_height);
+        button.setBounds(x - button_width/2, y, button_width, button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
         JLabel label = new JLabel();
@@ -421,7 +409,7 @@ public class ProjectWindow {
         int button_width = (int) (width * 0.04);
         int button_height = (int) (height * 0.8);
         int y = (height - button_height) / 2;
-        button.setBounds(x, y, button_width, button_height);
+        button.setBounds(x - button_width/2, y, button_width, button_height);
         button.setBackground(Window.button_off_c);
         button.setBorderPainted(true);
         JLabel label = new JLabel();
@@ -572,7 +560,6 @@ public class ProjectWindow {
                         mousePressed = true;
                         repaint();
                         validateText();
-                        //validatePointer();
                     }
                 }
                 @Override
@@ -616,6 +603,15 @@ public class ProjectWindow {
                 } else {
                     tab.get(currently_edited).set(string, "--");
                 }
+                if(auto_next_line){
+                    currently_edited++;
+                    if (currently_edited >= tab.size() - 1) {
+                        currently_edited = tab.size();
+                        addLine();
+                    } else {}
+
+                    validateText();
+                }
                 //TabListToString();
                 validateText();
 
@@ -652,7 +648,6 @@ public class ProjectWindow {
         System.out.println(stringBuffer);
         return String.valueOf(stringBuffer);
     }
-
     public void saveTabToDatabase(){
         ConnectionSettings settings = new ConnectionSettings();
         try {
