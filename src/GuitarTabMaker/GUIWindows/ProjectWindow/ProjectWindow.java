@@ -12,10 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +36,7 @@ public class ProjectWindow {
     
     public ProjectWindow(Project project) {
         Fretboard fretboard = project.getFretboard();
-
+        p_id = project.getP_id();
         this.tab = project.getTab();
 
         // Create Window frame
@@ -65,9 +62,11 @@ public class ProjectWindow {
                 tab.add(i, new ArrayList<>(7));
             }
             for (int i = 0; i < 6; i++) {
-                tab.get(0).add(i, fretboard.getTuning().get(i).getName().substring(0, 1));
+                if (fretboard.getTuning().get(i).getName().length()-1 == 1){
+                    tab.get(0).add(i, fretboard.getTuning().get(i).getName().substring(0, fretboard.getTuning().get(i).getName().length()-1) + " ");
+                }else  tab.get(0).add(i, fretboard.getTuning().get(i).getName().substring(0, fretboard.getTuning().get(i).getName().length()-1));
             }
-            tab.get(0).add(6, " ");
+            tab.get(0).add(6, "  ");
             for (int i = 0; i < 6; i++) {
                 tab.get(1).add(i, "|");
             }
@@ -78,7 +77,9 @@ public class ProjectWindow {
             tab.get(2).add(6, "^^");
         } //Initialize list
         TabListToString();
+        validateText();
         tablatureTextArea();
+        System.out.println(tab);
         frame.add(TabScrollFramePanel());
         //Set frame visible
         frame.setVisible(true);
@@ -269,7 +270,7 @@ public class ProjectWindow {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                convertTabToDatabaseString();
+                saveTabToDatabase();
             }
         });
         return button;
@@ -305,10 +306,14 @@ public class ProjectWindow {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tab.remove(currently_edited);
-                if (currently_edited == 2) {
-                } else currently_edited--;
-                //TabListToString();
+                if (currently_edited > 2) {
+                    tab.remove(currently_edited);
+                    currently_edited--;
+                } else {
+                    for(int i = 0; i<6; i++) {
+                        tab.get(currently_edited).set(i, "--");
+                    }
+                }
                 validateText();
 
             }
@@ -482,9 +487,9 @@ public class ProjectWindow {
             if (tab.get(i).get(0) != "|") tab.get(i).set(6, "  ");
             else tab.get(i).set(6, " ");
         }
-        tab.get(0).set(6, " ");
+        tab.get(0).set(6, "  ");
         tab.get(1).set(6, " ");
-        if (tab.get(currently_edited).get(0) == "|") tab.get(currently_edited).set(6, "^");
+        if (tab.get(currently_edited).get(1) == "|"){ tab.get(currently_edited).set(6, "^"); System.out.println("Bar line");}
         else tab.get(currently_edited).set(6, "^^");
         TabListToString();
     }
@@ -651,21 +656,12 @@ public class ProjectWindow {
     public void saveTabToDatabase(){
         ConnectionSettings settings = new ConnectionSettings();
         try {
-            Connection conn  = settings.getDatabaseConnection();
-            String sql = "SELECT t_s1_id,t_s2_id,t_s3_id,t_s4_id,t_s5_id,t_s6_id FROM tunings WHERE t_id = ";
-            Statement statement_notes_id = conn.createStatement();
-            ResultSet resultSet_notes_id = statement_notes_id.executeQuery(sql);
-            resultSet_notes_id.next();
-            for (int i = 1; i<=6; i++){
-                int string_id = resultSet_notes_id.getInt(i);
-                sql = "SELECT n_name, n_val, n_oct, n_audio FROM notes WHERE n_id = "+string_id;
-                Statement statement_notes = conn.createStatement();
-                ResultSet resultSet_notes = statement_notes.executeQuery(sql);
-                resultSet_notes.next();
-
-                statement_notes.close();
-
-            }
+            Connection conn = settings.getDatabaseConnection();
+            PreparedStatement statement = conn.prepareStatement("UPDATE `guitartab`.`projects` SET `p_cvs_val`= ? WHERE `p_id` = ?");
+            statement.setString(1, convertTabToDatabaseString());
+            statement.setString(2, String.valueOf(p_id));
+            statement.executeUpdate();
+            System.out.println("Update executed: " + statement);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -673,9 +669,7 @@ public class ProjectWindow {
     }
 
     public static void main(String[] args) {
-        Scale scale = new Scale();
-        scale.createScale(1, 4);
-        Project project = new Project(1, scale, 1, new LinkedList<>());
+        Project project = new Project(1);
         new ProjectWindow(project);
     }
 }

@@ -1,4 +1,3 @@
-
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
 -- Server version:               11.7.2-MariaDB - mariadb.org binary distribution
@@ -23,10 +22,10 @@ USE `guitartab`;
 -- Dumping structure for table guitartab.intervals
 CREATE TABLE IF NOT EXISTS `intervals` (
   `i_id` int(11) NOT NULL AUTO_INCREMENT,
-  `i_name` varchar(50) NOT NULL,
+  `i_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_uca1400_ai_ci NOT NULL,
   `i_val` int(11) NOT NULL,
   PRIMARY KEY (`i_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf16 COLLATE=utf16_uca1400_ai_ci;
 
 -- Dumping data for table guitartab.intervals: ~14 rows (approximately)
 INSERT INTO `intervals` (`i_id`, `i_name`, `i_val`) VALUES
@@ -48,12 +47,12 @@ INSERT INTO `intervals` (`i_id`, `i_name`, `i_val`) VALUES
 -- Dumping structure for table guitartab.notes
 CREATE TABLE IF NOT EXISTS `notes` (
   `n_id` int(11) NOT NULL AUTO_INCREMENT,
-  `n_name` varchar(3) DEFAULT NULL,
+  `n_name` varchar(3) CHARACTER SET utf8mb3 COLLATE utf8mb3_uca1400_ai_ci DEFAULT NULL,
   `n_val` int(2) DEFAULT NULL,
   `n_oct` int(1) DEFAULT NULL,
-  `n_audio` varchar(50) DEFAULT NULL,
+  `n_audio` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_uca1400_ai_ci DEFAULT NULL,
   PRIMARY KEY (`n_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf16 COLLATE=utf16_uca1400_ai_ci;
 
 -- Dumping data for table guitartab.notes: ~60 rows (approximately)
 INSERT INTO `notes` (`n_id`, `n_name`, `n_val`, `n_oct`, `n_audio`) VALUES
@@ -118,10 +117,29 @@ INSERT INTO `notes` (`n_id`, `n_name`, `n_val`, `n_oct`, `n_audio`) VALUES
 	(59, 'G6', 11, 6, NULL),
 	(60, 'G#6', 12, 6, NULL);
 
+-- Dumping structure for table guitartab.projects
+CREATE TABLE IF NOT EXISTS `projects` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
+  `p_t_id` int(11) NOT NULL,
+  `p_s_id` int(11) NOT NULL,
+  `p_key_val` int(11) NOT NULL,
+  `p_name` text CHARACTER SET utf8mb3 COLLATE utf8mb3_uca1400_ai_ci DEFAULT 'New Project',
+  `p_cvs_val` mediumtext DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  KEY `FK_projects_tunings` (`p_t_id`),
+  KEY `FK_projects_scale` (`p_s_id`),
+  CONSTRAINT `FK_projects_scale` FOREIGN KEY (`p_s_id`) REFERENCES `scale` (`s_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_projects_tunings` FOREIGN KEY (`p_t_id`) REFERENCES `tunings` (`t_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf16 COLLATE=utf16_uca1400_ai_ci;
+
+-- Dumping data for table guitartab.projects: ~1 rows (approximately)
+INSERT INTO `projects` (`p_id`, `p_t_id`, `p_s_id`, `p_key_val`, `p_name`, `p_cvs_val`) VALUES
+	(1, 2, 1, 4, 'FACGCE C MAJ', 'E ,C ,G ,C ,A ,F ,  ,|,|,|,|,|,|, ,--,7-,7-,--,--,11,^^,--,--,--,--,--,--,  ,12,--,--,--,--,--,  ,--,--,--,--,--,--,  ,|,|,|,|,|,|,  ,--,--,--,--,--,--,  ,--,--,--,--,--,--,  ,--,--,--,--,--,10,  ,--,--,--,--,--,--,  ,--,--,--,--,--,--,  ,--,--,--,--,--,--,  ,|,|,|,|,|,|,  ,--,--,--,--,--,--,  ,--,--,--,--,--,--,  ,--,--,--,--,--,--,  ,');
+
 -- Dumping structure for table guitartab.scale
 CREATE TABLE IF NOT EXISTS `scale` (
   `s_id` int(11) NOT NULL AUTO_INCREMENT,
-  `s_name` varchar(50) DEFAULT NULL,
+  `s_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_uca1400_ai_ci DEFAULT NULL,
   `s_i1` int(11) DEFAULT NULL,
   `s_i2` int(11) DEFAULT NULL,
   `s_i3` int(11) DEFAULT NULL,
@@ -144,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `scale` (
   CONSTRAINT `FK__intervals_5` FOREIGN KEY (`s_i6`) REFERENCES `intervals` (`i_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK__intervals_6` FOREIGN KEY (`s_i7`) REFERENCES `intervals` (`i_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_scale_intervals` FOREIGN KEY (`s_i5`) REFERENCES `intervals` (`i_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf16 COLLATE=utf16_uca1400_ai_ci;
 
 -- Dumping data for table guitartab.scale: ~3 rows (approximately)
 INSERT INTO `scale` (`s_id`, `s_name`, `s_i1`, `s_i2`, `s_i3`, `s_i4`, `s_i5`, `s_i6`, `s_i7`) VALUES
@@ -155,7 +173,7 @@ INSERT INTO `scale` (`s_id`, `s_name`, `s_i1`, `s_i2`, `s_i3`, `s_i4`, `s_i5`, `
 -- Dumping structure for table guitartab.tunings
 CREATE TABLE IF NOT EXISTS `tunings` (
   `t_id` int(11) NOT NULL AUTO_INCREMENT,
-  `t_name` varchar(50) DEFAULT NULL,
+  `t_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_uca1400_ai_ci DEFAULT NULL,
   `t_s1_id` int(11) DEFAULT NULL,
   `t_s2_id` int(11) DEFAULT NULL,
   `t_s3_id` int(11) DEFAULT NULL,
@@ -175,12 +193,12 @@ CREATE TABLE IF NOT EXISTS `tunings` (
   CONSTRAINT `FK_tunings_notes_2` FOREIGN KEY (`t_s4_id`) REFERENCES `notes` (`n_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_tunings_notes_3` FOREIGN KEY (`t_s5_id`) REFERENCES `notes` (`n_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_tunings_notes_4` FOREIGN KEY (`t_s6_id`) REFERENCES `notes` (`n_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf16 COLLATE=utf16_uca1400_ai_ci;
 
 -- Dumping data for table guitartab.tunings: ~3 rows (approximately)
 INSERT INTO `tunings` (`t_id`, `t_name`, `t_s1_id`, `t_s2_id`, `t_s3_id`, `t_s4_id`, `t_s5_id`, `t_s6_id`) VALUES
 	(1, 'EADGBE', 32, 15, 23, 18, 1, 8),
-	(2, 'FACGCE', 32, 28, 23, 16, 14, 9),
+	(2, 'FACGCE', 32, 28, 23, 16, 13, 9),
 	(3, 'DEDGBE', 32, 15, 23, 18, 1, 6);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
