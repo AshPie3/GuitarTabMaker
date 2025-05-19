@@ -120,6 +120,18 @@ public class ProjectWindow {
 
         return textArea;
     }
+
+    private JPanel tablatureTextPanel(){
+        JPanel panel = new JPanel();
+        int width = (int) (windowWidth * 0.9);
+        int height = (int) (windowHeight / 2.3) * 100;
+        panel.setBounds(0, 0, width, height);
+        panel.setBackground(Window.fretboard_c);
+        panel.setLayout(null);
+
+
+        return panel;
+    }
     private Component MenuPanel() {
         JPanel menuPanel = new JPanel();
         menuPanel.setLayout(null);
@@ -186,9 +198,7 @@ public class ProjectWindow {
         });
         return button;
     }
-
     private Component functionsPanel() {
-        JPanel functionsPanel = new JPanel();
         functionsPanel.setLayout(null);
         int width = (int) (windowWidth * 0.7);
         int height = (int) (fretboardPanelHeight * 0.23);
@@ -210,7 +220,7 @@ public class ProjectWindow {
         functionsPanel.add(deleteLineButton(width, height, func_x[0]));
         return functionsPanel;
     }
-    // Elements of panels
+    // Elements of function panel
     private JButton autoNextLineButton(int width, int height, int x) {
         JButton button = new JButton();
         button.setLayout(null);
@@ -237,14 +247,13 @@ public class ProjectWindow {
         });
         return button;
     }
-    private void addLine() { // function
+    private void addLine() {
         List<String> temp_list = new ArrayList<>(6);
         for (int i = 0; i < 6; i++) {
             temp_list.add("--");
         }
         temp_list.add(" ");
         tab.add(currently_edited, temp_list);
-
         //TabListToString();
         validateText();
 
@@ -415,6 +424,22 @@ public class ProjectWindow {
         //System.out.println(str_tab_buff); // for debugging
         str_tab = str_tab_buff.toString();
     } //Function used to display the Tablature in the frame
+    private String LimitedTabListToString(int begin_col, int end_col) {
+        StringBuffer str_tab_buff = new StringBuffer();
+        List<List<String>> limited_tab = new LinkedList<>();
+        for (int i = begin_col; i<= end_col; i++){
+            limited_tab.add(tab.get(i));
+        }
+        for (int y = 0; y < 7; y++) {
+            for (int x = 0; x < limited_tab.size(); x++) {
+                String current_val = limited_tab.get(x).get(y);
+                str_tab_buff.append(current_val);
+            }
+            str_tab_buff.append("\n");
+        }
+        //System.out.println(str_tab_buff); // for debugging
+        return str_tab_buff.toString();
+    } //Used to get one panel row of tab
     private void setButtons(Fretboard fretboard, JPanel panel) {
         List<List<Component>> button_list = new LinkedList<>();
         List<Component> button_temp = new LinkedList<>();
@@ -583,7 +608,6 @@ public class ProjectWindow {
                         currently_edited = tab.size();
                         addLine();
                     } else {}
-
                     validateText();
                 }
                 validateText();
@@ -609,7 +633,7 @@ public class ProjectWindow {
                     tablatureTextArea().repaint();
             }
         }
-    }
+    } // interface runnable include in Crit C
 
     public String convertTabToDatabaseString(){
         StringBuffer stringBuffer = new StringBuffer();

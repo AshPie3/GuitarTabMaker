@@ -28,9 +28,6 @@ public class NewProjectWindow {
 
         // Add components
         frame.add(MainTitle());
-        //frame.add(NewProjectButton());
-
-
 
     }
     // Create Center Label
