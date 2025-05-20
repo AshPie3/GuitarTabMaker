@@ -437,12 +437,9 @@ public class ProjectWindow {
             }
             str_tab_buff.append("\n");
         }
-        //System.out.println(str_tab_buff); // for debugging
         return str_tab_buff.toString();
     } //Used to get one panel row of tab
     private void setButtons(Fretboard fretboard, JPanel panel) {
-        List<List<Component>> button_list = new LinkedList<>();
-        List<Component> button_temp = new LinkedList<>();
         int b_diamater = (int) (fretboardPanelHeight / 7.3);
         for (int y = 0; y < 6; y++) {
             int y_m = (fretboardPanelHeight / 7) * y + (fretboardPanelHeight / 7) - b_diamater / 2;
@@ -455,13 +452,10 @@ public class ProjectWindow {
                 textLabel.setText(fretboard.getFretboard().get(y).get(x).getName());
                 textLabel.setFont(new Font(Window.font, Font.BOLD, (int) (fretboardPanelHeight * 0.07)));
                 textLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                button_temp.add(mainLabel);
                 panel.add(textLabel);
                 panel.add(mainLabel);
 
             }
-            button_list.add(button_temp);
-            button_temp.clear();
         }
     }
     private void validateText(){
