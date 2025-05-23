@@ -8,6 +8,7 @@ package GuitarTabMaker.GUIWindows.NewProjectWindow;
         import java.sql.Connection;
         import java.sql.PreparedStatement;
         import java.sql.SQLException;
+        import java.util.HashMap;
 
 public class NewProjectWindow {
 
@@ -24,9 +25,25 @@ public class NewProjectWindow {
     private int t_id;
     private int s_id;
     private int key_val;
+    private HashMap<Integer, String> keyValMap = new HashMap();
+    private void initaizeKeyValMap(){
+        keyValMap.put(1, "A");
+        keyValMap.put(2, "A#");
+        keyValMap.put(3, "B");
+        keyValMap.put(4, "C");
+        keyValMap.put(5, "C#");
+        keyValMap.put(6, "D");
+        keyValMap.put(7, "D#");
+        keyValMap.put(8, "E");
+        keyValMap.put(9, "F");
+        keyValMap.put(10, "F#");
+        keyValMap.put(11, "G");
+        keyValMap.put(12, "G#");
+    }
 
 
     public NewProjectWindow(){
+        initaizeKeyValMap();
         // create Window
         frame.setTitle("Create Project Window");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
