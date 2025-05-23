@@ -68,8 +68,13 @@ public class Project {
             this.scale.createScale(s_id, key_val);
             this.scale.applyScale(this.fretboard);
             this.p_name = resultSet_project.getString(4);
-            this.cvs_value = resultSet_project.getString(5);
-            retriveTab();
+            if (resultSet_project.getString(5) == null){
+                initilizeTab();
+            } else {
+                this.cvs_value = resultSet_project.getString(5);
+                retriveTab();
+            }
+
             statement_project.close();
             resultSet_project.close();
         } catch (SQLException e) {
@@ -89,7 +94,7 @@ public class Project {
             tab.add(temp_list);
             i = i +7;
         }
-        System.out.println(tab);
+        //System.out.println(tab);
     }
 
     public void initilizeTab(){

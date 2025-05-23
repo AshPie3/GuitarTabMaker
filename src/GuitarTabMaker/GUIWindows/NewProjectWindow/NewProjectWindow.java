@@ -1,22 +1,34 @@
 package GuitarTabMaker.GUIWindows.NewProjectWindow;
 
-        import GuitarTabMaker.GUIWindows.ProjectWindow.ProjectWindow;
+        import GuitarTabMaker.ConnectionSettings;
         import GuitarTabMaker.GUIWindows.Window;
 
         import javax.swing.*;
         import java.awt.*;
-        import java.awt.event.ActionEvent;
-        import java.awt.event.ActionListener;
+        import java.sql.Connection;
+        import java.sql.PreparedStatement;
+        import java.sql.SQLException;
 
 public class NewProjectWindow {
 
-    private int windowWidth = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getWidth()*0.5);
-    private int windowHeight = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getHeight()*0.5);
+    private int windowHeight = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getHeight()*0.7);
+    private int windowWidth = windowHeight;//(int) (GuitarTabMaker.GUIWindows.Window.screenSize.getWidth()*0.5);
+    private JFrame frame = new JFrame();
+    private JLabel projectNameL;
+    private JTextField projectNameTf;
+    private JLabel projectKey;
+    private JComboBox keyValCb;
+    private JCheckBox keyScaleCb;
+    private JLabel projectTunning;
+    private int p_id;
+    private int t_id;
+    private int s_id;
+    private int key_val;
+
 
     public NewProjectWindow(){
         // create Window
-        JFrame frame = new JFrame();
-        frame.setTitle("Start Window");
+        frame.setTitle("Create Project Window");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(windowWidth, windowHeight);
         frame.setResizable(false);
@@ -28,50 +40,50 @@ public class NewProjectWindow {
 
 
         // Add components
-        frame.add(MainTitle());
-        frame.add(NewProjectButton());
+        frame.add(projectName());
 
 
         frame.setVisible(true);
     }
-    // Create Center Label
-    private Component MainTitle(){
+    private void DumpDataToDatabase() {
+        ConnectionSettings settings = new ConnectionSettings();
+        try {
+            Connection conn = settings.getDatabaseConnection();
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO `projects` SET `p_cvs_val`= ? WHERE `p_id` = ?");
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+        // Create Center Label
+    private Component projectName(){
         JLabel label = new JLabel();
-        label.setText("Guitar Tab Maker");
+        label.setText("Project Name");
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.TOP);
         label.setForeground(Window.text_c); // set text color
-        label.setFont(new Font(Window.font, Font.BOLD, (int) (windowHeight*0.08)));
-        int label_width = 400;
-        int label_height = 100;
-        label.setBounds(windowWidth/2-label_width/2, 50, label_width, label_height);
-
+        label.setFont(new Font(Window.font, Font.PLAIN, (int) (windowHeight*0.06)));
+        int label_width = windowWidth;
+        int label_height = windowHeight/10;
+        label.setBounds(windowWidth/2-label_width/2, 0, label_width, label_height);
         return label;
     }
+    private Component projectNameTextField(){
+        projectNameTf.setBounds(0,  windowHeight/10, windowWidth, windowHeight/10);
 
-    private Component NewProjectButton(){
-        JButton button = new JButton();
-        int width = (int) (windowWidth/4.5);
-        int height = windowHeight/7;
-        button.setBounds(windowWidth - windowWidth/3 - width/2, windowHeight/2 - height/2, width, height);
-        button.setBackground(Window.button_off_c);
-        button.setBorderPainted(false);
-        JLabel label = new JLabel();
-        label.setText("New Project");
-        label.setFont(new Font(Window.font, Font.BOLD, height/3));
-
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
-
-        button.add(label);
-
-        return button;
+        return projectNameTf;
     }
+    private JComboBox projectBtnBox(){
+         keyValCb = new JComboBox();
+
+
+         return keyValCb;
+    }
+
+
+
 
 
 

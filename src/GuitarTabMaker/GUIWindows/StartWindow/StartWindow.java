@@ -1,6 +1,7 @@
 package GuitarTabMaker.GUIWindows.StartWindow;
 
 import GuitarTabMaker.ConnectionSettings;
+import GuitarTabMaker.GUIWindows.NewProjectWindow.NewProjectWindow;
 import GuitarTabMaker.GUIWindows.ProjectWindow.ProjectWindow;
 import GuitarTabMaker.GUIWindows.Window;
 import GuitarTabMaker.ProjectManager.Project;
@@ -22,7 +23,7 @@ public class StartWindow {
     private int windowWidth = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getWidth()*0.7);
     private int windowHeight = (int) (GuitarTabMaker.GUIWindows.Window.screenSize.getHeight()*0.7);
     private JScrollPane existingProjectScrollPane = new JScrollPane();
-    private JPanel existingProjectPanel = new JPanel();
+    private JPanel existingProjectPanel;
     private HashMap<Integer, String> projectMap = new HashMap<>();
     private JFrame frame = new JFrame();
 
@@ -37,12 +38,10 @@ public class StartWindow {
         frame.getContentPane().setBackground(GuitarTabMaker.GUIWindows.Window.background_c);
         frame.setLayout(null);
 
-        generateHashMap();
-        ExistingProjectScrollPane();
-
         // Add components
         frame.add(MainTitle());
-        frame.add(ExistingProjectPanel());
+        frame.add(ExistingProjectScrollPane());
+        frame.add(createProject());
 
         frame.setVisible(true);
     }
@@ -61,32 +60,42 @@ public class StartWindow {
 
         return label;
     }
-    private Component ProjectName(){
-        JLabel label = new JLabel();
-
-        return label;
-    }
 
     private Component ExistingProjectScrollPane(){
+
         int width = windowWidth/3;
         int height = (int) ( windowHeight*0.7);
         int x = width/4;
-        int y = windowHeight/2-height/2;
-        existingProjectScrollPane.setBorder(null);
-        existingProjectScrollPane.setBounds(0,0, width,height);
+        int y = (windowHeight-height)/3;
 
         existingProjectScrollPane = new JScrollPane(ExistingProjectPanel(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         JScrollBar scrollBar = existingProjectScrollPane.getVerticalScrollBar();
+        existingProjectScrollPane.setBorder(null);
+        existingProjectScrollPane.setBounds(x,y, width,height);
         scrollBar.setOrientation(JScrollBar.VERTICAL);
         return existingProjectScrollPane;
 
     }
-
     private JPanel ExistingProjectPanel(){
+        existingProjectPanel = new JPanel();
         existingProjectPanel.setLayout(null);
-        existingProjectPanel.setBounds(0,0, existingProjectScrollPane.getWidth(), existingProjectScrollPane.getHeight()*10);
+        existingProjectPanel.setBounds(0,0,windowWidth/3,  (int) ( windowHeight*0.7)*10);
         existingProjectPanel.setBackground(Window.function_panel_c);
-        createProjectLabels();
+        generateHashMap();
+        int height =  (int) ( windowHeight*0.7)/15;
+        for(int i = 0; i < projectMap.size(); i++){
+            int key = (int) projectMap.keySet().toArray()[i];
+            System.out.println(key);
+            int y = height*i;
+            String name = projectMap.get(key);
+            JLabel label = new ProjectLabel(key);
+            label.setBounds(0,y,existingProjectPanel.getWidth(), height);
+            label.setBackground(Window.button_off_c);
+            label.setText(name);
+            label.setBorder(BorderFactory.createLineBorder(Color.black));
+            label.setOpaque(true);
+            existingProjectPanel.add(label);
+        }
         return existingProjectPanel;
     }
     private void generateHashMap(){
@@ -107,19 +116,30 @@ public class StartWindow {
     private void openProject(int p_id){
         new ProjectWindow(new Project(p_id));
         frame.dispose();
-
     }
-    private void createProjectLabels(){
-        int height = existingProjectScrollPane.getHeight()/20;
-        for(int i = 0; i < projectMap.size(); i++){
-            int key = (int) projectMap.keySet().toArray()[i];
-            int y = height*i;
-            String name = projectMap.get(key);
-            JLabel label = new ProjectLabel(key);
-            label.setBounds(0,y,existingProjectPanel.getWidth(), height);
-            label.setText(name);
-            existingProjectPanel.add(label);
-        }
+
+    private JButton createProject(){
+        JButton button = new JButton();
+        int width = windowWidth/6;
+        int height = windowHeight/10;
+        int x = windowWidth- (2*width);
+        int y = (existingProjectScrollPane.getY());
+        button.setBounds(x, y, width, height);
+        button.setLayout(null);
+        button.setBackground(Window.button_off_c);
+        JLabel label = new JLabel();
+        label.setBounds(0, 0, width,height);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setText("Create Project");
+        button.add(label);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new NewProjectWindow();
+                frame.dispose();
+            }
+        });
+        return button;
     }
 
     private class ProjectLabel extends JLabel{
@@ -129,7 +149,6 @@ public class StartWindow {
         ProjectLabel(int p_id){
             this.p_id = p_id;
             MouseAdapter mouseListener = new MouseAdapter() {
-
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (contains(e.getX(), e.getY())) {
@@ -156,11 +175,5 @@ public class StartWindow {
 
     }
 
-
-
-
-    public static void main(String[] args) {
-        new StartWindow();
-    }
 
 }

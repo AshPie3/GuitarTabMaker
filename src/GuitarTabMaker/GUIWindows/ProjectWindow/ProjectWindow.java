@@ -439,6 +439,35 @@ public class ProjectWindow {
         }
         return str_tab_buff.toString();
     } //Used to get one panel row of tab
+
+    private JButton projectButton(int width, int height, int x){
+        JButton button = new JButton();
+        button.setLayout(null);
+        int button_width = (int) (width * 0.06);
+        int button_height = height;
+        int y = (height - button_height) / 2;
+        button.setBounds(0, 0, button_width, button_height);
+        button.setBackground(Window.button_off_c);
+        button.setBorderPainted(true);
+        JLabel label = new JLabel();
+        label.setText("Project");
+        label.setBounds(0, 0, button_width, button_height);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD, (int) (button_height * 0.4)));
+        button.add(label);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+
+
+            }
+        });
+        return button;
+    }
+
+
     private void setButtons(Fretboard fretboard, JPanel panel) {
         int b_diamater = (int) (fretboardPanelHeight / 7.3);
         for (int y = 0; y < 6; y++) {
@@ -501,37 +530,6 @@ public class ProjectWindow {
 
             }
         }
-    }
-    private class NoteLabel extends JLabel {
-        private boolean selected = false;
-        private String value;
-
-        public NoteLabel(String value, boolean selected) {
-            this.selected = selected;
-            this.value = value;
-
-            setText(value);
-
-
-        }
-
-
-        public boolean isSelected() {
-            return selected;
-        }
-
-        public void setSelected(boolean selected) {
-            this.selected = selected;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-
     }
     private class RoundButton extends JLabel {
         private boolean mousePressed = false;
