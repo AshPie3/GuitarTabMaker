@@ -2,13 +2,17 @@ package GuitarTabMaker.GUIWindows.NewProjectWindow;
 
         import GuitarTabMaker.ConnectionSettings;
         import GuitarTabMaker.GUIWindows.ProjectWindow.ProjectWindow;
+        import GuitarTabMaker.GUIWindows.StartWindow.StartWindow;
         import GuitarTabMaker.GUIWindows.Window;
         import GuitarTabMaker.ProjectManager.Project;
 
         import javax.swing.*;
+        import javax.swing.border.Border;
         import java.awt.*;
         import java.awt.event.ActionEvent;
         import java.awt.event.ActionListener;
+        import java.awt.event.WindowAdapter;
+        import java.awt.event.WindowEvent;
         import java.sql.Connection;
         import java.sql.ResultSet;
         import java.sql.SQLException;
@@ -25,33 +29,56 @@ public class NewProjectWindow {
     private JTextField projectNameTf;
     private JLabel projectKey;
     private JComboBox keyValCb;
-    private HashMap<Integer, String> keyValMap = new HashMap();
+    private HashMap<String, Integer> keyValMap = new HashMap();
     private JComboBox keyScaleCb;
-    private HashMap<Integer, String> scaleMap = new HashMap<>();
+    private HashMap<String, Integer> scaleMap = new HashMap<>();
     private JLabel projectTunning;
     private JComboBox tunningCb;
-    private HashMap<Integer, String> tuningMap = new HashMap<>();
+    private HashMap<String, Integer> tuningMap = new HashMap<>();
     private JButton createBtn = new JButton();
     private int p_id;
     private int t_id;
     private int s_id;
     private int key_val;
     private String p_name;
-    private void populateKeyValMap(){
-        keyValMap.put(1, "A");
-        keyValMap.put(2, "A#");
-        keyValMap.put(3, "B");
-        keyValMap.put(4, "C");
-        keyValMap.put(5, "C#");
-        keyValMap.put(6, "D");
-        keyValMap.put(7, "D#");
-        keyValMap.put(8, "E");
-        keyValMap.put(9, "F");
-        keyValMap.put(10, "F#");
-        keyValMap.put(11, "G");
-        keyValMap.put(12, "G#");
-    }
+    public NewProjectWindow(){
+        // create Window
+        frame.setTitle("Create Project Window");
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.setSize(windowWidth, windowHeight);
+        frame.setResizable(false);
+        ImageIcon icon = new ImageIcon("Assets/Icon.png");
+        frame.setIconImage(icon.getImage());
+        frame.getContentPane().setBackground(GuitarTabMaker.GUIWindows.Window.background_c);
+        frame.setLayout(null);
 
+        // Add components
+        frame.add(exitBtn());
+        frame.add(projectName());
+        frame.add(projectNameTextField());
+        frame.add(projectKey());
+        frame.add(projectKeyValBox());
+        frame.add(projectScaleBox());
+        frame.add(projectTuning());
+        frame.add(projectTuningBox());
+        frame.add(createProjectBtn());
+
+        frame.setVisible(true);
+    }
+    private void populateKeyValMap(){
+        keyValMap.put( "A", 1);
+        keyValMap.put("A#", 2);
+        keyValMap.put("B", 3);
+        keyValMap.put("C", 4);
+        keyValMap.put("C#", 5);
+        keyValMap.put("D", 6);
+        keyValMap.put("D#", 7);
+        keyValMap.put("E", 8);
+        keyValMap.put("F", 9);
+        keyValMap.put("F#",10);
+        keyValMap.put("G",11);
+        keyValMap.put("G#",12);
+    }
     private void populateScaleMap() {
         ConnectionSettings settings = new ConnectionSettings();
         try {
@@ -60,7 +87,7 @@ public class NewProjectWindow {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while(resultSet.next()){
-                scaleMap.put(resultSet.getInt("s_id"), resultSet.getString("s_name"));
+                scaleMap.put(resultSet.getString("s_name"), resultSet.getInt("s_id"));
             }
         } catch (SQLException e){
             throw new RuntimeException();
@@ -75,42 +102,43 @@ public class NewProjectWindow {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while(resultSet.next()){
-                tuningMap.put(resultSet.getInt("t_id"), resultSet.getString("t_name"));
+                tuningMap.put(resultSet.getString("t_name"),resultSet.getInt("t_id"));
             }
         } catch (SQLException e){
             throw new RuntimeException();
         }
     }
 
-
-    public NewProjectWindow(){
-        // create Window
-        frame.setTitle("Create Project Window");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(windowWidth, windowHeight);
-        frame.setResizable(false);
-        ImageIcon icon = new ImageIcon("Assets/Icon.png");
-        frame.setIconImage(icon.getImage());
-        frame.getContentPane().setBackground(GuitarTabMaker.GUIWindows.Window.background_c);
-        frame.setLayout(null);
-
-        // Add components
-        frame.add(projectName());
-        frame.add(projectNameTextField());
-        frame.add(projectKey());
-        frame.add(projectKeyValBox());
-        frame.add(projectScaleBox());
-        frame.add(projectTunning());
-        frame.add(projectTuningBox());
-        frame.add(createProjectBtn());
-
-        frame.setVisible(true);
-    }
     private void createProject() {
         Project project = new Project(this.t_id, this.s_id, this.key_val, this.p_name);
         new ProjectWindow(project);
         frame.dispose();
 
+    }
+    private Component exitBtn(){
+        JButton button = new JButton();
+        button.setLayout(null);
+        int button_width = (int) (windowWidth * 0.1);
+        int button_height = (int) (windowHeight*0.045);
+        int y = 0;
+        button.setBounds(0, y, button_width, button_height);
+        button.setBackground(Window.button_off_c);
+        button.setBorderPainted(true);
+        JLabel label = new JLabel();
+        label.setText("Exit");
+        label.setBounds(0, 0, button_width, button_height);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD, (int) (button_height * 0.6)));
+        button.add(label);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new StartWindow();
+                frame.dispose();
+            }
+        });
+        return button;
     }
     private Component projectName(){
         projectNameL = new JLabel();
@@ -129,6 +157,8 @@ public class NewProjectWindow {
         projectNameTf.setBounds((int) (windowWidth/2.5),  (int) (windowHeight*0.05), windowWidth/2, windowHeight/20);
         projectNameTf.setFont(new Font(Window.font, Font.PLAIN, (int) (windowWidth*0.04)));
         projectNameTf.setHorizontalAlignment(SwingConstants.CENTER);
+        projectNameTf.setBackground(Window.menu_item_c);
+        projectNameTf.setBorder(BorderFactory.createLineBorder(Color.black));
         return projectNameTf;
     }
     private Component projectKey(){
@@ -146,14 +176,16 @@ public class NewProjectWindow {
     private JComboBox projectKeyValBox(){
          keyValCb = new JComboBox();
          keyValCb.setBounds((int) (windowWidth/2.5), (int) (windowHeight*0.05)*3, windowWidth/4, windowHeight/20);
+         keyValCb.setBackground(Window.menu_item_c);
          fillKeyValComboBox();
+         keyValCb.setBorder(BorderFactory.createLineBorder(Color.black));
          return keyValCb;
     }
     private void fillKeyValComboBox(){
         populateKeyValMap();
 
         for(Map.Entry entry: keyValMap.entrySet()){
-            Object Items = entry.getValue();
+            Object Items = entry.getKey();
             keyValCb.addItem(Items);
         }
     }
@@ -161,18 +193,20 @@ public class NewProjectWindow {
     private JComboBox projectScaleBox(){
         keyScaleCb = new JComboBox<>();
         keyScaleCb.setBounds((int) (windowWidth/2.5)+windowWidth/4, (int) (windowHeight*0.05)*3, windowWidth/4, windowHeight/20);
+        keyScaleCb.setBackground(Window.menu_item_c);
         fillScaleComboBox();
+        keyScaleCb.setBorder(BorderFactory.createLineBorder(Color.black));
         return keyScaleCb;
     }
 
     private void fillScaleComboBox(){
         populateScaleMap();
         for(Map.Entry entry: scaleMap.entrySet()){
-            Object Items = entry.getValue();
+            Object Items = entry.getKey();
             keyScaleCb.addItem(Items);
         }
     }
-    private JLabel projectTunning(){
+    private JLabel projectTuning(){
         projectTunning = new JLabel();
         projectTunning.setText("Tuning");
         projectTunning.setHorizontalAlignment(SwingConstants.CENTER);
@@ -187,41 +221,45 @@ public class NewProjectWindow {
     private JComboBox projectTuningBox(){
         tunningCb = new JComboBox<>();
         tunningCb.setBounds((int) (windowWidth/2.5), (int) (windowHeight*0.05)*5, windowWidth/2, windowHeight/20);
+        tunningCb.setBackground(Window.menu_item_c);
         fillTuningBox();
+        tunningCb.setBorder(BorderFactory.createLineBorder(Color.black));
         return tunningCb;
     }
     private void fillTuningBox(){
         populateTuningMap();
         for(Map.Entry entry: tuningMap.entrySet()){
-            Object Items = entry.getValue();
+            Object Items = entry.getKey();
             tunningCb.addItem(Items);
         }
     }
     private JButton createProjectBtn(){
         int btn_w = windowWidth/3;
         int btn_h = windowHeight/10;
-        createBtn.setBounds(windowWidth/2 - btn_w, (int) (windowHeight*0.05)*7, btn_w, btn_h);
+        createBtn.setBounds(windowWidth/2 - btn_w/2, (int) (windowHeight*0.05)*7, btn_w, btn_h);
+        createBtn.setLayout(null);
+        createBtn.setBackground(Window.button_off_c);
+        JLabel label = new JLabel();
+        label.setBounds(0,0, btn_w, btn_h);
+        label.setText("Create");
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD, (int) (btn_h*0.5)));
+        createBtn.add(label);
+
         createBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (int i = 0; i < keyValMap.size(); i ++){
-                    //if(keyValMap.get())
-                }
+                t_id = tuningMap.get(tunningCb.getSelectedItem().toString());
+                s_id = scaleMap.get(keyScaleCb.getSelectedItem().toString());
+                key_val = keyValMap.get(keyValCb.getSelectedItem().toString());
                 p_name = projectNameTf.getText();
-                //key_val = keyValMap.get(keyValCb.getSelectedItem().toString());
+                createProject();
                 System.out.println(key_val);
             }
         });
         return createBtn;
     }
-
-
-
-
-
-
-
-
 
     public static void main(String[] args) {
         new NewProjectWindow();

@@ -2,10 +2,13 @@ package GuitarTabMaker.GUIWindows.ProjectWindow;
 
 import GuitarTabMaker.ConnectionSettings;
 import GuitarTabMaker.FretboardCreator.Fretboard;
+import GuitarTabMaker.GUIWindows.NewProjectWindow.NewProjectWindow;
+import GuitarTabMaker.GUIWindows.StartWindow.StartWindow;
 import GuitarTabMaker.GUIWindows.Window;
 import GuitarTabMaker.ProjectManager.Project;
 
 import javax.swing.*;
+import javax.swing.event.MenuKeyListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,7 +44,7 @@ public class ProjectWindow {
 
         // Create Window frame
         frame.setTitle("Project Window");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setSize(windowWidth, windowHeight);
         frame.setResizable(false);
         //frame.setVisible(true);
@@ -120,32 +123,21 @@ public class ProjectWindow {
 
         return textArea;
     }
-
-    private JPanel tablatureTextPanel(){
-        JPanel panel = new JPanel();
-        int width = (int) (windowWidth * 0.9);
-        int height = (int) (windowHeight / 2.3) * 100;
-        panel.setBounds(0, 0, width, height);
-        panel.setBackground(Window.fretboard_c);
-        panel.setLayout(null);
-
-
-        return panel;
-    }
     private Component MenuPanel() {
-        JPanel menuPanel = new JPanel();
+        JMenuBar menuPanel = new JMenuBar();
         menuPanel.setLayout(null);
         int width = windowWidth;
         int height = (int) (windowHeight * 0.05);
         menuPanel.setBounds(0, 0, width, height);
-        menuPanel.setBackground(Window.text_c);
+        menuPanel.setBackground(Window.menu_panel_c);
+        menuPanel.setBorderPainted(false);
         int btn_num = 6;
         int[] func_x = new int[btn_num];
         for (int i = 0; i < btn_num; i++) {
             func_x[i] = (width / btn_num) * i + width / btn_num;
         }
         menuPanel.add(exitButton(width, height, func_x[5]));
-        menuPanel.add(saveButton(width,height,func_x[4]));
+        menuPanel.add(projectMenu(width,height,0));
 
         return menuPanel;
     }
@@ -169,34 +161,50 @@ public class ProjectWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 saveTabToDatabase();
+                new StartWindow();
                 frame.dispose();
             }
         });
         return button;
     }
-    private JButton saveButton(int width, int height, int x) {
-        JButton button = new JButton();
-        button.setLayout(null);
-        int button_width = (int) (width * 0.06);
-        int button_height = height;
-        int y = (height - button_height) / 2;
-        button.setBounds(x, y, button_width, button_height);
-        button.setBackground(Window.button_off_c);
-        button.setBorderPainted(true);
-        JLabel label = new JLabel();
-        label.setText("Save");
-        label.setBounds(0, 0, button_width, button_height);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setVerticalAlignment(SwingConstants.CENTER);
-        label.setFont(new Font(Window.font, Font.BOLD, (int) (button_height * 0.4)));
-        button.add(label);
-        button.addActionListener(new ActionListener() {
+    private Component projectMenu(int width, int height, int x){
+        JMenu menu = new JMenu();
+        // menu.setMenuLocation(x, height);
+        int btn_width = (int) (width*0.08);
+        menu.setBounds(0,0,btn_width, height);
+        menu.setBackground(Window.button_hover);
+        menu.setText("Project");
+        JMenuItem newMenuItem = new JMenuItem("New");
+        newMenuItem.setBackground(Window.menu_item_c);
+        newMenuItem.setSize(btn_width,height);
+        newMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new NewProjectWindow();
+            }
+        });
+        menu.add(newMenuItem);
+        JMenuItem saveMenuItem = new JMenuItem("Save");
+        saveMenuItem.setBackground(Window.menu_item_c);
+        saveMenuItem.setSize(btn_width,height);
+        saveMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 saveTabToDatabase();
             }
         });
-        return button;
+        menu.add(saveMenuItem);
+        JMenuItem openMenuItem = new JMenuItem("Open");
+        saveMenuItem.setBackground(Window.menu_item_c);
+        saveMenuItem.setSize(btn_width,height);
+        saveMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Create a drop down/menu of existing projects
+            }
+        });
+
+        return menu;
     }
     private Component functionsPanel() {
         functionsPanel.setLayout(null);
