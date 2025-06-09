@@ -63,7 +63,7 @@ public class ProjectWindow {
         TabListToString();
         validateText();
         tablatureTextArea();
-        System.out.println(tab);
+        //System.out.println(tab);
         frame.add(TabScrollFramePanel());
         //Set frame visible
         frame.setVisible(true);
@@ -97,15 +97,14 @@ public class ProjectWindow {
         return fretboardNumsPanel;
     }
     private Component TabScrollFramePanel() {
-        int y = (int) (windowHeight*0.15);
+        int y = (int) (windowHeight*0.1);
         int width = (int) (windowWidth * 0.9);
-        int height = (int) (windowHeight /3);
+        int height = (int) (windowHeight /2.5);
         scrollFrame = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // tablature text area scroll frame
         scrollFrame.setBounds((int) (windowWidth * 0.05), y, width, height);
         scrollFrame.setBorder(null);
 
         JScrollBar scrollBar = scrollFrame.getVerticalScrollBar();
-        scrollBar.setValue(scrollBar_val);
         scrollBar.setOrientation(JScrollBar.VERTICAL);
 
         return scrollFrame;
@@ -120,7 +119,6 @@ public class ProjectWindow {
         textArea.setEditable(false);
         textArea.setText(str_tab);
         textArea.setFont(new Font(Window.font, Font.BOLD, (int) (width * 0.02)));
-        //textArea.setLineWrap(true);
 
         return textArea;
     }
@@ -312,7 +310,7 @@ public class ProjectWindow {
             public void actionPerformed(ActionEvent e) {
                 if(auto_next_line) auto_next_line= false;
                 else auto_next_line= true;
-                System.out.println("Auto next line is:" + auto_next_line);
+               // System.out.println("Auto next line is:" + auto_next_line);
             }
         });
         return button;
@@ -503,9 +501,9 @@ public class ProjectWindow {
         List<List<String>> limited_tab = new LinkedList<>();
         for (int i = begin_col; i< end_col; i++){
             limited_tab.add(tab.get(i));
-            System.out.println(limited_tab);
+            //System.out.println(limited_tab);
         }
-        System.out.println(limited_tab);
+        //System.out.println(limited_tab);
         for (int y = 0; y < 7; y++) {
             for (int x = 0; x < limited_tab.size(); x++) {
                 String current_val = limited_tab.get(x).get(y);
@@ -523,7 +521,7 @@ public class ProjectWindow {
                 stringBuffer.append(tab.get(x).get(y) + ",");
             }
         }
-        System.out.println(stringBuffer);
+        //System.out.println(stringBuffer);
         return String.valueOf(stringBuffer);
     }
     public void saveTabToDatabase(){
@@ -534,7 +532,7 @@ public class ProjectWindow {
             statement.setString(1, convertTabToDatabaseString());
             statement.setString(2, String.valueOf(p_id));
             statement.executeUpdate();
-            System.out.println("Update executed: " + statement);
+            //System.out.println("Update executed: " + statement);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -566,18 +564,14 @@ public class ProjectWindow {
     }
     private void validatePointer(){
         for(int i = 0; i < tab.size(); i++){
-            if (tab.get(i).get(0).equals("|"))  tab.get(i).set(6, " "); // tab.get(currently_edited).get(1).equals("|") tab.get(currently_edited).get(1).compareTo("|")==0
+            if (tab.get(i).get(0).equals("|"))  tab.get(i).set(6, " ");
             else tab.get(i).set(6, "  ");
         }
         tab.get(0).set(6, "  ");
         tab.get(1).set(6, " ");
-        if (tab.get(currently_edited).get(1).equals("|")){ tab.get(currently_edited).set(6, "^");} //tab.get(currently_edited).get(1) == "|"
+        if (tab.get(currently_edited).get(1).equals("|")){ tab.get(currently_edited).set(6, "^");}
         else tab.get(currently_edited).set(6, "^^");
         TabListToString();
-    }
-    private void validateScrollBar(){
-
-        scrollFrame.getVerticalScrollBar().setValue(scrollBar_val);
     }
     //Modified Classes
     private class FretboardPanel extends JPanel {
@@ -692,17 +686,16 @@ public class ProjectWindow {
         public void setFret(int fret) {this.fret = fret;}
     }
     class ValidateThread implements Runnable {
+
         @Override
         public void run() {
             scrollBar_val = scrollFrame.getVerticalScrollBar().getValue();
             TabListToString();
                 if (tablatureTextArea().getText() != str_tab) {
-
                     validatePointer();
                     tablatureTextArea().setText(str_tab);
                     tablatureTextArea().repaint();
-                    validateScrollBar();
-                    scrollFrame.getVerticalScrollBar().setValue(scrollBar_val);
+                    scrollFrame.getVerticalScrollBar().setValue(scrollFrame.getVerticalScrollBar().getMaximum());
             }
         }
     } // interface runnable include in Crit C
