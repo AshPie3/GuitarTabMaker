@@ -118,7 +118,7 @@ public class ProjectWindow {
         textArea.setLayout(null);
         textArea.setEditable(false);
         textArea.setText(str_tab);
-        textArea.setFont(new Font(Window.font, Font.BOLD, (int) (width * 0.02)));
+        textArea.setFont(new Font(Window.font, Font.BOLD, (int) (width * 0.015)));
 
         return textArea;
     }
@@ -258,10 +258,8 @@ public class ProjectWindow {
             Connection conn = settings.getDatabaseConnection();
             String sql = "DELETE FROM `guitartab`.`projects` WHERE  `p_id`=" + p_id;
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
-            while(resultSet.next()){
-                openProjectMap.put(resultSet.getString("p_name"), resultSet.getInt("p_id"));
-            }
+            statement.executeQuery(sql);
+            frame.dispose();
         } catch (SQLException e){
             throw new RuntimeException();
         }
@@ -274,7 +272,7 @@ public class ProjectWindow {
         int y = windowHeight - 2 * height;
         functionsPanel.setBounds(x, y, width, height);
         functionsPanel.setBackground(Window.function_panel_c);
-        int func_num = 6;
+        int func_num = 7;
         int[] func_x = new int[func_num];
         for (int i = 0; i < func_num; i++) {
             func_x[i] = (width / func_num) * i + width / func_num / 2;
@@ -286,6 +284,7 @@ public class ProjectWindow {
         functionsPanel.add(insertBarLineButton(width, height, func_x[2]));
         functionsPanel.add(insertLineButton(width, height, func_x[1]));
         functionsPanel.add(deleteLineButton(width, height, func_x[0]));
+        functionsPanel.add(lastLineButton(width, height, func_x[6]));
         return functionsPanel;
     }
     // Elements of function panel
@@ -322,7 +321,6 @@ public class ProjectWindow {
         }
         temp_list.add(" ");
         tab.add(currently_edited, temp_list);
-        //TabListToString();
         validateText();
 
     }
@@ -354,7 +352,6 @@ public class ProjectWindow {
                     }
                 }
                 validateText();
-
             }
         });
 
@@ -449,11 +446,44 @@ public class ProjectWindow {
                     addLine();
                 } else {}
                 validateText();
-
             }
         });
         return button;
     }
+    private JButton lastLineButton(int width, int height, int x) {
+        JButton button = new JButton();
+        button.setLayout(null);
+        int button_width = (int) (width * 0.09);
+        int button_height = (int) (height * 0.8);
+        int y = (height - button_height) / 2;
+        button.setBounds(x- button_width/2, y, button_width, button_height);
+        button.setBackground(Window.button_off_c);
+        button.setBorderPainted(true);
+        JLabel label = new JLabel();
+        label.setText("Last line");
+        label.setBounds(0, 0, button_width, button_height);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD, (int) (button_height * 0.4)));
+        button.add(label);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (currently_edited != tab.size()-1){
+                    currently_edited = tab.size()-1;
+                    label.setText("First line");
+                    label.repaint();
+                } else {
+                    currently_edited = 2;
+                    label.setText("Last line");
+                    label.repaint();
+                }
+                validateText();
+            }
+        });
+        return button;
+    }
+
     private JButton previousLineButton(int width, int height, int x) {
         JButton button = new JButton();
         button.setLayout(null);
@@ -482,7 +512,7 @@ public class ProjectWindow {
     }
     private void TabListToString() {
         StringBuffer str_tab_buff = new StringBuffer();
-        int row_val = 44;
+        int row_val = 58;
         int current_row = 0;
         int end_idx = 0;
         while(end_idx< tab.size()){
@@ -606,7 +636,6 @@ public class ProjectWindow {
         private boolean inKey = false;
         private int fret;
         private final int string;
-
         private final String audio_file;
 
         public RoundButton(int fret, int string, boolean inKey, String audio_file) {

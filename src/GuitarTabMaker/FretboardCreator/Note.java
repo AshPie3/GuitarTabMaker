@@ -44,9 +44,7 @@ public class Note {
 
     public int getOct() {return oct;}
     public void setOct(int oct) {this.oct = oct;}
-
     public String getAudio_file() {return audio_file;}
-    public void setAudio_file(String audio_file) {this.audio_file = audio_file;}
 
     public boolean getIn_scale() {return in_scale;}
     public void setIn_scale(boolean in_scale) {this.in_scale = in_scale;}

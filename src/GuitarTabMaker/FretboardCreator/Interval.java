@@ -4,7 +4,6 @@ public class Interval {
     private int id;
     private String name;
     private int value;
-
     public Interval(int id, String name, int value) {
         this.id = id;
         this.name = name;
