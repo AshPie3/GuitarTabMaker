@@ -16,7 +16,7 @@ public interface Window {
     Color function_panel_c = new Color(73, 72, 69);
     Color menu_panel_c = new Color(73, 72, 69);
     Color menu_item_c = new Color(83, 82, 79);
-    Color text_area_c = new Color(62, 74, 88);
+    Color text_area_c = new Color(72, 84, 94);
     String font = "Monospaced";
 
 

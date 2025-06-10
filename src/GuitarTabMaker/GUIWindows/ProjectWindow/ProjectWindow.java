@@ -108,6 +108,7 @@ public class ProjectWindow {
         scrollFrame = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // tablature text area scroll frame
         scrollFrame.setBounds((int) (windowWidth * 0.05), y, width, height);
         scrollFrame.setBorder(null);
+        scrollFrame.setBorder(BorderFactory.createLineBorder(Color.black));
         JScrollBar scrollBar = scrollFrame.getVerticalScrollBar();
         scrollBar.setOrientation(JScrollBar.VERTICAL);
 
@@ -619,7 +620,7 @@ public class ProjectWindow {
             MidiChannel[] channels = synth.getChannels();
             channels[channel].noteOn(noteNumber, volume); // C note
             //Thread.sleep(duration);
-            Thread.sleep(duration);
+            //Thread.sleep(duration);
             channels[channel].noteOff(noteNumber);
             synth.close();
         } catch (Exception e) {
