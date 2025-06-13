@@ -8,6 +8,7 @@ import GuitarTabMaker.GUIWindows.Window;
 import GuitarTabMaker.ProjectManager.Project;
 
 import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Synthesizer;
 import javax.swing.*;
@@ -108,7 +109,7 @@ public class ProjectWindow {
         scrollFrame = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // tablature text area scroll frame
         scrollFrame.setBounds((int) (windowWidth * 0.05), y, width, height);
         scrollFrame.setBorder(null);
-        scrollFrame.setBorder(BorderFactory.createLineBorder(Color.black));
+        //scrollFrame.setBorder(BorderFactory.createLineBorder(Color.black));
         JScrollBar scrollBar = scrollFrame.getVerticalScrollBar();
         scrollBar.setOrientation(JScrollBar.VERTICAL);
 
@@ -119,7 +120,7 @@ public class ProjectWindow {
         int width = (int) (windowWidth * 0.9);
         int height = (int) (windowHeight / 2.3);
         textArea.setBounds(0, 0, width, height);
-        textArea.setBackground(Window.text_area_c);
+        textArea.setBackground(Window.background_c); //Window.button_off_c
         textArea.setLayout(null);
         textArea.setEditable(false);
         textArea.setText(str_tab);
@@ -516,10 +517,10 @@ public class ProjectWindow {
     // Creating and formatting the tablature
     private void TabListToString() {
         StringBuffer str_tab_buff = new StringBuffer();
-        int row_val = 58;
+        int row_val = 56;
         int current_row = 0;
         int end_idx = 0;
-        while(end_idx< tab.size()){
+        while(end_idx < tab.size()){
             int begin_idx =  row_val * current_row;
             end_idx = begin_idx+row_val;
             if (end_idx >= tab.size()) end_idx = tab.size();
@@ -533,7 +534,7 @@ public class ProjectWindow {
     private String LimitedTabListToString(int begin_col, int end_col) {
         StringBuffer str_tab_buff = new StringBuffer();
         List<List<String>> limited_tab = new LinkedList<>();
-        for (int i = begin_col; i< end_col; i++){
+        for (int i = begin_col; i < end_col; i++){
             limited_tab.add(tab.get(i));
             //System.out.println(limited_tab);
         }
@@ -607,25 +608,19 @@ public class ProjectWindow {
         else tab.get(currently_edited).set(6, "^^");
         TabListToString();
     }
-
     public void playNote(int noteId) {
-        int channel = 1; // 0 is a piano, 9 is percussion, other channels are for other instruments
-
+        int channel = 5; // 0 is a piano, 9 is percussion, other channels are for other instruments
         int volume = 80; // between 0 et 127
-        int duration = 700; // in milliseconds
         int noteNumber = noteId + 32;
-        try {
-            Synthesizer synth = MidiSystem.getSynthesizer();
-            synth.open();
-            MidiChannel[] channels = synth.getChannels();
-            channels[channel].noteOn(noteNumber, volume); // C note
-            //Thread.sleep(duration);
-            //Thread.sleep(duration);
-            channels[channel].noteOff(noteNumber);
-            synth.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            try {
+                Synthesizer synth = MidiSystem.getSynthesizer();
+                synth.open();
+                MidiChannel[] channels = synth.getChannels();
+                channels[channel].noteOn(noteNumber, volume); // C note
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
     }
     //Modified Classes
     private class FretboardPanel extends JPanel {
@@ -651,7 +646,6 @@ public class ProjectWindow {
                 int y = (fretboardPanelHeight / 7) * i;
                 g.setColor(Color.BLACK);
                 g.fillRect(0, y, fretboardPanelWidth, (int) (fretboardPanelHeight * 0.02));
-
             }
         }
     }
@@ -661,7 +655,6 @@ public class ProjectWindow {
         private int fret;
         private final int string;
         private int noteId;
-
         public RoundButton(int fret, int string, boolean inKey, int noteId) {
             this.inKey = inKey;
             this.fret = fret;
@@ -687,7 +680,6 @@ public class ProjectWindow {
             addMouseListener(mouseListener);
             addMouseMotionListener(mouseListener);
         }
-
         private int getDiameter() {
             int diameter = Math.min(getWidth(), getHeight());
             return diameter;
@@ -705,9 +697,7 @@ public class ProjectWindow {
                 } catch (NumberFormatException e) {
                     current_val_int = -1;
                 }
-
                 if (tab.get(currently_edited).get(1).equals("|")) return;
-
                 else if (fret >= 10) {
                     appended_val = String.valueOf(fret);
                 } else appended_val = fret + "-";
@@ -743,21 +733,12 @@ public class ProjectWindow {
             TabListToString();
             if (tablatureTextArea().getText() != str_tab) {
                 validatePointer();
-                tablatureTextArea().setText(str_tab);
-                tablatureTextArea().repaint();
+                textArea.setText(str_tab);
+                //textArea.repaint();
                 SwingUtilities.invokeLater(() -> {
+                    textArea.repaint();
                     scrollFrame.getVerticalScrollBar().setValue(scrollBarVal);
                 });
             }
         }} // interface runnable include in Crit C
-
-    class PlayNote extends Thread{
-        public void run(){
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
 }

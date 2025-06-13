@@ -6,7 +6,7 @@ public interface Window {
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int screenSizeWidth = (int) (screenSize.getWidth());
     int screenSizeHeight = (int) ( screenSize.getHeight());
-    Color background_c = new Color(62, 74, 88);
+    Color background_c = new Color(97, 115, 124);//92, 94, 118);
     Color button_off_c = new Color(91, 114, 124);
     Color button_on_c = new Color(62, 79, 96);
     Color button_hover = new Color(42, 59, 76);
