@@ -2,10 +2,7 @@ package GuitarTabMaker.FretboardCreator;
 
 import GuitarTabMaker.ConnectionSettings;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,6 +41,17 @@ public class Scale {
         }
     }
 
+    public void createScale(String name,int s_i1,int s_i2,int s_i3,int s_i4,int s_i5,int s_i6,int s_i7){
+        ConnectionSettings settings = new ConnectionSettings();
+        try {
+            Connection conn  = settings.getDatabaseConnection();
+            String sql = "INSERT INTO `guitartab`.`scale` (s_name, s_i1, s_i2, s_i3, s_i4, s_i5, s_i6, s_i7) VALUES ("+ name +", "+s_i1+", "+s_i2+", "+s_i3+", "+s_i4+", "+s_i5+", "+s_i6+", "+s_i7+")";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public void applyScale(Fretboard fretboard) {
         for (int i1 = 0; i1<6; i1++) {
             for (int i2 = 0; i2 <fretboard.getFretNum(); i2++) {

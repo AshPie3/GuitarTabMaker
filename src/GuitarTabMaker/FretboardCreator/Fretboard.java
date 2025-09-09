@@ -23,11 +23,11 @@ public class Fretboard {
                 resultSet_notes_id.next();
                 for (int i = 1; i<=6; i++){
                     int string_id = resultSet_notes_id.getInt(i);
-                    sql = "SELECT n_name, n_val, n_oct, n_audio FROM notes WHERE n_id = "+string_id;
+                    sql = "SELECT n_name, n_val, n_oct FROM notes WHERE n_id = "+string_id;
                     Statement statement_notes = conn.createStatement();
                     ResultSet resultSet_notes = statement_notes.executeQuery(sql);
                     resultSet_notes.next();
-                    Note note = new Note(string_id ,resultSet_notes.getString("n_name"), resultSet_notes.getInt("n_val"), resultSet_notes.getInt("n_oct"), resultSet_notes.getString("n_audio"), false );
+                    Note note = new Note(string_id ,resultSet_notes.getString("n_name"), resultSet_notes.getInt("n_val"), resultSet_notes.getInt("n_oct"), false );
                     statement_notes.close();
                     this.tuning.add(note);
                 }
@@ -48,10 +48,10 @@ public class Fretboard {
                 int start_note_id = this.tuning.get(n).getId();
                 for (int i = 0; i < fretNum; i++) {
                     int n_id = start_note_id + i;
-                    sql = "SELECT n_name, n_val, n_oct, n_audio FROM notes WHERE n_id = " + n_id;
+                    sql = "SELECT n_name, n_val, n_oct FROM notes WHERE n_id = " + n_id;
                     ResultSet resultSet_notes = statement_notes.executeQuery(sql);
                     resultSet_notes.next();
-                    Note note = new Note(n_id, resultSet_notes.getString("n_name"), resultSet_notes.getInt("n_val"), resultSet_notes.getInt("n_oct"), resultSet_notes.getString("n_audio"), false);
+                    Note note = new Note(n_id, resultSet_notes.getString("n_name"), resultSet_notes.getInt("n_val"), resultSet_notes.getInt("n_oct"),  false);
                     temp_string_notes.add(note);
                 }
                 this.fretboard.add(n, temp_string_notes);

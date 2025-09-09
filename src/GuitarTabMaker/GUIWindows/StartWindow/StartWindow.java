@@ -1,6 +1,7 @@
 package GuitarTabMaker.GUIWindows.StartWindow;
 
 import GuitarTabMaker.ConnectionSettings;
+import GuitarTabMaker.GUIWindows.CreateScaleWindow.CreateScaleWindow;
 import GuitarTabMaker.GUIWindows.NewProjectWindow.NewProjectWindow;
 import GuitarTabMaker.GUIWindows.ProjectWindow.ProjectWindow;
 import GuitarTabMaker.GUIWindows.Window;
@@ -42,6 +43,7 @@ public class StartWindow {
         frame.add(MainTitle());
         frame.add(ExistingProjectScrollPane());
         frame.add(createProject());
+        frame.add(createScale());
 
         frame.setVisible(true);
     }
@@ -136,6 +138,30 @@ public class StartWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new NewProjectWindow();
+                frame.dispose();
+            }
+        });
+        return button;
+    }
+
+    private JButton createScale(){
+        JButton button = new JButton();
+        int width = windowWidth/6;
+        int height = windowHeight/10;
+        int x = windowWidth- (2*width);
+        int y = (existingProjectScrollPane.getY()) + 2*height;
+        button.setBounds(x, y, width, height);
+        button.setLayout(null);
+        button.setBackground(Window.button_off_c);
+        JLabel label = new JLabel();
+        label.setBounds(0, 0, width,height);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setText("Create Scale");
+        button.add(label);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new CreateScaleWindow();
                 frame.dispose();
             }
         });
