@@ -43,7 +43,7 @@ public class StartWindow {
         frame.add(MainTitle());
         frame.add(ExistingProjectScrollPane());
         frame.add(createProject());
-        frame.add(createScale());
+        //frame.add(createScale()); implement in the future maybe
 
         frame.setVisible(true);
     }
@@ -143,7 +143,7 @@ public class StartWindow {
         });
         return button;
     }
-
+    /*
     private JButton createScale(){
         JButton button = new JButton();
         int width = windowWidth/6;
@@ -167,7 +167,7 @@ public class StartWindow {
         });
         return button;
     }
-
+    */
     private class ProjectLabel extends JLabel{
         private boolean mousePressed = false;
         private int p_id;

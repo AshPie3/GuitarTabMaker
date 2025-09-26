@@ -18,7 +18,6 @@ public class Note {
         this.oct = oct;
         this.in_scale = in_scale;
     }
-
     @Override
     public String toString() {
         return "Notes{" +

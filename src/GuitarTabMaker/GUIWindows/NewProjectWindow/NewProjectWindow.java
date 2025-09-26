@@ -7,12 +7,9 @@ package GuitarTabMaker.GUIWindows.NewProjectWindow;
         import GuitarTabMaker.ProjectManager.Project;
 
         import javax.swing.*;
-        import javax.swing.border.Border;
         import java.awt.*;
         import java.awt.event.ActionEvent;
         import java.awt.event.ActionListener;
-        import java.awt.event.WindowAdapter;
-        import java.awt.event.WindowEvent;
         import java.sql.Connection;
         import java.sql.ResultSet;
         import java.sql.SQLException;
@@ -32,8 +29,8 @@ public class NewProjectWindow {
     private HashMap<String, Integer> keyValMap = new HashMap();
     private JComboBox keyScaleCb;
     private HashMap<String, Integer> scaleMap = new HashMap<>();
-    private JLabel projectTunning;
-    private JComboBox tunningCb;
+    private JLabel projectTuning;
+    private JComboBox tuningCb;
     private HashMap<String, Integer> tuningMap = new HashMap<>();
     private JButton createBtn = new JButton();
     private int p_id;
@@ -159,6 +156,7 @@ public class NewProjectWindow {
         projectNameTf.setHorizontalAlignment(SwingConstants.CENTER);
         projectNameTf.setBackground(Window.menu_item_c);
         projectNameTf.setBorder(BorderFactory.createLineBorder(Color.black));
+        projectNameTf.setText("New Project");
         return projectNameTf;
     }
     private Component projectKey(){
@@ -207,32 +205,33 @@ public class NewProjectWindow {
         }
     }
     private JLabel projectTuning(){
-        projectTunning = new JLabel();
-        projectTunning.setText("Tuning");
-        projectTunning.setHorizontalAlignment(SwingConstants.CENTER);
-        projectTunning.setVerticalAlignment(SwingConstants.CENTER);
-        projectTunning.setForeground(Window.text_c); // set text color
-        projectTunning.setFont(new Font(Window.font, Font.BOLD, (int) (windowWidth*0.04)));
+        projectTuning = new JLabel();
+        projectTuning.setText("Tuning");
+        projectTuning.setHorizontalAlignment(SwingConstants.CENTER);
+        projectTuning.setVerticalAlignment(SwingConstants.CENTER);
+        projectTuning.setForeground(Window.text_c); // set text color
+        projectTuning.setFont(new Font(Window.font, Font.BOLD, (int) (windowWidth*0.04)));
         int label_width = (int) (windowWidth/4);
         int label_height = windowHeight/20;
-        projectTunning.setBounds(0, (int) (windowHeight*0.05)*5, label_width, label_height);
-        return projectTunning;
+        projectTuning.setBounds(0, (int) (windowHeight*0.05)*5, label_width, label_height);
+        return projectTuning;
     }
     private JComboBox projectTuningBox(){
-        tunningCb = new JComboBox<>();
-        tunningCb.setBounds((int) (windowWidth/2.5), (int) (windowHeight*0.05)*5, windowWidth/2, windowHeight/20);
-        tunningCb.setBackground(Window.menu_item_c);
+        tuningCb = new JComboBox<>();
+        tuningCb.setBounds((int) (windowWidth/2.5), (int) (windowHeight*0.05)*5, windowWidth/2, windowHeight/20);
+        tuningCb.setBackground(Window.menu_item_c);
         fillTuningBox();
-        tunningCb.setBorder(BorderFactory.createLineBorder(Color.black));
-        return tunningCb;
+        tuningCb.setBorder(BorderFactory.createLineBorder(Color.black));
+        return tuningCb;
     }
     private void fillTuningBox(){
         populateTuningMap();
         for(Map.Entry entry: tuningMap.entrySet()){
             Object Items = entry.getKey();
-            tunningCb.addItem(Items);
+            tuningCb.addItem(Items);
         }
     }
+
     private JButton createProjectBtn(){
         int btn_w = windowWidth/3;
         int btn_h = windowHeight/10;
@@ -250,7 +249,7 @@ public class NewProjectWindow {
         createBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                t_id = tuningMap.get(tunningCb.getSelectedItem().toString());
+                t_id = tuningMap.get(tuningCb.getSelectedItem().toString());
                 s_id = scaleMap.get(keyScaleCb.getSelectedItem().toString());
                 key_val = keyValMap.get(keyValCb.getSelectedItem().toString());
                 p_name = projectNameTf.getText();

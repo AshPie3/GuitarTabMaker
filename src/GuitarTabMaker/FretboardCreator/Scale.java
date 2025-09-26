@@ -40,7 +40,7 @@ public class Scale {
             throw new RuntimeException(e);
         }
     }
-
+    /*
     public void createScale(String name,int s_i1,int s_i2,int s_i3,int s_i4,int s_i5,int s_i6,int s_i7){
         ConnectionSettings settings = new ConnectionSettings();
         try {
@@ -52,6 +52,7 @@ public class Scale {
             throw new RuntimeException(e);
         }
     }
+    */
     public void applyScale(Fretboard fretboard) {
         for (int i1 = 0; i1<6; i1++) {
             for (int i2 = 0; i2 <fretboard.getFretNum(); i2++) {
