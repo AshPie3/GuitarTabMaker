@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="GuitarTabMaker:jar">
+    <output-path>$PROJECT_DIR$/out</output-path>
+    <root id="archive" name="GuitarTabMaker.jar">
+      <element id="module-output" name="GuitarTabMaker" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/mariadb-java-client-3.5.3.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
