@@ -1,7 +1,7 @@
 package GuitarTabMaker.GUIWindows.StartWindow;
 
 import GuitarTabMaker.ConnectionSettings;
-import GuitarTabMaker.GUIWindows.CreateScaleWindow.CreateScaleWindow;
+//import GuitarTabMaker.GUIWindows.CreateScaleWindow.CreateScaleWindow;
 import GuitarTabMaker.GUIWindows.NewProjectWindow.NewProjectWindow;
 import GuitarTabMaker.GUIWindows.ProjectWindow.ProjectWindow;
 import GuitarTabMaker.GUIWindows.Window;

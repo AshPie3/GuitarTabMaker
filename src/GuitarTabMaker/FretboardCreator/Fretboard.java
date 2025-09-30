@@ -74,14 +74,9 @@ public class Fretboard {
     public List<Note> getTuning(){
         return tuning;
     }
-    public void setTuning(List<Note> tuning) {this.tuning = tuning;}
-
     public List<List<Note>> getFretboard(){
         return fretboard;
     }
-    public void setFretboard(List<List<Note>> fretboard) {this.fretboard = fretboard;}
-
-
     public static int getFretNum() {return fretNum;}
-    public void setFretNum(int fretNum) {this.fretNum = fretNum;}
+
 }
