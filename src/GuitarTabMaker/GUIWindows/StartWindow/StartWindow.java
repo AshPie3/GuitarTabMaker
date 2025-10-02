@@ -87,7 +87,7 @@ public class StartWindow {
         int height =  (int) ( windowHeight*0.7)/15;
         for(int i = 0; i < projectMap.size(); i++){
             int key = (int) projectMap.keySet().toArray()[i];
-            System.out.println(key);
+            //System.out.println(key);
             int y = height*i;
             String name = projectMap.get(key);
             JLabel label = new ProjectLabel(key);

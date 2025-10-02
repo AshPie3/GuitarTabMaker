@@ -254,7 +254,7 @@ public class NewProjectWindow {
                 key_val = keyValMap.get(keyValCb.getSelectedItem().toString());
                 p_name = projectNameTf.getText();
                 createProject();
-                System.out.println(key_val);
+                //System.out.println(key_val);
             }
         });
         return createBtn;

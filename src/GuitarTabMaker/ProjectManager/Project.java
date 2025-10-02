@@ -58,7 +58,7 @@ public class Project {
             ResultSet resultSet_project = statement_project.executeQuery(sql);
             resultSet_project.next();
             //System.out.println(resultSet_project.toString());
-            System.out.println();
+            //System.out.println();
             this.t_id = resultSet_project.getInt("p_t_id");
             this.fretboard.generateTuning(t_id);
             this.fretboard.generateFretboard();
@@ -88,7 +88,7 @@ public class Project {
             List<String> temp_list = new ArrayList<>();
             for (int y = 0; y<7; y++){
                 int index = y+i;
-                if(values.get(index) == "|"){values.set(index, "|"); System.out.println("Changed");}
+                if(values.get(index) == "|"){values.set(index, "|"); } //System.out.println("Changed");
                 temp_list.add(values.get(index));
             }
             tab.add(temp_list);
