@@ -1,4 +1,4 @@
-package GuitarTabMaker;
+gpackage GuitarTabMaker;
 
 import GuitarTabMaker.GUIWindows.StartWindow.StartWindow;
 
