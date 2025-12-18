@@ -446,7 +446,7 @@ public class ProjectWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 currently_edited++;
-                if (currently_edited >= tab.size() - 1) {
+                if (currently_edited > tab.size() - 1) {
                     currently_edited = tab.size();
                     addLine();
                 } else {}
@@ -710,7 +710,7 @@ public class ProjectWindow {
                 }
                 if(auto_next_line){
                     currently_edited++;
-                    if (currently_edited >= tab.size() - 1) {
+                    if (currently_edited > tab.size() - 1) {
                         currently_edited = tab.size();
                         addLine();
                     } else {}

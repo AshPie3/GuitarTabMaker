@@ -108,6 +108,7 @@ public class NewProjectWindow {
 
     private void createProject() {
         Project project = new Project(this.t_id, this.s_id, this.key_val, this.p_name);
+        
         new ProjectWindow(project);
         frame.dispose();
 
@@ -152,7 +153,7 @@ public class NewProjectWindow {
     private Component projectNameTextField(){
         projectNameTf = new JTextField();
         projectNameTf.setBounds((int) (windowWidth/2.5),  (int) (windowHeight*0.05), windowWidth/2, windowHeight/20);
-        projectNameTf.setFont(new Font(Window.font, Font.PLAIN, (int) (windowWidth*0.04)));
+        projectNameTf.setFont(new Font(Window.font, Font.PLAIN, (int) (windowWidth*0.03)));
         projectNameTf.setHorizontalAlignment(SwingConstants.CENTER);
         projectNameTf.setBackground(Window.menu_item_c);
         projectNameTf.setBorder(BorderFactory.createLineBorder(Color.black));

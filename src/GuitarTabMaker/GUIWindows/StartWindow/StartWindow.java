@@ -1,13 +1,10 @@
 package GuitarTabMaker.GUIWindows.StartWindow;
 
 import GuitarTabMaker.ConnectionSettings;
-//import GuitarTabMaker.GUIWindows.CreateScaleWindow.CreateScaleWindow;
 import GuitarTabMaker.GUIWindows.NewProjectWindow.NewProjectWindow;
 import GuitarTabMaker.GUIWindows.ProjectWindow.ProjectWindow;
 import GuitarTabMaker.GUIWindows.Window;
 import GuitarTabMaker.ProjectManager.Project;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import javax.swing.*;
 
 public class StartWindow {
 
@@ -54,7 +52,7 @@ public class StartWindow {
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.TOP);
         label.setForeground(Window.text_c); // set text color
-        label.setFont(new Font(Window.font, Font.BOLD, 15));
+        label.setFont(new Font(Window.font, Font.BOLD, 30));
         label.setForeground(Color.BLACK);
         int label_width = windowWidth/3;
         int label_height = windowHeight/15;
@@ -94,6 +92,7 @@ public class StartWindow {
             label.setBounds(0,y,existingProjectPanel.getWidth(), height);
             label.setBackground(Window.button_off_c);
             label.setText(name);
+            label.setFont(new Font(Window.font, Font.BOLD, 15));
             label.setBorder(BorderFactory.createLineBorder(Color.black));
             label.setOpaque(true);
             existingProjectPanel.add(label);
@@ -132,6 +131,7 @@ public class StartWindow {
         JLabel label = new JLabel();
         label.setBounds(0, 0, width,height);
         label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font(Window.font, Font.BOLD, 20));
         label.setText("Create Project");
         button.add(label);
         button.addActionListener(new ActionListener() {

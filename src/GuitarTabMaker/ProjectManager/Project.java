@@ -3,7 +3,6 @@ package GuitarTabMaker.ProjectManager;
 import GuitarTabMaker.ConnectionSettings;
 import GuitarTabMaker.FretboardCreator.Fretboard;
 import GuitarTabMaker.FretboardCreator.Scale;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,7 +42,16 @@ public class Project {
             Statement statement_project = conn.createStatement();
             statement_project.executeQuery(sql);
             statement_project.close();
-
+            
+            System.out.println("Project created at:" + p_id);
+            System.out.println("Project name:" + "'" +p_name + "'");
+            sql = "SELECT p_id FROM projects WHERE p_name = " + "'" +p_name + "'";
+            Statement statement_project_2 = conn.createStatement();
+            ResultSet resultSet_project_2 = statement_project_2.executeQuery(sql);
+            resultSet_project_2.next();
+            this.p_id = resultSet_project_2.getInt("p_id");
+            System.out.println("Project created at:" + p_id);
+            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
