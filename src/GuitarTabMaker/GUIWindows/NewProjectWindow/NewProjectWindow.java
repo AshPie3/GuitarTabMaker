@@ -253,12 +253,32 @@ public class NewProjectWindow {
                 t_id = tuningMap.get(tuningCb.getSelectedItem().toString());
                 s_id = scaleMap.get(keyScaleCb.getSelectedItem().toString());
                 key_val = keyValMap.get(keyValCb.getSelectedItem().toString());
-                p_name = projectNameTf.getText();
+                if (checkNameAvailable(projectNameTf.getText())){
+                    p_name = projectNameTf.getText();
+                } else {
+                    p_name = projectNameTf.getText() + " - New";
+                }
                 createProject();
                 //System.out.println(key_val);
             }
         });
         return createBtn;
+    }
+
+    private boolean checkNameAvailable(String p_name){
+        ConnectionSettings settings = new ConnectionSettings();
+         try {
+            Connection conn = settings.getDatabaseConnection();
+            String sql = "SELECT p_name FROM projects WHERE p_name = '"+ p_name+"'";
+            Statement statement_project = conn.createStatement();
+            ResultSet resultSet_project = statement_project.executeQuery(sql);
+            if (resultSet_project.next()){
+                return false;
+            }
+         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
     }
 
     public static void main(String[] args) {
